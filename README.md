@@ -35,6 +35,8 @@ enviroments: firebase config erstellen für test und prod
 
 ```npm install ts-node```
 
+weiteres
+
 
 
 

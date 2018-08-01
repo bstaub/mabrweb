@@ -11,6 +11,13 @@
   <div>
     <label>Bild: </label> {{product.picture}}
   </div>
+  <div>
+    <label>Status: </label> {{product.active}}
+  </div>
+
+  <span class="button is-small btn-primary" *ngIf='product.active' (click)='updateActive(false)'>inaktiv</span>
+
+  <span class="button is-small btn-primary" *ngIf='!product.active' (click)='updateActive(true)'>aktiv</span>
 
   <span class="button is-small btn-danger" (click)='deleteProduct()'>Löschen</span>
 

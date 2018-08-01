@@ -10,94 +10,56 @@ export class ProductService {
 
   private dbListPath = '/products';
 
-  coursesRef: AngularFireList<Product> = null;
-  courseRef: AngularFireObject<Product> = null;
+  productsRef: AngularFireList<Product> = null;
 
 
-  constructor(private db: AngularFireDatabase) { }
-
-
-  getCourseObject(key): AngularFireObject<Product> {
-    const dbObjectPath = '/products/' + key;
-    return this.courseRef = this.db.object<Product>(dbObjectPath);
+  constructor(private db: AngularFireDatabase) {
+    this.productsRef = db.list(this.dbListPath);
   }
 
-  createCourseObject(newKey, newCourse) {
-    const courseRef = this.db.object('products/' + newKey);
-    courseRef.set({description: newCourse})
-      .then(
-        () => console.log('Object Create done'),
-        console.error
-      );
-  }
 
-  updateCourseObject(key, newCourse) {
-    const courseRef = this.db.object('products/' + key);
-    courseRef.update({description: newCourse})
-      .then(
-        () => console.log('Object Update done'),
-        console.error
-      );
+  createProduct(product: Product): void {
+    this.productsRef.push(product);
   }
-
-  removeCourseObject(key) {
-    const courseRef = this.db.object('products/' + key);
-    courseRef.remove()
-      .then(
-        () => console.log('Object Remove done'),
-        console.error
-      );
-  }
-
 
   getProductList(): AngularFireList<Product> {
-    return this.coursesRef = this.db.list<Product>(this.dbListPath);
-
+    // return this.productsRef = this.db.list<Product>(this.dbListPath);
+    return this.productsRef = this.productsRef;
   }
 
-
-  pushCourse(newValue) {
-    const coursesRef = this.db.list('products');
-    coursesRef.push({description: newValue})
-      .then(
-        () => console.log('List Push done'),
-        console.error
-      );
+  updateProduct(key: string, value: any): void {
+    this.productsRef
+      .update(key, value)
+      .then( () => this.handleLog('Update successful'))
+      .catch(error => this.handleError(error));
   }
 
-  removeCourse(toRemoveCourse) {
-    const coursesRef = this.db.list('products');
-    coursesRef.remove(toRemoveCourse)
-      .then(
-        () => console.log('List Remove done'),
-        console.error
-      );
-
+  deleteProduct(key: string): void {
+    this.productsRef
+      .remove(key)
+      .then( () => this.handleLog('Delete successful'))
+      .catch(error => this.handleError(error));
   }
 
-  updateCourse(toUpdateCourse, newValue, newValueLong ) {
-    const coursesRef = this.db.list('products');
-    coursesRef.update(toUpdateCourse, {description: newValue, longDescription: newValueLong })
-      .then(
-        () => console.log('List Update done'),
-        console.error
-      );
-
+  deleteAll(): void {
+    this.productsRef.remove()
+      .then( () => this.handleLog('deleteAll successful'))
+      .catch(error => this.handleError(error));
   }
 
-
-  getCourseListQuery(): AngularFireList<Product> {
-    const coursesRef = this.db.list<Product>(this.dbListPath,
-      ref => ref.orderByChild('url')
+  getProductListByName(): AngularFireList<Product> {
+    const productsRef = this.db.list<Product>(this.dbListPath,
+      ref => ref.orderByChild('name')
     );
-
-    return coursesRef;
+    return productsRef;
   }
-
 
   private handleError(error) {
-    console.log(error);
+    console.error(error);
   }
 
+  private handleLog(msg) {
+    console.log(msg);
+  }
 
 }

@@ -1,7 +1,17 @@
-<h1>List with AngularFireList </h1>
+<h1>Products </h1>
 
-<ul>
-  <li *ngFor="let product of products | async">
-    {{product.name}}
-  </li>
-</ul>
+<div class="row">
+  <div class="col-md-6 col-xs-12" >
+    <ul>
+      <li *ngFor="let product of products | async" style="width: 300px;">
+        <app-detail-list [product]='product'></app-detail-list>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-6 col-xs-12" >
+    <app-product-new></app-product-new>
+  </div>
+</div>
+
+
+

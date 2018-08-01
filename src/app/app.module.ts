@@ -18,6 +18,8 @@ import {UserRegisterComponent} from './user/user-register/user-register.componen
 import {Routing} from './app.routing';
 import {OrderDetailComponent} from './order/order-detail/order-detail.component';
 import {OrderListComponent} from './order/order-list/order-list.component';
+import { ProductNewComponent } from './product/product-new/product-new.component';
+import {FormsModule} from '@angular/forms';
 
 
 
@@ -26,6 +28,7 @@ import {OrderListComponent} from './order/order-list/order-list.component';
     AppComponent,
     ProductListComponent,
     ProductDetailComponent,
+    ProductNewComponent,
     HeaderComponent,
     NaviComponent,
     HomeComponent,
@@ -41,7 +44,8 @@ import {OrderListComponent} from './order/order-list/order-list.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     NgbModule.forRoot(),
-    Routing
+    Routing,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

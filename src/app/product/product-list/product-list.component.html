@@ -1,15 +1,8 @@
-<div class="row product-list">
-  <div class="col-md-6 col-xs-12" >
-    <ul>
-      <!-- <li *ngFor="let product of products | async" style="width: 300px;"> -->
-      <li *ngFor="let product of products" style="width: 300px;">
-        <app-detail-list [product]='product'></app-detail-list>
-      </li>
-    </ul>
-  </div>
-  <div class="col-md-6 col-xs-12" >
-
-  </div>
+<div *ngIf="products" class="row product-list">
+      <!-- <div class="media" *ngFor="let product of products | async" style="width: 300px;"> -->
+      <div class="media" *ngFor="let product of products; let i = index">
+        <app-detail-list [product]='product' [count]='i'></app-detail-list>
+      </div>
 </div>
 
 

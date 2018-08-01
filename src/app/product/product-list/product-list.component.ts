@@ -37,7 +37,7 @@ export class ProductListComponent implements OnInit {
 
   getProductListAsync() {
     // | async in Teamplate Ausgabe hinzufügen, product kann dann auch vom Typ Observable<any[]> zurückgeben!
-    this.products = this.productService.getProductList().valueChanges();
+    // this.products = this.productService.getProductList().valueChanges();
   }
 
   getProductList() {

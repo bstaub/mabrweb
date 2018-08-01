@@ -5,6 +5,11 @@ import {ProductNewComponent} from './product-new/product-new.component';
 
 
 export const PRODUCT_ROUTES: Routes = [
+  {
+    path: '',
+    redirectTo: 'list',
+    pathMatch: 'full'
+  },
   {path: 'list', component: ProductListComponent},
   {path: 'detail', component: ProductDetailComponent},
   {path: 'new', component: ProductNewComponent},

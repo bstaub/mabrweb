@@ -3,5 +3,10 @@
 <nav>
   <a routerLink="list" class="btn btn-primary active" role="button" routerLinkActive="active">Produkte anzeigen</a>
   <a routerLink="new" class="btn btn-primary active" role="button" routerLinkActive="active">Produkte hinzufügen</a>
+  <a class="btn btn-primary active" role="button" (click)="getBasket()">Warenkorb anzeigen</a>
 </nav>
+
+<ul>
+  <li *ngFor="let item of basket">{{item}}</li>
+</ul>
 <router-outlet></router-outlet>

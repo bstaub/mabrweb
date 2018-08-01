@@ -1,33 +1,35 @@
-<div class="product-new">
-  <h3>Produkt erfassen</h3>
-  <div [hidden]="submitted" style="width: 300px;">
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="name">Name</label> <input type="text"
-                                              class="form-control" id="name" required [(ngModel)]="product.name"
-                                              name="name">
-      </div>
+<div class="product-new" *ngIf="product">
+  <div class="col-xs-12">
+    <h3>Produkt erfassen</h3>
+    <div [hidden]="submitted" style="width: 300px;">
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">Name</label> <input type="text"
+                                                class="form-control" id="name" required [(ngModel)]="product.name"
+                                                name="name">
+        </div>
 
-      <div class="form-group">
-        <label for="beschreibung">Beschreibung</label> <input type="text"
-                                            class="form-control" id="beschreibung" required [(ngModel)]="product.description"
-                                            name="beschreibung">
-      </div>
+        <div class="form-group">
+          <label for="beschreibung">Beschreibung</label> <input type="text"
+                                              class="form-control" id="beschreibung" required [(ngModel)]="product.description"
+                                              name="beschreibung">
+        </div>
 
-      <div class="form-group">
-        <label for="price">Preis</label> <input type="text" class="form-control" id="price" required [(ngModel)]="product.price" name="price">
-      </div>
+        <div class="form-group">
+          <label for="price">Preis</label> <input type="text" class="form-control" id="price" required [(ngModel)]="product.price" name="price">
+        </div>
 
-      <div class="form-group">
-        <label for="picture">Bild</label> <input type="text" class="form-control" id="picture" required [(ngModel)]="product.picture" name="picture">
-      </div>
+        <div class="form-group">
+          <label for="picture">Bild</label> <input type="text" class="form-control" id="picture" required [(ngModel)]="product.picture" name="picture">
+        </div>
 
-      <button type="submit" class="btn btn-success">Bestätigen</button>
-    </form>
-  </div>
+        <button type="submit" class="btn btn-success">Bestätigen</button>
+      </form>
+    </div>
 
-  <div [hidden]="!submitted">
-    <p>Du hast erfolgreich hinzugefügt</p>
-    <button class="btn btn-success" (click)="newProduct()">Hinzufügen</button>
+    <div [hidden]="!submitted">
+      <p>Du hast erfolgreich hinzugefügt</p>
+      <button class="btn btn-success" (click)="newProduct()">Hinzufügen</button>
+    </div>
   </div>
 </div>

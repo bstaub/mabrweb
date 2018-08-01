@@ -9,6 +9,8 @@ import { Product } from './product.model';
 export class ProductService {
 
   private dbListPath = '/products';
+  private basket = [];
+  private basketObj = {};
 
   productsRef: AngularFireList<Product> = null;
 
@@ -52,6 +54,16 @@ export class ProductService {
       ref => ref.orderByChild('name')
     );
     return productsRef;
+  }
+
+  setbasket(item): void {
+    this.basket.push(item);
+  }
+
+  getbasket(): string[] {
+    // this.basketObj = { basket: this.basket, count: 3 };
+    // return this.basketObj;
+    return this.basket;
   }
 
   private handleError(error) {

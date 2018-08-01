@@ -65,7 +65,7 @@ orderKeys.forEach((orderKey) => {
   productKeys.forEach((productKey) => {
     console.log(`adding product ${productKey} to order ${orderKey}`);
     const productsPerOrderAssociation = productsPerOrder.child(productKey);
-    productsPerOrderAssociation.set('1');
+    productsPerOrderAssociation.set(Math.floor(Math.random() * 10) + 1);
 
   });
 

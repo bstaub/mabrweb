@@ -6,7 +6,14 @@ import { ProductService} from '../product.service';
 @Component({
   selector: 'app-product-new',
   templateUrl: './product-new.component.html',
-  styles: []
+  styles: [`    
+    .product-new{
+      border: 1px solid black;
+      background-color: #ecf1f3;
+      padding: 10px;
+      margin-top: 40px;
+    }
+  `]
 })
 export class ProductNewComponent implements OnInit {
 

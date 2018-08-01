@@ -20,6 +20,7 @@ import {OrderDetailComponent} from './order/order-detail/order-detail.component'
 import {OrderListComponent} from './order/order-list/order-list.component';
 import { ProductNewComponent } from './product/product-new/product-new.component';
 import {FormsModule} from '@angular/forms';
+import { ProductComponent } from './product/product.component';
 
 
 
@@ -38,6 +39,7 @@ import {FormsModule} from '@angular/forms';
     UserRegisterComponent,
     OrderDetailComponent,
     OrderListComponent,
+    ProductComponent,
   ],
   imports: [
     BrowserModule,

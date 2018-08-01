@@ -5,5 +5,5 @@ export class Product {
   price: string;
   picture: string;
   createdDate: string;
-  active: true;
+  active = true;
 }

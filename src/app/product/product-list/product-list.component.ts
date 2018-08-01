@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService} from '../product.service';
 import { Observable} from 'rxjs/index';
+import {map} from 'rxjs/internal/operators';
 
 
 
@@ -15,8 +16,9 @@ import { Observable} from 'rxjs/index';
 })
 export class ProductListComponent implements OnInit {
 
-  products: Observable<any>;
-  // products: any;
+  // products: Observable<any[]>;
+  // products: Observable<any>;
+  products: any;
 
   constructor(private productService: ProductService) { }
 
@@ -24,16 +26,20 @@ export class ProductListComponent implements OnInit {
     this.getProductList();
   }
 
-  getProductList() {
+  getProductListAsync() {
+    // | async in Teamplate Ausgabe hinzufügen, product kann dann auch vom Typ Observable<any[]> zurückgeben!
     this.products = this.productService.getProductList().valueChanges();
-    /*
-    // Use snapshotChanges().map() to store the key
-    this.productService.getProductList().snapshotChanges().map(changes => {
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    }).subscribe(products => {
+  }
+
+  getProductList() {
+    this.productService.getProductList().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+      )
+    ).subscribe(products => {
+      console.log('bslogger: ', products);
       this.products = products;
     });
-    */
   }
 
   deleteProducts() {

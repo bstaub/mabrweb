@@ -31,35 +31,30 @@ export const dbData = {
   ],
   'orders': [
     {
-      'orderId': 'XXX-001',
       'userId': '123',
       'orderDate': '20/03/2000',
       'status': 'pending',
       'totalValue': '100',
     },
     {
-      'orderId': 'XXX-002',
       'userId': '123',
       'orderDate': '21/03/2000',
       'status': 'done',
       'totalValue': '100',
     },
     {
-      'orderId': 'XXX-003',
       'userId': '123',
       'orderDate': '22/03/2000',
       'status': 'done',
       'totalValue': '100',
     },
     {
-      'orderId': 'XXX-003',
       'userId': '123',
       'orderDate': '23/03/2000',
       'status': 'pending',
       'totalValue': '100',
     },
     {
-      'orderId': 'XXX-004',
       'userId': '123',
       'orderDate': '24/03/2000',
       'status': 'done',
@@ -67,7 +62,6 @@ export const dbData = {
     },
 
   ]
-
 };
 
 

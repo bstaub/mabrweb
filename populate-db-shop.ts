@@ -71,20 +71,41 @@ dbData.courses.forEach(course => {
 });
 */
 
+const productKeys = [];
+
 dbData.products.forEach(product => {
+
 
   console.log('adding product', product.name);
 
-  const courseRef = productsRef.push({
+  productKeys.push( productsRef.push({
     name: product.name,
     description: product.description,
     price: product.price,
     picture: product.picture,
     createdDate: product.createdDate
-  });
+  }).key);
 
 
 });
+
+dbData.orders.forEach(order => {
+
+
+  console.log('adding order', order.name);
+
+  productKeys.push( productsRef.push({
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    picture: product.picture,
+    createdDate: product.createdDate
+  }).key);
+
+
+});
+
+
 
 /*
 dbData.orders.forEach(order => {

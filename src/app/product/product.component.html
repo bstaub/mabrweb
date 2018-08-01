@@ -7,6 +7,6 @@
 </nav>
 
 <ul>
-  <li *ngFor="let item of basket">{{item}}</li>
+  <li *ngFor="let item of basket"> {{item.name}} - CHF {{item.price}} - {{item.itemcount}} Stk - Total CHF  {{item.itemcount * item.price}}</li>
 </ul>
 <router-outlet></router-outlet>

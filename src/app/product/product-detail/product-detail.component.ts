@@ -11,7 +11,6 @@ export class ProductDetailComponent implements OnInit {
 
   @Input() product: Product;
   @Input() count: number;
-  basket: string[];
 
   constructor(private productService: ProductService) {
   }
@@ -28,10 +27,9 @@ export class ProductDetailComponent implements OnInit {
     this.productService.deleteProduct(this.product.key);
   }
 
-  addtoBasket(item) {
-    // alert('Add to Basket...' + item);
-    // this.basket.push(item);
-    this.productService.setbasket(item);
+  addtoBasket(product) {
+    this.productService.setbasket(product);
+    alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
   }
 
 }

@@ -11,7 +11,6 @@ import {ProductService} from './product.service';
 export class ProductComponent implements OnInit {
 
   basket = [];
-  basketObj = {};
   constructor(private productService: ProductService) { }
 
   ngOnInit() {
@@ -19,7 +18,6 @@ export class ProductComponent implements OnInit {
   }
 
   getBasket() {
-    // this.basketObj = this.productService.getbasket();
     this.basket = this.productService.getbasket();
   }
 

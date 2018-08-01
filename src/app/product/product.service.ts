@@ -10,7 +10,6 @@ export class ProductService {
 
   private dbListPath = '/products';
   private basket = [];
-  private basketObj = {};
 
   productsRef: AngularFireList<Product> = null;
 

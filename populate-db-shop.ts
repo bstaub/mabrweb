@@ -5,6 +5,7 @@ import 'core-js/es7/reflect';
 import { database, initializeApp } from 'firebase';
 import { environment } from './src/environments/environment';
 import { dbData } from './db-data';
+import {forEach} from '@angular/router/src/utils/collection';
 
 
 console.log('WARNING VERY IMPORTANT - PLEASE READ THIS\n\n\n');
@@ -19,7 +20,8 @@ initializeApp(environment.firebase);
 // const coursesRef = database().ref('courses');
 // const lessonsRef = database().ref('lessons');
 const productsRef = database().ref('products');
-// const ordersRef = database().ref('orders');
+const ordersRef = database().ref('orders');
+const association = database().ref('productsPerOrder');
 // const usersRef = database().ref('users');
 
 
@@ -72,6 +74,7 @@ dbData.courses.forEach(course => {
 */
 
 const productKeys = [];
+const orderKeys = [];
 
 dbData.products.forEach(product => {
 
@@ -92,19 +95,32 @@ dbData.products.forEach(product => {
 dbData.orders.forEach(order => {
 
 
-  console.log('adding order', order.name);
+  console.log('adding order', order.shopOrderId);
 
-  productKeys.push( productsRef.push({
-    name: product.name,
-    description: product.description,
-    price: product.price,
-    picture: product.picture,
-    createdDate: product.createdDate
+  orderKeys.push(ordersRef.push({
+    shopOrderId: order.shopOrderId,
+    userId: order.userId,
+    orderDate: order.orderDate,
+    status: order.status,
+    totalValue: order.totalValue
   }).key);
 
 
 });
 
+orderKeys.forEach((orderKey) => {
+  const productsPerOrder = database().ref('productsPerOrder').child(orderKey);
+  console.log(orderKey);
+
+  productKeys.forEach((productKey) => {
+    console.log(`adding product ${productKey} to order ${orderKey}`);
+    const productsPerOrderAssociation = productsPerOrder.child(productKey);
+    productsPerOrderAssociation.set('1');
+
+  });
+
+
+});
 
 
 /*

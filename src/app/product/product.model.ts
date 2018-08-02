@@ -3,7 +3,7 @@ export class Product {
   name: string;
   description: string;
   price: number;
-  picture = 'https://picsum.photos/800/800?image='
+  picture: string;
   createdDate: string;
   active = true;
   itemcount: number;

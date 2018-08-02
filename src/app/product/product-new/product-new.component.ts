@@ -19,10 +19,12 @@ export class ProductNewComponent implements OnInit {
 
   product: Product = new Product();
   submitted = false;
+  createdDate: string;
 
   constructor(private productService: ProductService) { }
 
   ngOnInit() {
+    this.product.createdDate = this.productService.formatDate(new Date());
   }
 
   newProduct(): void {

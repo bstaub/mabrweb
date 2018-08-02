@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase, AngularFireList, AngularFireObject} from 'angularfire2/database';
 
-import { Product } from './product.model';
+import {Product} from './product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,20 +31,20 @@ export class ProductService {
   updateProduct(key: string, value: any): void {
     this.productsRef
       .update(key, value)
-      .then( () => this.handleLog('Update successful'))
+      .then(() => this.handleLog('Update successful'))
       .catch(error => this.handleError(error));
   }
 
   deleteProduct(key: string): void {
     this.productsRef
       .remove(key)
-      .then( () => this.handleLog('Delete successful'))
+      .then(() => this.handleLog('Delete successful'))
       .catch(error => this.handleError(error));
   }
 
   deleteAll(): void {
     this.productsRef.remove()
-      .then( () => this.handleLog('deleteAll successful'))
+      .then(() => this.handleLog('deleteAll successful'))
       .catch(error => this.handleError(error));
   }
 
@@ -63,6 +63,23 @@ export class ProductService {
     // this.basketObj = { basket: this.basket, count: 3 };
     // return this.basketObj;
     return this.basket;
+  }
+
+  formatDate(date: Date): string {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hour = this.addZero(date.getHours());
+    const minutes = date.getMinutes();
+
+    return `${day}/${month}/${year} ${hour}:${minutes}`;
+  }
+
+  addZero(i) {
+    if (i < 10) {
+      i = '0' + i;
+    }
+    return i;
   }
 
   private handleError(error) {

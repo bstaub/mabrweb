@@ -1,8 +1,10 @@
-<div class="product-new" *ngIf="product">
+<div class="product-new">
   <div class="col-xs-12">
     <h3>Produkt erfassen</h3>
     <div [hidden]="submitted" style="width: 300px;">
       <form (ngSubmit)="onSubmit()">
+        <input type="hidden" id="createdDate" [(ngModel)]="product.createdDate" name="createdDate">
+
         <div class="form-group">
           <label for="name">Name</label> <input type="text"
                                                 class="form-control" id="name" required [(ngModel)]="product.name"
@@ -11,16 +13,19 @@
 
         <div class="form-group">
           <label for="beschreibung">Beschreibung</label> <input type="text"
-                                              class="form-control" id="beschreibung" required [(ngModel)]="product.description"
-                                              name="beschreibung">
+                                                                class="form-control" id="beschreibung" required
+                                                                [(ngModel)]="product.description"
+                                                                name="beschreibung">
         </div>
 
         <div class="form-group">
-          <label for="price">Preis</label> <input type="text" class="form-control" id="price" required [(ngModel)]="product.price" name="price">
+          <label for="price">Preis</label> <input type="text" class="form-control" id="price" required
+                                                  [(ngModel)]="product.price" name="price">
         </div>
 
         <div class="form-group">
-          <label for="picture">Bild</label> <input type="text" class="form-control" id="picture" required [(ngModel)]="product.picture" name="picture">
+          <label for="picture">Bild</label> <input type="text" class="form-control" id="picture" required
+                                                   [(ngModel)]="product.picture" name="picture">
         </div>
 
         <button type="submit" class="btn btn-success">Bestätigen</button>

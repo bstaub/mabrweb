@@ -50,9 +50,10 @@ export class OrderService {
   }
 
 
+
+
   getOrder(id) {
     const dbOrderPath = '/orders/' + id;
-    console.log(dbOrderPath);
     return this.orderRef = this.db.object<Order>(dbOrderPath);
 
   }
@@ -61,6 +62,10 @@ export class OrderService {
     return this.productsPerOrderRef = this.db.object(dbProductsPerOrderPath);
 
   }
+
+
+
+
 
   getOrderListByName(): AngularFireList<Order> {
     const ordersRef = this.db.list<Order>(this.dbListPath,

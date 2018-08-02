@@ -14,7 +14,11 @@
   </div>
 
   <hr/>
-  <h1>Bestellübersicht</h1>
+  <h1>Bestellpositionen</h1>
+
+  <div *ngFor="let product of order | async | keyvalue">
+    Artikel: <b>{{product.key}}</b> Anzahl: <b>{{product.value}}</b>
+  </div>
 
 </div>
 

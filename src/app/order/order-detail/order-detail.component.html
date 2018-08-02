@@ -1,3 +1,21 @@
-<p>
-  order-detail works!
-</p>
+<div *ngIf="selectedOrder">
+  <h1>Allgemeine Infos</h1>
+  <div>
+    <label>Best.Nr.: </label> {{(selectedOrder | async)?.shopOrderId}}
+  </div>
+  <div>
+    <label>Datum: </label> {{(selectedOrder | async)?.orderDate}}
+  </div>
+  <div>
+    <label>Status: </label> {{(selectedOrder | async)?.status}}
+  </div>
+  <div>
+    <label>Gesamtbetrag: </label> {{(selectedOrder | async)?.totalValue}}
+  </div>
+
+  <hr/>
+  <h1>Bestellübersicht</h1>
+
+</div>
+
+

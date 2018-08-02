@@ -21,6 +21,10 @@ import {OrderListComponent} from './order/order-list/order-list.component';
 import { ProductNewComponent } from './product/product-new/product-new.component';
 import {FormsModule} from '@angular/forms';
 import { ProductComponent } from './product/product.component';
+import { OrderItemComponent } from './order/order-list/order-item.component';
+import { OrderStartComponent } from './order/order-start.component';
+import {OrderComponent} from './order/order.component';
+
 
 
 
@@ -40,6 +44,9 @@ import { ProductComponent } from './product/product.component';
     OrderDetailComponent,
     OrderListComponent,
     ProductComponent,
+    OrderItemComponent,
+    OrderStartComponent,
+    OrderComponent,
   ],
   imports: [
     BrowserModule,

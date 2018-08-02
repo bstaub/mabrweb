@@ -1,9 +1,9 @@
 import {Routes} from '@angular/router';
-import {OrderListComponent} from './order-list/order-list.component';
 import {OrderDetailComponent} from './order-detail/order-detail.component';
+import {OrderStartComponent} from './order-start.component';
 
 
 export const ORDER_ROUTES: Routes = [
-  {path: 'list', component: OrderListComponent},
-  {path: 'detail', component: OrderDetailComponent}
+  {path: '', component: OrderStartComponent},
+  {path: ':id', component: OrderDetailComponent}
 ];

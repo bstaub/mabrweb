@@ -1,3 +1,12 @@
-<p>
-  order-list works!
-</p>
+<h1>Ihre Bestellungen</h1>
+<div class="row"><div class="col-xs-12">
+  <ul class="list-group">
+
+    <app-order-item
+      *ngFor="let order of orders; let i = index"
+      [order]="order"
+      [orderId]="order.key"></app-order-item>
+
+  </ul>
+</div>
+</div>

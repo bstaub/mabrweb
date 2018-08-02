@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {OrderService} from '../order.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-order-list',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrderListComponent implements OnInit {
 
-  constructor() { }
+  orders: any;
+
+  constructor(private orderService: OrderService) { }
 
   ngOnInit() {
+    this.getAllOrders();
+  }
+
+
+  getAllOrders () {
+    // Use snapshotChanges().map() to store the key
+    this.orderService.getOrderList().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+      )
+    ).subscribe(orders => {
+      this.orders = orders;
+    });
   }
 
 }

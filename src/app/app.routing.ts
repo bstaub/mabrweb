@@ -10,11 +10,12 @@ import {OrderListComponent} from './order/order-list/order-list.component';
 import {UserLoginComponent} from './user/user-login/user-login.component';
 import {UserRegisterComponent} from './user/user-register/user-register.component';
 import {ProductComponent} from './product/product.component';
+import {OrderComponent} from './order/order.component';
 
 const APP_ROUTES: Routes = [
   {path: '', component: HomeComponent },
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES },
-  {path: 'bestellung', component: OrderListComponent, children: ORDER_ROUTES },
+  {path: 'bestellung', component: OrderComponent, children: ORDER_ROUTES },
   {path: 'user', component: UserListComponent, children: USER_ROUTES},
   {path: 'login', component: UserLoginComponent},
   {path: 'register', component: UserRegisterComponent},

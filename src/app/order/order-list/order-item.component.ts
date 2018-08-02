@@ -8,7 +8,7 @@ import {Order} from '../order.model';
 })
 export class OrderItemComponent implements OnInit {
   @Input() order: Order;
-  @Input() orderId: number;
+
 
 
   constructor() { }

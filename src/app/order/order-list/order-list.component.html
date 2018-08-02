@@ -4,9 +4,8 @@
   <ul class="list-group">
 
     <app-order-item
-      *ngFor="let order of orders; let i = index"
-      [order]="order"
-      [orderId]="order.key"></app-order-item>
+      *ngFor="let order of orders"
+      [order]="order"></app-order-item>
 
   </ul>
 </div>

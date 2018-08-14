@@ -59,6 +59,7 @@ export class UserRegisterComponent implements OnInit {
   onSubmit(form: NgForm) {
     // console.log(form);
     console.log(form.value);
+    this.userService.setItemToLocalStorage(form.value);
     this.save();
   }
 

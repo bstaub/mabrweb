@@ -7,6 +7,7 @@ import {User} from './user.model';
 })
 export class UserService {
 
+  STORE_KEY = 'localStorageUserKey';
 
   private dbListPath = '/users';
 
@@ -45,6 +46,18 @@ export class UserService {
     this.usersRef.remove()
       .then(() => this.handleLog('deleteAll successful'))
       .catch(error => this.handleError(error));
+  }
+
+  getItemFromLocalStorage() {
+    return JSON.parse(localStorage.getItem(this.STORE_KEY)) || [];
+  }
+
+  setItemToLocalStorage(items) {
+    localStorage.setItem(this.STORE_KEY, JSON.stringify(items));
+  }
+
+  removeKeyFromLocalStorage() {
+    localStorage.removeItem(this.STORE_KEY);
   }
 
   private handleError(error) {

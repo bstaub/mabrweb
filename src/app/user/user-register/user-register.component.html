@@ -1,3 +1,50 @@
-<p>
-  user-register works!
-</p>
+<h2>
+  Registrierung
+</h2>
+
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <!--<div ngModelGroup="userData">-->
+  <!--[(ngModel)]="userdata.username"-->
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text"
+             class="form-control"
+             id="username"
+             [(ngModel)]="user.username"
+             name="username"
+             required>
+    </div>
+  <!--[(ngModel)]="userdata.email"-->
+    <div class="form-group">
+      <label for="email">E-Mail</label>
+      <input type="text"
+             class="form-control"
+             id="email"
+             [(ngModel)]="user.email"
+             name="email"
+             pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+             required
+             #email="ngModel">
+      <div class="error-red" *ngIf="!email.valid">Ungültige Email Adresse!</div>
+    </div>
+  <!--</div>-->
+  <!--[(ngModel)]="userdata.password"-->
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password"
+           class="form-control"
+           id="password"
+           [(ngModel)]="user.password"
+           name="password"
+           required>
+  </div>
+  <!--<div class="checkbox" *ngFor="let item of list">-->
+    <!--<label>-->
+      <!--<input type="checkbox"-->
+             <!--name="item"-->
+             <!--[(ngModel)]="item.checked"-->
+             <!--&gt;{{ item.title }}-->
+    <!--</label>-->
+  <!--</div>-->
+  <button type="submit" class="btn btn-primary" [disabled]="!f.valid">Submit</button>
+</form>

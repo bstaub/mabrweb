@@ -1,3 +1,28 @@
-<p>
-  user-login works!
-</p>
+<h2>
+  Login
+</h2>
+
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <div class="form-group">
+    <label for="email">E-Mail</label>
+    <input type="text"
+           class="form-control"
+           id="email"
+           ngModel
+           name="email"
+           pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+           required
+           #email="ngModel">
+    <div class="error-red" *ngIf="!email.valid">Ungültige Email Adresse!</div>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password"
+           class="form-control"
+           id="password"
+           ngModel
+           name="password"
+           required>
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="!f.valid">Submit</button>
+</form>

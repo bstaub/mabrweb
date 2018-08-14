@@ -6,6 +6,7 @@ import {HeaderComponent} from './header/header.component';
 import {AngularFireModule} from 'angularfire2';
 import {environment} from '../environments/environment';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
+import {AngularFireAuthModule} from 'angularfire2/auth';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NaviComponent} from './navi.component';
 import {ProductListComponent} from './product/product-list/product-list.component';
@@ -24,6 +25,7 @@ import { ProductComponent } from './product/product.component';
 import { OrderItemComponent } from './order/order-list/order-item.component';
 import { OrderStartComponent } from './order/order-start.component';
 import {OrderComponent} from './order/order.component';
+import {AuthService} from './user/auth.service';
 
 
 
@@ -52,11 +54,12 @@ import {OrderComponent} from './order/order.component';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
+    AngularFireAuthModule,
     NgbModule.forRoot(),
     Routing,
     FormsModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

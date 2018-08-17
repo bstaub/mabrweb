@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup] ="orderForm" (ngSubmit)="onSubmit()">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            type="submit"
+            class="btn btn-success">Speichern</button>
+          <a class="btn btn-danger" (click)="onCancel()">Abbrechen</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="anonymeOrder">Anonyme Bestellung</label>
+
+              <input
+                type="checkbox"
+                id="anonymeOrder"
+                class="form-control"
+                formControlName="anonymeOrder"
+                [checked]="anonymeOrder"
+                (change)="anonymeOrder = !anonymeOrder">
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="row" *ngIf="!anonymeOrder" >
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="userId">User</label>
+            <input
+              type="text"
+              id="userId"
+              class="form-control"
+              formControlName="userId"
+              #imagePath>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+    </form>
+  </div>
+</div>

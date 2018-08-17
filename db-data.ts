@@ -34,26 +34,49 @@ export const dbData = {
       'shopOrderId': 'XXX-001',
       'userId': '123',
       'orderDate': '20/03/2000',
-      'status': 'pending',
-      'totalValue': '100',
-    },
-    {
-      'shopOrderId': 'XXX-002',
-      'userId': '123',
-      'orderDate': '21/03/2000',
       'status': 'done',
       'totalValue': '100',
     },
     {
-      'shopOrderId': 'XXX-003',
+      'shopOrderId': '',
       'userId': '123',
+      'orderDate': '',
+      'status': 'pending',
+      'totalValue': '0',
+    },
+    {
+      'shopOrderId': '',
+      'userId': '123',
+      'orderDate': '',
+      'status': 'pending',
+      'totalValue': '0',
+    },
+    {
+      'shopOrderId': '0',
+      'userId': '0',
+      'orderDate': '22',
+      'status': 'pending',
+      'totalValue': '0',
+    },
+    {
+      'shopOrderId': '0',
+      'userId': '0',
       'orderDate': '22/03/2000',
       'status': 'done',
-      'totalValue': '100',
-    }
+      'totalValue': '0',
+    },
+    {
+      'shopOrderId': '0',
+      'userId': '0',
+      'orderDate': '',
+      'status': 'pending',
+      'totalValue': '0',
+    },
 
 
-  ]
+
+  ],
+
 
 };
 

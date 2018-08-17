@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {OrderService} from '../order.service';
 import {map} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-order-list',
@@ -11,10 +12,16 @@ export class OrderListComponent implements OnInit {
 
   orders: any;
 
-  constructor(private orderService: OrderService) { }
+  constructor(private orderService: OrderService,
+              private router: Router) { }
 
   ngOnInit() {
     this.getAllOrders();
+  }
+
+  onNewOrder() {
+    this.router.navigate(['/bestellung', 'neu']);
+
   }
 
 

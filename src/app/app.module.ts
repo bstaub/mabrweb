@@ -20,12 +20,13 @@ import {Routing} from './app.routing';
 import {OrderDetailComponent} from './order/order-detail/order-detail.component';
 import {OrderListComponent} from './order/order-list/order-list.component';
 import { ProductNewComponent } from './product/product-new/product-new.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProductComponent } from './product/product.component';
 import { OrderItemComponent } from './order/order-list/order-item.component';
 import { OrderStartComponent } from './order/order-start.component';
 import {OrderComponent} from './order/order.component';
 import {AuthService} from './user/auth.service';
+import {OrderEditComponent} from './order/order-edit/order-edit.component';
 
 
 
@@ -49,6 +50,7 @@ import {AuthService} from './user/auth.service';
     OrderItemComponent,
     OrderStartComponent,
     OrderComponent,
+    OrderEditComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,8 @@ import {AuthService} from './user/auth.service';
     AngularFireAuthModule,
     NgbModule.forRoot(),
     Routing,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

@@ -12,6 +12,7 @@ export class OrderService {
   private dbProductsPerOrderPath = '/productsPerOrder';
 
   ordersRef: AngularFireList<Order> = null;
+  productsPerOrdersRef: AngularFireList<Order> = null;
   orderRef: AngularFireObject<Order> = null;
   productsPerOrderRef: AngularFireObject<any> = null;
 
@@ -39,7 +40,12 @@ export class OrderService {
   deleteOrder(key: string): void {
     this.ordersRef
       .remove(key)
-      .then( () => this.handleLog('Delete successful'))
+      .then( () => this.handleLog('Order Delete successful'))
+      .catch(error => this.handleError(error));
+
+    this.productsPerOrdersRef
+      .remove(key)
+      .then( () => this.handleLog('Products per Order Delete successful'))
       .catch(error => this.handleError(error));
   }
 

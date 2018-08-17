@@ -19,6 +19,8 @@ export class OrderService {
 
   constructor(private db: AngularFireDatabase) {
     this.ordersRef = db.list(this.dbListPath);
+    this.productsPerOrdersRef = db.list(this.dbProductsPerOrderPath);
+
   }
 
 

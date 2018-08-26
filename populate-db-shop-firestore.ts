@@ -2,14 +2,9 @@ import 'core-js/es6/reflect';
 import 'core-js/es7/reflect';
 
 
-import { database, initializeApp, firestore } from 'firebase';
+import { initializeApp} from 'firebase';
 import { environment } from './src/environments/environment';
 import { dbData } from './db-data';
-
-import {AngularFireModule} from 'angularfire2';
-import {AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firestore';
-import {AngularFireDatabase} from 'angularfire2/database';
-import {getCollection} from '@angular/cli/utilities/schematics';
 import * as firebase from 'firebase';
 
 
@@ -113,8 +108,7 @@ setTimeout(function () {
   });
 
 
-
-}, 5000)
+}, 5000);
 
 
 

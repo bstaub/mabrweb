@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "populate-db": "./node_modules/.bin/ts-node ./populate-db-shop.ts"
+    "populate-db": "./node_modules/.bin/ts-node ./populate-db-shop-firestore.ts"
   },
   "private": true,
   "dependencies": {

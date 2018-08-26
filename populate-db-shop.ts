@@ -60,24 +60,7 @@ dbData.orders.forEach(order => {
 
 });
 
-/*
-dbData['orders-temp'].forEach(order => {
 
-
-  console.log('adding temp order', order.shopOrderId);
-
-  orderTempKeys.push(ordersTempRef.push({
-    shopOrderId: order.shopOrderId,
-    userId: order.userId,
-    orderDate: order.orderDate,
-    status: order.status,
-    totalValue: order.totalValue
-  }).key);
-
-
-});
-
-*/
 
 orderKeys.forEach((orderKey) => {
   const productsPerOrder = database().ref('productsPerOrder').child(orderKey);
@@ -93,19 +76,4 @@ orderKeys.forEach((orderKey) => {
 
 });
 
-/*
-orderTempKeys.forEach((orderTempKey) => {
-  const productsPerOrder = database().ref('productsPerOrder-temp').child(orderTempKey);
-  console.log(orderTempKey);
 
-  productKeys.forEach((productKey) => {
-    console.log(`adding product ${productKey} to order ${orderTempKey}`);
-    const productsPerOrderAssociation = productsPerOrder.child(productKey);
-    productsPerOrderAssociation.set(Math.floor(Math.random() * 10) + 1);
-
-  });
-
-
-});
-
-*/

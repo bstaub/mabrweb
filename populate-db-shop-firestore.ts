@@ -95,13 +95,21 @@ setTimeout(function () {
 
     productKeys.forEach((productKey) => {
 
+      /*
       db.collection('productsPerOrder').add({
         orderId: db.doc('orders/' + orderKey),
         productId: db.doc('products/' + productKey),
         qty: Math.floor(Math.random() * 10) + 1
 
       });
+      */
 
+      db.collection('productsPerOrder').doc(orderKey).collection('products').doc(productKey).set({
+        orderId: db.doc('orders/' + orderKey),
+        productId: db.doc('products/' + productKey),
+        qty: Math.floor(Math.random() * 10) + 1
+
+      });
 
     });
 

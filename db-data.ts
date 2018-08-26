@@ -3,74 +3,74 @@ export const dbData = {
     {
       'name': 'MacBook',
       'description': 'MacBook Pro 15 Zoll Late 2015',
-      'price': '1800',
+      'price': 1800,
       'picture': 'https://picsum.photos/800/800?image=0',
-      'createdDate': '18/03/2014'
+      'createdDate': new Date()
     },
     {
       'name': 'Ipad Air',
       'description': 'Ipad Air 10.5 Zoll Grau',
-      'price': '500',
+      'price': 500,
       'picture': 'https://picsum.photos/800/800?image=7',
-      'createdDate': '20/03/2010'
+      'createdDate': new Date()
     },
     {
       'name': 'Surface3',
       'description': 'Surface 3 von Microsoft',
-      'price': '990',
+      'price': 990,
       'picture': 'https://picsum.photos/800/800?image=5',
-      'createdDate': '17/08/2013'
+      'createdDate': new Date()
     },
     {
       'name': 'MacBook Air',
       'description': 'Mac Mini light grey',
-      'price': '1100',
+      'price': 1100,
       'picture': 'https://picsum.photos/800/800?image=2',
-      'createdDate': '20/08/2006'
+      'createdDate': new Date()
     }
   ],
   'orders': [
     {
       'shopOrderId': 'XXX-001',
       'userId': '123',
-      'orderDate': '20/03/2000',
+      'orderDate': new Date(),
       'status': 'done',
-      'totalValue': '100',
+      'totalValue': 100,
     },
     {
       'shopOrderId': '',
       'userId': '123',
-      'orderDate': '',
+      'orderDate': new Date(),
       'status': 'pending',
-      'totalValue': '0',
+      'totalValue': 0,
     },
     {
       'shopOrderId': '',
       'userId': '123',
-      'orderDate': '',
+      'orderDate': new Date(),
       'status': 'pending',
-      'totalValue': '0',
+      'totalValue': 0,
     },
     {
       'shopOrderId': '0',
       'userId': '0',
-      'orderDate': '22',
+      'orderDate': new Date(),
       'status': 'pending',
-      'totalValue': '0',
+      'totalValue': 0,
     },
     {
       'shopOrderId': '0',
       'userId': '0',
-      'orderDate': '22/03/2000',
+      'orderDate': new Date(),
       'status': 'done',
-      'totalValue': '0',
+      'totalValue': 0,
     },
     {
       'shopOrderId': '0',
       'userId': '0',
-      'orderDate': '',
+      'orderDate': new Date(),
       'status': 'pending',
-      'totalValue': '0',
+      'totalValue': 0,
     },
 
 

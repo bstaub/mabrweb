@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {OrderService} from '../order.service';
+import {OrderFirestoreService} from '../order-firestore.service';
 import {map} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {Order} from '../order.model';
+import {error} from 'util';
+
 
 @Component({
   selector: 'app-order-list',
@@ -10,9 +14,11 @@ import {Router} from '@angular/router';
 })
 export class OrderListComponent implements OnInit {
 
+  // orders: any;
   orders: any;
 
   constructor(private orderService: OrderService,
+              private orderServiceFirestore: OrderFirestoreService,
               private router: Router) { }
 
   ngOnInit() {
@@ -26,6 +32,10 @@ export class OrderListComponent implements OnInit {
 
 
   getAllOrders () {
+
+    this.orders = this.orderServiceFirestore.getOrders();
+
+    /*
     // Use snapshotChanges().map() to store the key
     this.orderService.getOrderList().snapshotChanges().pipe(
       map(changes =>
@@ -34,6 +44,7 @@ export class OrderListComponent implements OnInit {
     ).subscribe(orders => {
       this.orders = orders;
     });
+    */
   }
 
 }

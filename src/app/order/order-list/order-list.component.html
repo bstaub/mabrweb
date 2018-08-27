@@ -4,7 +4,7 @@
   <ul class="list-group">
 
     <app-order-item
-      *ngFor="let order of orders"
+      *ngFor="let order of orders | async"
       [order]="order"></app-order-item>
 
   </ul>

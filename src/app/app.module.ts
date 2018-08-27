@@ -27,6 +27,7 @@ import { OrderStartComponent } from './order/order-start.component';
 import {OrderComponent} from './order/order.component';
 import {AuthService} from './user/auth.service';
 import {OrderEditComponent} from './order/order-edit/order-edit.component';
+import {AngularFirestoreModule} from 'angularfire2/firestore';
 
 
 
@@ -57,6 +58,7 @@ import {OrderEditComponent} from './order/order-edit/order-edit.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    AngularFirestoreModule,
     NgbModule.forRoot(),
     Routing,
     FormsModule,

@@ -10,11 +10,14 @@ import {Order} from './order.model';
 })
 export class OrderFirestoreService {
   orderCollection: AngularFirestoreCollection<Order>;
+  productsOrderCollection: AngularFirestoreCollection<any>;
   orders: Observable<Order[]>;
   orderDoc: AngularFirestoreDocument<Order>;
 
   constructor(public afs: AngularFirestore) {
     this.orderCollection = this.afs.collection('orders', ref => ref.orderBy('orderDate', 'desc'));
+
+
 
 
     this.orders = this.orderCollection.snapshotChanges().pipe(
@@ -32,19 +35,31 @@ export class OrderFirestoreService {
     return this.orders;
   }
 
-  addItem(order: Order) {
+  getOrder(key) {
+    this.orderDoc = this.afs.doc(`orders/${key}`);
+    return this.orderDoc;
+  }
+
+  getProductsPerOrder(key) {
+    this.productsOrderCollection = this.afs.doc(`productsPerOrder/${key}`).collection('products');
+    return  this.productsOrderCollection;
+  }
+
+  addOrder(order: Order) {
     this.orderCollection.add(order);
   }
 
-  deleteItem(order: Order) {
-    this.orderDoc = this.afs.doc(`items/${order.key}`);
+  deleteOrder(key: string) {
+    this.orderDoc = this.afs.doc(`orders/${key}`);
     this.orderDoc.delete();
   }
 
-  updateItem(order: Order) {
-    this.orderDoc = this.afs.doc(`items/${order.key}`);
+  updateOrder(order: Order) {
+    this.orderDoc = this.afs.doc(`orders/${order.key}`);
     this.orderDoc.update(order);
 
   }
+
+
 
 }

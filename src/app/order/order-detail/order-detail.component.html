@@ -4,7 +4,7 @@
     <label>Best.Nr.: </label> {{(selectedOrder | async)?.shopOrderId}}
   </div>
   <div>
-    <label>Datum: </label> {{(selectedOrder | async)?.orderDate}}
+    <label>Datum: </label> {{(selectedOrder | async)?.orderDate.toDate()| date: 'dd.MM.yyyy'}}
   </div>
   <div>
     <label>Status: </label> {{(selectedOrder | async)?.status}}
@@ -16,8 +16,10 @@
   <hr/>
   <h1>Bestellpositionen</h1>
 
-  <div *ngFor="let product of order | async | keyvalue">
-    Artikel: <b>{{product.key}}</b> Anzahl: <b>{{product.value}}</b>
+  <div *ngFor="let product of order | async ">
+    Artikel: <b>{{product.productId}}</b> Anzahl: <b>{{product.qty}}</b>
+
+
   </div>
 
 

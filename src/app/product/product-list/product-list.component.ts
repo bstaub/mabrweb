@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService} from '../product.service';
 import { Observable} from 'rxjs/index';
 import {map} from 'rxjs/internal/operators';
+import {ProductFirestoreService} from '../product-firestore.service';
 
 
 
@@ -29,7 +30,7 @@ export class ProductListComponent implements OnInit {
   // products: Observable<any>;
   products: any;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private productFireStoreService: ProductFirestoreService) { }
 
   ngOnInit() {
     this.getProductList();
@@ -41,14 +42,17 @@ export class ProductListComponent implements OnInit {
   }
 
   getProductList() {
-    this.productService.getProductList().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
-      )
-    ).subscribe(products => {
-      console.log('bslogger: ', products);
-      this.products = products;
-    });
+    this.products = this.productFireStoreService.getProducts();
+
+
+    // this.productService.getProductList().snapshotChanges().pipe(
+    //   map(changes =>
+    //     changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+    //   )
+    // ).subscribe(products => {
+    //   console.log('bslogger: ', products);
+    //   this.products = products;
+    // });
   }
 
   deleteProducts() {

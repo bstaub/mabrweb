@@ -28,6 +28,13 @@ import {OrderComponent} from './order/order.component';
 import {AuthService} from './user/auth.service';
 import {OrderEditComponent} from './order/order-edit/order-edit.component';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
+import {NotificationComponent} from './notification/notification.component';
+import {NotificationService} from './shared/notification.service';
+import {StorageService} from './shared/storage.service';
+import {AngularFireStorageModule} from 'angularfire2/storage';
+import {ProfileComponent} from './user/profile/profile.component';
+import {UserService} from './user/user.service';
+import {AuthGuard} from './user/guards/auth-guard.service';
 
 
 
@@ -51,20 +58,23 @@ import {AngularFirestoreModule} from 'angularfire2/firestore';
     OrderItemComponent,
     OrderStartComponent,
     OrderComponent,
-    OrderEditComponent
+    OrderEditComponent,
+    NotificationComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule,
-    AngularFirestoreModule,
+    AngularFireDatabaseModule,  // for database
+    AngularFireAuthModule,      // cloud firestore
+    AngularFirestoreModule,     // do auth login register stuff
+    AngularFireStorageModule,   // do file store stuff
     NgbModule.forRoot(),
     Routing,
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuard, UserService, NotificationService, StorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

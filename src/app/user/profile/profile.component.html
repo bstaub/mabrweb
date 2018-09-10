@@ -1,0 +1,50 @@
+
+
+<!--<p><strong>AuthUser: </strong>{{ user | json }}}</p>-->
+<!--<p><strong>LocalStorage: </strong> {{ localStorageUser | json }}}</p>-->
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1>User Profil</h1>
+      <br>
+      <img *ngIf="user2" src="{{ user2?.downloadUrl }}" alt="">
+      <br>
+      <p>Benutzername: {{ localStorageUser?.username }}</p>
+      <p>Email: {{ user?.email }}</p>
+      <p>Verified: {{ user?.emailVerified }}</p>
+      <p>uid: {{ user?.uid }}</p>
+      <p>AuthUser: {{ localStorageUser?.roles.authuser }}</p>
+      <p>Admin: {{ localStorageUser?.roles.admin }}</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <input type="file" (change)="onFileSelection($event)" placeholder="Upload a file" accept=".png, .jpeg, .jpg">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!--&lt;!&ndash;<div class="container" *ngIf="imageUrl">&ndash;&gt;-->
+<!--<div class="container" *ngIf="user2">-->
+  <!--<div class="row">-->
+    <!--<div class="col-lg-8">-->
+
+      <!--&lt;!&ndash;<img src="{{ imageUrl }}" alt="">&ndash;&gt;-->
+      <!--<img src="{{ user2.downloadUrl }}" alt="">-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+

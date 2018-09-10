@@ -1,71 +1,100 @@
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
-import {User} from './user.model';
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
+import {User} from './user';
+import {Observable} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
+import AuthCredential = firebase.auth.AuthCredential;
+import {loadQueryList} from '@angular/core/src/render3/instructions';
+import {AngularFireAuth} from 'angularfire2/auth';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  usersCollection: AngularFirestoreCollection<User>;
+  users: Observable<User[]>;
+  userDoc: AngularFirestoreDocument<User>;
 
-  STORE_KEY = 'localStorageUserKey';
+  constructor( public  afs: AngularFirestore,
+               private afAuth: AngularFireAuth,
+  ) {
+    // this.users = this.afs.collection('users').valueChanges();
 
-  private dbListPath = '/users';
-
-  usersRef: AngularFireList<User> = null;
+    this.usersCollection = this.afs.collection('users', ref => ref.orderBy('email', 'asc'));
 
 
-  constructor(private db: AngularFireDatabase) {
-    this.usersRef = db.list(this.dbListPath);
+    this.users = this.usersCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as User;
+        const id = a.payload.doc.id;
+        return {id, ...data};
+      }))
+    );
+
+
+
+
   }
 
-
-  createUser(user: User): void {
-    this.usersRef.push(user);
+  getUsers() {
+    return this.users;
   }
 
-  getUserList(): AngularFireList<User> {
-    // return this.usersRef = this.db.list<User>(this.dbListPath);
-    return this.usersRef = this.usersRef;
+  getUser(id) {
+    this.userDoc = this.afs.doc(`users/${id}`);
+    return this.userDoc.valueChanges();
   }
 
-  updateUser(key: string, value: any): void {
-    this.usersRef
-      .update(key, value)
-      .then(() => this.handleLog('Update successful'))
-      .catch(error => this.handleError(error));
+  addUser(user: User) {
+    return this.usersCollection.add(user);  // need return for async logout call in register process!
   }
 
-  deleteUser(key: string): void {
-    this.usersRef
-      .remove(key)
-      .then(() => this.handleLog('Delete successful'))
-      .catch(error => this.handleError(error));
+  setUser(user: User) {
+    this.userDoc = this.afs.doc(`users/${user.id}`);
+    return this.userDoc.set(user, {merge: true});
   }
 
-  deleteAll(): void {
-    this.usersRef.remove()
-      .then(() => this.handleLog('deleteAll successful'))
-      .catch(error => this.handleError(error));
+  setUserMerge(user: User) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.id}`);
+    const data: User = {
+      downloadUrl: 'xxx',
+      area: 'luzernXXX'
+    };
+    return userRef.set(data, {merge: true});
   }
 
-  getItemFromLocalStorage() {
-    return JSON.parse(localStorage.getItem(this.STORE_KEY)) || [];
+  deleteUser(user: User) {
+    this.userDoc = this.afs.doc(`users/${user.id}`);
+    this.userDoc.delete();
   }
 
-  setItemToLocalStorage(items) {
-    localStorage.setItem(this.STORE_KEY, JSON.stringify(items));
+  updateUser(user: User) {
+    this.userDoc = this.afs.doc(`users/${user.id}`);
+    this.userDoc.update(user);
+
   }
 
-  removeKeyFromLocalStorage() {
-    localStorage.removeItem(this.STORE_KEY);
+  // LocalStorage Functions start
+  setUserToLocalStorage(userFromDatabase) {
+    localStorage.setItem('user', JSON.stringify(userFromDatabase));
   }
 
-  private handleError(error) {
-    console.error(error);
+  destroyUserLocalStorage() {
+    localStorage.removeItem('user');
   }
 
-  private handleLog(msg) {
-    console.log(msg);
+  getProfileFromLocalStorage() {
+    return JSON.parse(localStorage.getItem('user')) || [];
+  }
+
+  get authenticated(): boolean {
+    return this.afAuth.authState !== null;
+  }
+
+  get currentUserId(): any {
+    return this.authenticated ? this.afAuth.auth.currentUser.uid : null;
   }
 
 }

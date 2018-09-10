@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {OrderService} from '../order.service';
 import {OrderFirestoreService} from '../order-firestore.service';
 import {Observable} from 'rxjs';
+import * as firebase from 'firebase';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 
 @Component({
@@ -20,7 +22,7 @@ export class OrderDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private orderService: OrderService,
     private orderFirestoreService: OrderFirestoreService,
-    private router: Router) { }
+    private router: Router) {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(
@@ -33,6 +35,7 @@ export class OrderDetailComponent implements OnInit {
         this.order = this.orderFirestoreService.getProductsPerOrder(params['id']).valueChanges();
       }
     );
+
   }
 
 

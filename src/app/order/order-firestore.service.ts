@@ -15,7 +15,7 @@ export class OrderFirestoreService {
   orderDoc: AngularFirestoreDocument<Order>;
 
   constructor(public afs: AngularFirestore) {
-    this.orderCollection = this.afs.collection('orders', ref => ref.orderBy('orderDate', 'desc'));
+    this.orderCollection = this.afs.collection('orders');
 
 
 
@@ -32,6 +32,7 @@ export class OrderFirestoreService {
 
 
   getOrders() {
+    console.log(this.orders);
     return this.orders;
   }
 
@@ -46,6 +47,7 @@ export class OrderFirestoreService {
   }
 
   addOrder(order: Order) {
+
     this.orderCollection.add(order);
   }
 

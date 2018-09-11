@@ -3,9 +3,11 @@
   <div>
     <label>Best.Nr.: </label> {{(selectedOrder | async)?.shopOrderId}}
   </div>
+  <!--
   <div>
     <label>Datum: </label> {{(selectedOrder | async)?.orderDate.toDate()| date: 'dd.MM.yyyy'}}
   </div>
+  -->
   <div>
     <label>Status: </label> {{(selectedOrder | async)?.status}}
   </div>

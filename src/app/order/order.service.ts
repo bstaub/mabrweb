@@ -23,8 +23,8 @@ export class OrderService {
 
   }
 
-
   createOrder(order: Order): void {
+    console.log(order);
     this.ordersRef.push(order);
   }
 

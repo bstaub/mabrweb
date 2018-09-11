@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {OrderService} from '../order.service';
+import {OrderFirestoreService} from '../order-firestore.service';
 import {Router} from '@angular/router';
-import {AuthService} from '../../user/auth.service';
 import {User} from '../../user/user';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
@@ -22,19 +22,11 @@ export class OrderEditComponent implements OnInit {
 
 
   constructor(private orderService: OrderService,
+              private orderServiceFirestore: OrderFirestoreService,
               private router: Router,
               private afAuth: AngularFireAuth) {
-    // Get Current Auth User
-    this.user = afAuth.authState;
-    this.user.subscribe(
-      (user) => {
-        if (user) {
-          this.userDetails = user;
-        } else {
-          this.userDetails = null;
-        }
-      }
-    );
+
+
   }
 
 
@@ -42,7 +34,7 @@ export class OrderEditComponent implements OnInit {
 
     const newOrder = this.orderForm.value;
     console.log(newOrder);
-    this.orderService.createOrder(newOrder);
+    this.orderServiceFirestore.addOrder(newOrder);
     this.onNavigateBack();
 
   }
@@ -60,6 +52,19 @@ export class OrderEditComponent implements OnInit {
       'anonymeOrder': new FormControl('false')
 
     });
+
+    // Get Current Auth User
+    this.user = this.afAuth.authState;
+    this.user.subscribe(
+      (user) => {
+        if (user) {
+          this.userDetails = user;
+          console.log(user);
+        } else {
+          this.userDetails = null;
+        }
+      }
+    );
 
 
 

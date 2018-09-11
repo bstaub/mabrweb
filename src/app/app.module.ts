@@ -34,7 +34,10 @@ import {StorageService} from './shared/storage.service';
 import {AngularFireStorageModule} from 'angularfire2/storage';
 import {ProfileComponent} from './user/profile/profile.component';
 import {UserService} from './user/user.service';
-import {AuthGuard} from './user/guards/auth-guard.service';
+import {Auth2Guard} from './user/guards/auth2.guard';
+import {ResetPasswordComponent} from './user/reset-password/reset-password.component';
+import {SettingsService} from './shared/settings.service';
+
 
 
 
@@ -60,7 +63,8 @@ import {AuthGuard} from './user/guards/auth-guard.service';
     OrderComponent,
     OrderEditComponent,
     NotificationComponent,
-    ProfileComponent
+    ProfileComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +78,7 @@ import {AuthGuard} from './user/guards/auth-guard.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AuthGuard, UserService, NotificationService, StorageService],
+  providers: [AuthService, Auth2Guard, UserService, NotificationService, StorageService, SettingsService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AngularFireAuth} from 'angularfire2/auth';
+import {AngularFireAuth} from '@angular/fire/auth';
 import {AuthService} from '../user/auth.service';
 import {UserService} from '../user/user.service';
+import {SettingsService} from '../shared/settings.service';
 
 @Component({
   selector: 'app-header',
@@ -10,17 +11,25 @@ import {UserService} from '../user/user.service';
 })
 export class HeaderComponent implements OnInit {
 
-  isLoggedIn: boolean = false;
+  // isLoggedIn: boolean = false;
+  isLoggedIn: boolean;
+  loggedInUser: string;
+  showRegister: boolean;
   name: string;
   uid: string;
   email: string;
 
-  constructor(private _firebaseAuth: AngularFireAuth, private authService: AuthService, private userService: UserService) {
+  constructor(private afAuth: AngularFireAuth,
+              private authService: AuthService,
+              private userService: UserService,
+              private settingsService: SettingsService
+  ) {
   }
 
   ngOnInit() {
 
-    this._firebaseAuth.auth.onAuthStateChanged(userData => {
+    /*
+    this.afAuth.auth.onAuthStateChanged(userData => {
       // we are logged in
       console.log('ngOnInit000', userData);
 
@@ -42,6 +51,23 @@ export class HeaderComponent implements OnInit {
         this.isLoggedIn = false;
       }
     });
+    */
+
+    this.authService.getAuth().subscribe(auth => {
+      if (auth && auth.emailVerified) {
+        const user = this.userService.getProfileFromLocalStorage();
+        this.name = user.username;
+        this.email = user.email;
+        this.uid = user.id;
+
+
+        this.isLoggedIn = true;
+        this.loggedInUser = auth.email;
+      } else {
+        this.isLoggedIn = false;
+      }
+    });
+    this.showRegister = this.settingsService.getSettings().allowRegistration;
 
   }
 

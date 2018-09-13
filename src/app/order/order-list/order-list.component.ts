@@ -1,11 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OrderService} from '../order.service';
 import {OrderFirestoreService} from '../order-firestore.service';
-import {map} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {Order} from '../order.model';
-import {error} from 'util';
-import {User} from '../../user/user';
+
 
 
 @Component({
@@ -34,6 +31,7 @@ export class OrderListComponent implements OnInit {
   getAllOrders () {
 
     this.orders = this.orderServiceFirestore.getOrders();
+    //console.log(this.orders)
 
     /*
     // Use snapshotChanges().map() to store the key

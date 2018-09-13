@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import {map} from 'rxjs/operators';
 import {Order} from './order.model';
+import {ProductsPerOrder} from './productsPerOrder.model';
 
 
 @Injectable({
@@ -13,6 +14,8 @@ export class OrderFirestoreService {
   productsOrderCollection: AngularFirestoreCollection<any>;
   orders: Observable<Order[]>;
   orderDoc: AngularFirestoreDocument<Order>;
+  order: Order;
+
 
   constructor(public afs: AngularFirestore) {
     this.orderCollection = this.afs.collection('orders');
@@ -40,14 +43,19 @@ export class OrderFirestoreService {
     return this.orderDoc;
   }
 
+
+
   getProductsPerOrder(key) {
     this.productsOrderCollection = this.afs.doc(`productsPerOrder/${key}`).collection('products');
     return  this.productsOrderCollection;
   }
 
   addOrder(order: Order) {
-
     this.orderCollection.add(order);
+  }
+
+  addProductToOrder(key, productPerOrder: ProductsPerOrder) {
+    this.afs.doc(`productsPerOrder/${key}`).collection('products').add(productPerOrder);
   }
 
   deleteOrder(key: string) {
@@ -55,8 +63,8 @@ export class OrderFirestoreService {
     this.orderDoc.delete();
   }
 
-  updateOrder(order: Order) {
-    this.orderDoc = this.afs.doc(`orders/${order.key}`);
+  updateOrder(orderKey, order: Order) {
+    this.orderDoc = this.afs.doc(`orders/${orderKey}`);
     this.orderDoc.update(order);
 
   }

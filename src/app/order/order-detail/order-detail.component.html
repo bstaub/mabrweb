@@ -3,6 +3,9 @@
   <div>
     <label>Best.Nr.: </label> {{(selectedOrder | async)?.shopOrderId}}
   </div>
+  <div>
+    <label>User: </label> {{(selectedOrder | async)?.userId}}
+  </div>
   <!--
   <div>
     <label>Datum: </label> {{(selectedOrder | async)?.orderDate.toDate()| date: 'dd.MM.yyyy'}}
@@ -16,23 +19,48 @@
   </div>
 
   <hr/>
+  <button class="btn btn-primary" (click)="onDelete()">Löschen</button>
+  <button class="btn btn-primary" (click)="onEdit()">Bearbeiten</button>
+  <button class="btn btn-primary" (click)="onAuthorize()">Authorisieren</button>
+  <button class="btn btn-primary" (click)="onSubmitOrder()">Bestellung Absenden</button>
+  <hr/>
   <h1>Bestellpositionen</h1>
 
-  <div *ngFor="let product of order | async ">
-    Artikel: <b>{{product.productId}}</b> Anzahl: <b>{{product.qty}}</b>
+  <div *ngFor="let product of products ">
+    Artikel: <b>{{product.productData.description}}</b> Anzahl: <b>{{product.qty}}</b>
 
 
   </div>
 
 
-
-  <button class="btn btn-primary" (click)="onDelete()">Löschen</button>
-  <button class="btn btn-primary" (click)="onEdit()">Bearbeiten</button>
-  <button class="btn btn-primary" (click)="onAuthorize()">Authorisieren</button>
-  <button class="btn btn-primary" (click)="onSubmitOrder()">Bestellung Absenden</button>
-
-
-
+  <div>
+    <div>
+      <div>
+        <div>
+          <select [(ngModel)]="selectedProduct">
+            <option value="">- Select -</option>
+            <option *ngFor="let product of allProducts | async" [value]="product.key">{{product.name}}</option>
+          </select>
+        </div>
+        <div><input type="text" class="form-control" #productAmount></div>
+        <div>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="onAddProductControl(productAmount.value)">+
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
+
+
+
+
+
 
 

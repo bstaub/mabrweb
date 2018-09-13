@@ -48,10 +48,9 @@ export class OrderEditComponent implements OnInit {
     this.router.navigate(['/bestellung']);
   }
 
+
+
   ngOnInit() {
-
-
-
 
 
     this.orderForm = new FormGroup({
@@ -61,11 +60,9 @@ export class OrderEditComponent implements OnInit {
     });
 
 
-
-      this.userId = firebase.auth().currentUser.uid;
-      this.orderForm.patchValue({'userId':this.userId});
-      console.log(this.userId)
-
+    this.userId = firebase.auth().currentUser.uid;
+    this.orderForm.patchValue({'userId':this.userId});
+    console.log(this.userId)
 
 
   }

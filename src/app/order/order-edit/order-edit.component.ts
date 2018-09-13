@@ -19,6 +19,7 @@ export class OrderEditComponent implements OnInit {
   anonymeOrder: boolean;
   private user: Observable<firebase.User>;
   userDetails: firebase.User = null;
+  userId: string;
 
 
   constructor(private orderService: OrderService,
@@ -28,6 +29,7 @@ export class OrderEditComponent implements OnInit {
 
 
   }
+
 
 
   onSubmit() {
@@ -47,28 +49,27 @@ export class OrderEditComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
+
+
+
     this.orderForm = new FormGroup({
-      'userId': new FormControl(null, Validators.required),
+      'userId': new FormControl('', Validators.required),
       'anonymeOrder': new FormControl('false')
 
     });
 
-    // Get Current Auth User
-    this.user = this.afAuth.authState;
-    this.user.subscribe(
-      (user) => {
-        if (user) {
-          this.userDetails = user;
-          console.log(user);
-        } else {
-          this.userDetails = null;
-        }
-      }
-    );
+
+
+      this.userId = firebase.auth().currentUser.uid;
+      this.orderForm.patchValue({'userId':this.userId});
+      console.log(this.userId)
 
 
 
   }
+
 
 
 

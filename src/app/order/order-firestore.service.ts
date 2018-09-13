@@ -32,7 +32,6 @@ export class OrderFirestoreService {
 
 
   getOrders() {
-    console.log(this.orders);
     return this.orders;
   }
 

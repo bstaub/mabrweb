@@ -1,10 +1,11 @@
 export class Product {
-  key: string;
-  name: string;
-  description: string;
-  price: number;
-  picture: string;
-  createdDate: string;
+  key?: string;  // set to uid
+  name?: string;
+  description?: string;
+  price?: number;
+  picture?: string;
+  createdDate?: string;
   active = true;
-  itemcount: number;
+  itemcount?: number;
 }
+

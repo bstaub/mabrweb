@@ -18,15 +18,7 @@ export class OrderEditComponent implements OnInit {
   orderForm: FormGroup;
   private isNew = true;
   private orderKey: string;
-  public order: Order = {
-    key: null,
-  shopOrderId: null,
-  orderDate: null,
-  status: 'testing',
-  totalValue: null,
-  userId: null
-};
-  private bruno: boolean;
+  public order: Order;
   private anonymeOrder: boolean;
   private userId: string;
 

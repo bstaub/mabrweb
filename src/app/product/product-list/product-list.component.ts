@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService} from '../shared/product.service';
 import { Observable} from 'rxjs/index';
 import {map} from 'rxjs/internal/operators';
-import {ProductFirestoreService} from '../product-firestore.service';
+import {ProductFirestoreService} from '../shared/product-firestore.service';
 
 
 

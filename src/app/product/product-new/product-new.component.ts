@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { Product} from '../product.model';
-import { ProductService} from '../shared/product.service';
+import {Product} from '../product.model';
+import {ProductService} from '../shared/product.service';
+import {ProductFirestoreService} from '../shared/product-firestore.service';
+import * as firebase from 'firebase';
+import {UserService} from '../../user/user.service';
 
 @Component({
   selector: 'app-product-new',
   templateUrl: './product-new.component.html',
-  styles: [`    
-    .product-new{
+  styles: [`
+    .product-new {
       border: 1px solid black;
       background-color: #ecf1f3;
       padding: 10px;
@@ -21,10 +24,15 @@ export class ProductNewComponent implements OnInit {
   submitted = false;
   createdDate: string;
 
-  constructor(private productService: ProductService) { }
+  constructor(
+    private productService: ProductService,
+    private productFirestoreService: ProductFirestoreService,
+    private userService: UserService
+  ) {
+  }
 
   ngOnInit() {
-    this.product.createdDate = this.productService.formatDate(new Date());
+    // this.product.createdDate = this.productService.formatDate(new Date());  // this ist just for Realtime DB, for CloudFirstore use Timestamp!
   }
 
   newProduct(): void {
@@ -37,9 +45,12 @@ export class ProductNewComponent implements OnInit {
     this.product = new Product();
   }
 
+
   onSubmit() {
     this.submitted = true;
-    this.save();
-  }
+    // this.save();  // Realtime DB see save above
 
+    const productObj = Object.assign({key: this.userService.getCurrentUserId(), createdDate: firebase.firestore.FieldValue.serverTimestamp()}, this.product);
+    this.productFirestoreService.addProduct(productObj);
+  }
 }

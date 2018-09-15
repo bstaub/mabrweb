@@ -6,6 +6,7 @@ import {filter, map} from 'rxjs/operators';
 import AuthCredential = firebase.auth.AuthCredential;
 import {loadQueryList} from '@angular/core/src/render3/instructions';
 import {AngularFireAuth} from 'angularfire2/auth';
+import * as firebase from 'firebase';
 
 
 
@@ -45,6 +46,11 @@ export class UserService {
   getUser(id) {
     this.userDoc = this.afs.doc(`users/${id}`);
     return this.userDoc.valueChanges();
+  }
+
+  getCurrentUserId(): string {
+    return firebase.auth().currentUser.uid;
+    // this.myForm.patchValue({'userId': this.userId});
   }
 
   addUser(user: User) {

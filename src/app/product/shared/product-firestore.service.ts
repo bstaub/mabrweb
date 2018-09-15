@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import {map} from 'rxjs/operators';
-import {Product} from './product.model';
+import {Product} from '../product.model';
+import {Order} from '../../order/order.model';
+import {User} from '../../user/user';
 
 
 @Injectable({
@@ -56,6 +58,7 @@ export class ProductFirestoreService {
   }
 
   addProduct(product: Product) {
+    // this.productCollection.add(product);
     this.productCollection.add(product);
   }
 
@@ -64,12 +67,22 @@ export class ProductFirestoreService {
     this.productDoc.delete();
   }
 
+  setProduct(product: Product) {
+    this.productDoc = this.afs.doc(`products/${product.key}`);
+    return this.productDoc.set(product, {merge: true});
+  }
+
+  /*
   updateProduct(product: Product) {
     this.productDoc = this.afs.doc(`products/${product.key}`);
     this.productDoc.update(product);
-
   }
+  */
 
+  updateProduct(productKey, product: Product) {
+    this.productDoc = this.afs.doc(`products/${productKey}`);
+    this.productDoc.update(product);
+  }
 
 
 }

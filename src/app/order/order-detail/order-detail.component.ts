@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {OrderService} from '../order.service';
-import {OrderFirestoreService} from '../order-firestore.service';
+import {OrderFirestoreService} from '../shared/order-firestore.service';
 import {Observable} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProductFirestoreService} from '../../product/product-firestore.service';

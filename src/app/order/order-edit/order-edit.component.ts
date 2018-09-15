@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {OrderService} from '../order.service';
-import {OrderFirestoreService} from '../order-firestore.service';
+import {OrderFirestoreService} from '../shared/order-firestore.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
-import {Subscription} from "rxjs";
+import {Subscription} from 'rxjs';
 import {Order} from '../order.model';
-
 
 
 @Component({
@@ -19,7 +18,15 @@ export class OrderEditComponent implements OnInit {
   orderForm: FormGroup;
   private isNew = true;
   private orderKey: string;
-  private order: Order;
+  public order: Order = {
+    key: null,
+  shopOrderId: null,
+  orderDate: null,
+  status: 'testing',
+  totalValue: null,
+  userId: null
+};
+  private bruno: boolean;
   private anonymeOrder: boolean;
   private userId: string;
 
@@ -33,7 +40,6 @@ export class OrderEditComponent implements OnInit {
   }
 
 
-
   onSubmit() {
 
     const newOrder = this.orderForm.value;
@@ -41,7 +47,7 @@ export class OrderEditComponent implements OnInit {
     if (this.isNew) {
       this.orderServiceFirestore.addOrder(newOrder);
     } else {
-      this.orderServiceFirestore.updateOrder(this.orderKey, newOrder)
+      this.orderServiceFirestore.updateOrder(this.orderKey, newOrder);
     }
 
     this.onNavigateBack();
@@ -51,32 +57,38 @@ export class OrderEditComponent implements OnInit {
   onCancel() {
     this.onNavigateBack();
   }
+
   onNavigateBack() {
     this.router.navigate(['/bestellung']);
   }
 
 
-
   ngOnInit() {
-    let orderData;
+    var orderData;
+
     this.activatedRoute.params.subscribe(
       params => {
         if (params.hasOwnProperty('id')) {
+
 
           this.isNew = false;
           this.orderKey = params['id'];
           this.orderServiceFirestore.getOrder(this.orderKey).ref.get()
             .then(function (doc) {
 
-              orderData = doc.data();
+              orderData = doc.data() as Order;
               orderData.id = doc.id;
-              //this.order = orderData;
-            console.log(orderData);
-          }).catch(function (error) {
-            console.log("Error getting document:", error);
-          })
 
 
+              // this.order = orderData;
+              // console.log(orderData);
+            }).catch(function (error) {
+            console.log('Error getting document:', error);
+          });
+
+
+          this.order = orderData;
+          console.log(this.order);
 
         } else {
           this.isNew = true;
@@ -84,11 +96,10 @@ export class OrderEditComponent implements OnInit {
         }
 
 
-
       }
     );
 
-    console.log(this.order);
+    // console.log(this.order);
 
     this.orderForm = new FormGroup({
       'userId': new FormControl('', Validators.required),
@@ -100,16 +111,11 @@ export class OrderEditComponent implements OnInit {
 
     if (this.isNew) {
       this.userId = firebase.auth().currentUser.uid;
-      this.orderForm.patchValue({'userId':this.userId});
+      this.orderForm.patchValue({'userId': this.userId});
     }
 
 
-
-
   }
-
-
-
 
 
 }

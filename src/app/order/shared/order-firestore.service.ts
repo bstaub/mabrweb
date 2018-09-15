@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import {map} from 'rxjs/operators';
-import {Order} from './order.model';
-import {ProductsPerOrder} from './productsPerOrder.model';
+import {Order} from '../order.model';
+import {ProductsPerOrder} from '../productsPerOrder.model';
 
 
 @Injectable({
@@ -54,7 +54,7 @@ export class OrderFirestoreService {
     this.orderCollection.add(order);
   }
 
-  addProductToOrder(key, productPerOrder: ProductsPerOrder) {
+  addProductToOrder(key, productPerOrder: Object) {
     this.afs.doc(`productsPerOrder/${key}`).collection('products').add(productPerOrder);
   }
 

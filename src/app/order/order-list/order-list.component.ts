@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {OrderService} from '../order.service';
-import {OrderFirestoreService} from '../order-firestore.service';
+import {OrderFirestoreService} from '../shared/order-firestore.service';
 import {Router} from '@angular/router';
 
 

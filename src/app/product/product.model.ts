@@ -1,5 +1,5 @@
 export class Product {
-  key?: string;  // set to uid
+  key?: string;  // uuid in js
   name?: string;
   description?: string;
   price?: number;

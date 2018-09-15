@@ -4,7 +4,7 @@ import {Product} from '../product.model';
 import {ProductService} from '../shared/product.service';
 import {ProductFirestoreService} from '../shared/product-firestore.service';
 import * as firebase from 'firebase';
-import {UserService} from '../../user/user.service';
+import {StorageService} from '../../shared/storage.service';
 
 @Component({
   selector: 'app-product-new',
@@ -23,11 +23,12 @@ export class ProductNewComponent implements OnInit {
   product: Product = new Product();
   submitted = false;
   createdDate: string;
+  image: string;
 
   constructor(
     private productService: ProductService,
     private productFirestoreService: ProductFirestoreService,
-    private userService: UserService
+    private storageService: StorageService
   ) {
   }
 
@@ -51,7 +52,35 @@ export class ProductNewComponent implements OnInit {
     // this.save();  // Realtime DB see save above
     // this.userService.getCurrentUserId();
 
-    const productObj = Object.assign({key: this.productFirestoreService.generateId(), createdDate: firebase.firestore.FieldValue.serverTimestamp()}, this.product);
+    const productObj = Object.assign({key: this.productFirestoreService.generateId(),
+                                            image: this.image,
+                                            createdDate: firebase.firestore.FieldValue.serverTimestamp()},
+                                            this.product);
+
     this.productFirestoreService.addProduct(productObj);
   }
+
+
+  onFileSelection($event) {
+    this.storageService.upload($event)
+      .then((uploadSnapshot: firebase.storage.UploadTaskSnapshot) => {
+
+        uploadSnapshot.ref.getDownloadURL().then((downloadURL) => {
+          this.image = downloadURL;
+
+          /*
+          // update Image
+          const data: Product = {
+            key: this.product.key,
+            downloadUrl: downloadURL,
+          };
+          this.productFirestoreService.setProduct(data);
+          */
+
+        });
+
+      });
+  }
+
+
 }

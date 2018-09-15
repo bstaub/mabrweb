@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from '@angular/fire/firestore';
+import {AngularFireAuth} from '@angular/fire/auth';
+import * as firebase from 'firebase';
 import {User} from './user';
 import {Observable} from 'rxjs';
-import {filter, map} from 'rxjs/operators';
-import AuthCredential = firebase.auth.AuthCredential;
-import {loadQueryList} from '@angular/core/src/render3/instructions';
-import {AngularFireAuth} from 'angularfire2/auth';
-import * as firebase from 'firebase';
+import {map} from 'rxjs/operators';
+
 
 
 

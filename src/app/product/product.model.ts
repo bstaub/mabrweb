@@ -5,7 +5,8 @@ export class Product {
   price?: number;
   picture?: string;
   createdDate?: string;
-  active = true;
+  active?: boolean;
   itemcount?: number;
+  image?: string;
 }
 

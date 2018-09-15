@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from 'angularfire2/storage';
-import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'

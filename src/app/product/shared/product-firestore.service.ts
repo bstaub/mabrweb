@@ -3,8 +3,6 @@ import {Observable} from 'rxjs';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import {map} from 'rxjs/operators';
 import {Product} from '../product.model';
-import {Order} from '../../order/order.model';
-import {User} from '../../user/user';
 
 
 @Injectable({

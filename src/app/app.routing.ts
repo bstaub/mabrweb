@@ -11,12 +11,13 @@ import {ProductComponent} from './product/product.component';
 import {OrderComponent} from './order/order.component';
 import {ProfileComponent} from './user/profile/profile.component';
 import {Auth2Guard} from './user/guards/auth2.guard';
+import {AuthGuard} from './user/guards/auth-guard.service';
 import {ResetPasswordComponent} from './user/reset-password/reset-password.component';
 
 const APP_ROUTES: Routes = [
   {path: '', component: HomeComponent },
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES },
-  {path: 'bestellung', component: OrderComponent, children: ORDER_ROUTES, canActivate: [Auth2Guard] },
+  {path: 'bestellung', component: OrderComponent, children: ORDER_ROUTES, canActivate: [AuthGuard]},
   {path: 'user', component: UserListComponent, children: USER_ROUTES, canActivate: [Auth2Guard]},
   {path: 'login', component: UserLoginComponent},
   {path: 'register', component: UserRegisterComponent},

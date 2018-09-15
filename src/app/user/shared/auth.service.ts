@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {User} from './user';
+import {User} from '../user';
 
 import {UserService} from './user.service';
-import {NotificationService} from '../shared/notification.service';
+import {NotificationService} from '../../shared/notification.service';
 
 import * as firebase from 'firebase/app';
 import {Observable, of} from 'rxjs';

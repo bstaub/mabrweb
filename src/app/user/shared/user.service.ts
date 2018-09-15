@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
-import {User} from './user';
+import {User} from '../user';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -45,11 +45,6 @@ export class UserService {
   getUser(id) {
     this.userDoc = this.afs.doc(`users/${id}`);
     return this.userDoc.valueChanges();
-  }
-
-  getCurrentUserId(): string {
-    return firebase.auth().currentUser.uid;
-    // this.myForm.patchValue({'userId': this.userId});
   }
 
   addUser(user: User) {
@@ -96,6 +91,11 @@ export class UserService {
 
   get authenticated(): boolean {
     return this.afAuth.authState !== null;
+  }
+
+  getCurrentUserId(): string {
+    return firebase.auth().currentUser.uid;
+    // this.myForm.patchValue({'userId': this.userId});
   }
 
   get currentUserId(): any {

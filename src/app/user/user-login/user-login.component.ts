@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../shared/auth.service';
 import {NotificationService} from '../../shared/notification.service';
 import {Router} from '@angular/router';
 

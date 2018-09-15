@@ -19,13 +19,13 @@ import {UserRegisterComponent} from './user/user-register/user-register.componen
 import {Routing} from './app.routing';
 import {OrderDetailComponent} from './order/order-detail/order-detail.component';
 import {OrderListComponent} from './order/order-list/order-list.component';
-import { ProductNewComponent } from './product/product-new/product-new.component';
+import {ProductNewComponent} from './product/product-new/product-new.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { ProductComponent } from './product/product.component';
-import { OrderItemComponent } from './order/order-list/order-item.component';
-import { OrderStartComponent } from './order/order-start.component';
+import {ProductComponent} from './product/product.component';
+import {OrderItemComponent} from './order/order-list/order-item.component';
+import {OrderStartComponent} from './order/order-start.component';
 import {OrderComponent} from './order/order.component';
-import {AuthService} from './user/auth.service';
+import {AuthService} from './user/shared/auth.service';
 import {OrderEditComponent} from './order/order-edit/order-edit.component';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {NotificationComponent} from './notification/notification.component';
@@ -33,10 +33,10 @@ import {NotificationService} from './shared/notification.service';
 import {StorageService} from './shared/storage.service';
 import {AngularFireStorageModule} from 'angularfire2/storage';
 import {ProfileComponent} from './user/profile/profile.component';
-import {UserService} from './user/user.service';
-import {Auth2Guard} from './user/guards/auth2.guard';
+import {UserService} from './user/shared/user.service';
 import {ResetPasswordComponent} from './user/reset-password/reset-password.component';
 import {SettingsService} from './shared/settings.service';
+import {AuthGuard} from './user/guards/auth-guard.service';
 
 
 
@@ -78,7 +78,7 @@ import {SettingsService} from './shared/settings.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, Auth2Guard, UserService, NotificationService, StorageService, SettingsService],
+  providers: [AuthService, AuthGuard, UserService, NotificationService, StorageService, SettingsService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -14,26 +14,24 @@ export class ProfileComponent implements OnInit {
 
   constructor(private authService: AuthService, private userService: UserService, private storageService: StorageService) { }
 
-  uid;
-  user;
-  user2;
-  imageUrl;
-  localStorageUser;
+  uid: string;
+  imageUrl: string;
+  currentUser: any;
+  localStorageUser: any;
+  user: User;
+
 
   ngOnInit() {
+    this.currentUser = this.userService.getCurrentUser();
     this.uid = this.userService.getCurrentUserId();
-    // this.user = this.authService.getAuthUser();
     this.getUser();
   }
 
   getUser() {
-    // console.log(this.user.uid);
     this.localStorageUser = this.userService.getProfileFromLocalStorage();
     return this.userService.getUser(this.uid)
-    // return this.userService.getUser(this.user.uid)
       .subscribe( data => {
-        console.log('singleUser: ', data);
-        this.user2 = data;
+        this.user = data;
       });
   }
 
@@ -45,7 +43,6 @@ export class ProfileComponent implements OnInit {
           console.log(downloadURL);
           this.imageUrl = downloadURL;
           const data: User = {
-            // id: this.user.uid,
             id: this.uid,
             downloadUrl: downloadURL,
           };

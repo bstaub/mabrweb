@@ -36,7 +36,9 @@ import {ProfileComponent} from './user/profile/profile.component';
 import {UserService} from './user/shared/user.service';
 import {ResetPasswordComponent} from './user/reset-password/reset-password.component';
 import {SettingsService} from './shared/settings.service';
-import {AuthGuard} from './user/guards/auth-guard.service';
+import {AdminGuard} from './user/guards/admin.guard';
+import {AuthuserGuard} from './user/guards/authuser.guard';
+import {Auth2Guard} from './user/guards/auth2.guard';
 
 
 
@@ -78,7 +80,7 @@ import {AuthGuard} from './user/guards/auth-guard.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AuthGuard, UserService, NotificationService, StorageService, SettingsService],
+  providers: [AuthService, AdminGuard, AuthuserGuard, Auth2Guard, UserService, NotificationService, StorageService, SettingsService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

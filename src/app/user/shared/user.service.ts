@@ -102,4 +102,8 @@ export class UserService {
     return this.authenticated ? this.afAuth.auth.currentUser.uid : null;
   }
 
+  getCurrentUser() {
+    return firebase.auth().currentUser;
+  }
+
 }

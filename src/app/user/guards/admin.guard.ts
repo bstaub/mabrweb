@@ -7,7 +7,7 @@ import {map, take, tap} from 'rxjs/operators';
 import * as firebase from 'firebase';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
 
   constructor(private router: Router,
               private authService: AuthService,
@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
       map(user => user.roles.admin ? true : false),
       tap(isAdmin => {
         if (!isAdmin) {
-          console.error('Access denied - Authuser only allowed');
+          console.error('Access denied - Admin only allowed');
         }
       })
     );

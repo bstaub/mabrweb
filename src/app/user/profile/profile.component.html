@@ -8,14 +8,14 @@
     <div class="col-lg-12">
       <h1>User Profil</h1>
       <br>
-      <img *ngIf="user2" src="{{ user2?.downloadUrl }}" alt="">
+      <img *ngIf="user" src="{{ user?.downloadUrl }}" alt="">
       <br>
-      <p>Benutzername: {{ localStorageUser?.username }}</p>
-      <p>Email: {{ user?.email }}</p>
-      <p>Verified: {{ user?.emailVerified }}</p>
-      <p>uid: {{ user?.uid }}</p>
-      <p>AuthUser: {{ localStorageUser?.roles.authuser }}</p>
-      <p>Admin: {{ localStorageUser?.roles.admin }}</p>
+      <p>Benutzername: {{ user?.username }}</p>
+      <p>Email: {{ currentUser?.email }}</p>
+      <p>Verified: {{ currentUser?.emailVerified }}</p>
+      <p>uid: {{ currentUser?.uid }}</p>
+      <p>AuthUser: {{ user?.roles.authuser }}</p>
+      <p>Admin: {{ user?.roles.admin }}</p>
     </div>
   </div>
 </div>

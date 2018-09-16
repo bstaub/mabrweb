@@ -12,28 +12,11 @@ export class ProductFirestoreService {
   productCollection: AngularFirestoreCollection<Product>;
   products: Observable<Product[]>;
   productDoc: AngularFirestoreDocument<Product>;
+  filteredProducts: any[];
 
   constructor(public afs: AngularFirestore) {
-    // https://firebase.google.com/docs/firestore/query-data/query-cursors#use_a_document_snapshot_to_define_the_query_cursor
-    // https://stackoverflow.com/questions/46821757/can-i-query-a-cloud-firestore-collection-with-a-where-equals-clause-and-an-order
-    // https://www.youtube.com/watch?v=Ofux_4c94FI
-    // https://www.youtube.com/watch?v=VBEzqahgKmw
-    // https://console.cloud.google.com -> App Engine -> Quotas
 
-    // this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc').startAt('M'));
-    // this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc').limit(4));
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
-    // this.productCollection = this.afs.collection('products', ref => ref.where('price', '>', 505).limit(10));
-
-    // COMPOUND QUERIES, create Index manual, see Indexe in Firebase
-    // this.productCollection = this.afs.collection('products', ref => ref
-       // .orderBy('name', 'asc')
-       // .orderBy('description', 'asc'));
-    // COMPOUND QUERIES,
-    // this.productCollection = this.afs.collection('products', ref => ref
-        // .where('price', '>', 505).limit(10)
-        // .where('name', '==', 'Ipad Air'));
-
 
     this.products = this.productCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -43,8 +26,6 @@ export class ProductFirestoreService {
       }))
     );
   }
-
-
 
   getProducts() {
     return this.products;
@@ -91,10 +72,25 @@ export class ProductFirestoreService {
   }
 
   getCategory(productCategory: Product) {
-    console.log(this.afs.doc(`products/${productCategory}`));
-    // this.afs.doc(`products/${productCategory}`);
-    // this.productDoc = this.afs.doc(`products/${productCategory}`);
-    // return this.productDoc;
+    const productsArrayFiltered = [];
+
+    // getting data from productCategory
+    this.afs.collection('products').ref.get().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+          const newProduct = doc.data();
+          // newProduct.id = doc.id;
+          if (newProduct.productCategory && newProduct.productCategory === productCategory ) {
+            productsArrayFiltered.push(newProduct);
+          } else {
+            // do nothing
+            // productsArrayFiltered.push(newProduct);
+          }
+      });
+    });
+
+    this.filteredProducts = productsArrayFiltered;
+    return this.filteredProducts;
+
   }
 
 

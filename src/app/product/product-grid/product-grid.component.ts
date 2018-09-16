@@ -16,6 +16,7 @@ export class ProductGridComponent implements OnInit {
   products: Observable<Product[]>;
   categories: Observable<ProductCategory[]>;
   selectedProduct: string;
+  filteredProducts: any[];
 
   constructor(private productService: ProductService,
               private productFireStoreService: ProductFirestoreService,
@@ -37,8 +38,7 @@ export class ProductGridComponent implements OnInit {
 
   selectedCategory(event) {
     const categoryName = event.target.value;
-    console.log(categoryName);
-    return this.productFireStoreService.getCategory(categoryName);
+    this.filteredProducts = this.productFireStoreService.getCategory(categoryName);
   }
 
 }

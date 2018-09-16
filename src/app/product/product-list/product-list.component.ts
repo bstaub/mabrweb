@@ -3,6 +3,7 @@ import { ProductService} from '../shared/product.service';
 import { Observable} from 'rxjs/index';
 import {map} from 'rxjs/internal/operators';
 import {ProductFirestoreService} from '../shared/product-firestore.service';
+import {Product} from '../product.model';
 
 
 
@@ -28,7 +29,7 @@ export class ProductListComponent implements OnInit {
 
   // products: Observable<any[]>;
   // products: Observable<any>;
-  products: any;
+  products: Observable<Product[]>;
 
   constructor(private productService: ProductService, private productFireStoreService: ProductFirestoreService) { }
 

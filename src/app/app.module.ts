@@ -39,6 +39,8 @@ import {SettingsService} from './shared/settings.service';
 import {AdminGuard} from './user/guards/admin.guard';
 import {AuthuserGuard} from './user/guards/authuser.guard';
 import {Auth2Guard} from './user/guards/auth2.guard';
+import { ProductGridComponent } from './product/product-grid/product-grid.component';
+import { ProductItemComponent } from './product/product-item/product-item.component';
 
 
 
@@ -66,7 +68,9 @@ import {Auth2Guard} from './user/guards/auth2.guard';
     OrderEditComponent,
     NotificationComponent,
     ProfileComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    ProductGridComponent,
+    ProductItemComponent
   ],
   imports: [
     BrowserModule,

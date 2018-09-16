@@ -1,7 +1,13 @@
+
+/* Shop Dummy Projet */
+/* hier drin bitte nichts stylein, beeinflusst sonst das ganze Layout */
+/* bin am Flex Grid Layout für Produkte am testen, damit ich eine etwas besser Vorstellumg vom Endprodukt habe */
+/* 16.09.2018, BS */
+
 body {
   padding-top: 80px;
 }
 
 nav a{
-  margin-right: 5px;
+  /* margin-right: 5px;  */
 }

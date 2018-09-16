@@ -90,5 +90,12 @@ export class ProductFirestoreService {
     });
   }
 
+  getCategory(productCategory: Product) {
+    console.log(this.afs.doc(`products/${productCategory}`));
+    // this.afs.doc(`products/${productCategory}`);
+    // this.productDoc = this.afs.doc(`products/${productCategory}`);
+    // return this.productDoc;
+  }
+
 
 }

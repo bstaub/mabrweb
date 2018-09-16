@@ -35,4 +35,10 @@ export class ProductGridComponent implements OnInit {
     this.productService.deleteAll();
   }
 
+  selectedCategory(event) {
+    const categoryName = event.target.value;
+    console.log(categoryName);
+    return this.productFireStoreService.getCategory(categoryName);
+  }
+
 }

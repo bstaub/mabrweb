@@ -4,7 +4,7 @@
   <div class="sort">
     <div class="collection-sort">
       <label>Filter by:</label>
-      <select [(ngModel)]="selectedProduct">
+      <select [(ngModel)]="selectedProduct" (change)="selectedCategory($event)">
         <!--<option value="">- Wählen -</option>-->
         <option value="/">-wählen-</option>
         <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>

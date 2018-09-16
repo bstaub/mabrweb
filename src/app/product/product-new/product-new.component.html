@@ -24,10 +24,17 @@
         </div>
 
         <div class="form-group">
-          <!--<label for="picture">Bild</label> <input type="text" class="form-control" id="picture" required-->
-                                                   <!--[(ngModel)]="product.picture" name="picture">-->
+        <label for="category">Kategorie</label>
+        <select [(ngModel)]="selectedCategory" id="category" name="selectedCategory">
+        <option value="/">-wählen-</option>
+        <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
+        </select>
+        </div>
 
-          <input type="file" (change)="onFileSelection($event)" placeholder="Upload a file" accept=".gif, .png, .jpeg, .jpg">
+        <div class="form-group">
+          <label for="image">Bildupload</label>
+          <input type="file" id="image" (change)="onFileSelection($event)" placeholder="Upload a file"
+                 accept=".gif, .png, .jpeg, .jpg">
         </div>
 
         <button type="submit" class="btn btn-success">Bestätigen</button>

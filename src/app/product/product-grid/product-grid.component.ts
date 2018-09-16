@@ -3,6 +3,8 @@ import {Observable} from 'rxjs';
 import {Product} from '../product.model';
 import {ProductService} from '../shared/product.service';
 import {ProductFirestoreService} from '../shared/product-firestore.service';
+import {ProductCategoryService} from '../shared/product-category.service';
+import {ProductCategory} from '../product-category.model';
 
 @Component({
   selector: 'app-product-grid',
@@ -12,12 +14,17 @@ import {ProductFirestoreService} from '../shared/product-firestore.service';
 export class ProductGridComponent implements OnInit {
 
   products: Observable<Product[]>;
+  categories: Observable<ProductCategory[]>;
   selectedProduct: string;
 
-  constructor(private productService: ProductService, private productFireStoreService: ProductFirestoreService) { }
+  constructor(private productService: ProductService,
+              private productFireStoreService: ProductFirestoreService,
+              private productCategory: ProductCategoryService
+              ) { }
 
   ngOnInit() {
     this.getProductList();
+    this.categories = this.productCategory.getCategories();
   }
 
   getProductList() {

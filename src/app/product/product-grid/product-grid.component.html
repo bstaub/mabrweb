@@ -7,7 +7,7 @@
       <select [(ngModel)]="selectedProduct">
         <!--<option value="">- Wählen -</option>-->
         <option value="/">-wählen-</option>
-        <option *ngFor="let product of products | async" [value]="product.name">{{product.name}}</option>
+        <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
       </select>
     </div>
 

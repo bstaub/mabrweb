@@ -8,5 +8,6 @@ export class Product {
   active?: boolean;
   itemcount?: number;
   image?: string;
+  productCategory?: string;
 }
 

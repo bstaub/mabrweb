@@ -5,6 +5,9 @@ import {ProductService} from '../shared/product.service';
 import {ProductFirestoreService} from '../shared/product-firestore.service';
 import * as firebase from 'firebase';
 import {StorageService} from '../../shared/storage.service';
+import {ProductCategoryService} from '../shared/product-category.service';
+import {ProductCategory} from '../product-category.model';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-product-new',
@@ -21,6 +24,8 @@ import {StorageService} from '../../shared/storage.service';
 export class ProductNewComponent implements OnInit {
 
   product: Product = new Product();
+  categories: Observable<ProductCategory[]>;
+  selectedCategory: string;
   submitted = false;
   createdDate: string;
   image: string;
@@ -28,12 +33,15 @@ export class ProductNewComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private productFirestoreService: ProductFirestoreService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private productCategory: ProductCategoryService
   ) {
   }
 
   ngOnInit() {
     // this.product.createdDate = this.productService.formatDate(new Date());  // this ist just for Realtime DB, for CloudFirstore use Timestamp!
+    this.categories = this.productCategory.getCategories();
+
   }
 
   newProduct(): void {
@@ -54,6 +62,7 @@ export class ProductNewComponent implements OnInit {
 
     const productObj = Object.assign({key: this.productFirestoreService.generateId(),
                                             image: this.image,
+                                            productCategory: this.selectedCategory,
                                             createdDate: firebase.firestore.FieldValue.serverTimestamp()},
                                             this.product);
 

@@ -39,8 +39,11 @@ import {SettingsService} from './shared/settings.service';
 import {AdminGuard} from './user/guards/admin.guard';
 import {AuthuserGuard} from './user/guards/authuser.guard';
 import {Auth2Guard} from './user/guards/auth2.guard';
-import { ProductGridComponent } from './product/product-grid/product-grid.component';
-import { ProductItemComponent } from './product/product-item/product-item.component';
+import {ProductGridComponent} from './product/product-grid/product-grid.component';
+import {ProductItemComponent} from './product/product-item/product-item.component';
+import {ProductFirestoreService} from './product/shared/product-firestore.service';
+import {ProductCategoryService} from './product/shared/product-category.service';
+import {OrderFirestoreService} from './order/shared/order-firestore.service';
 
 
 
@@ -84,7 +87,7 @@ import { ProductItemComponent } from './product/product-item/product-item.compon
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AdminGuard, AuthuserGuard, Auth2Guard, UserService, NotificationService, StorageService, SettingsService],
+  providers: [AuthService, AdminGuard, AuthuserGuard, Auth2Guard, UserService, ProductFirestoreService, ProductCategoryService, OrderFirestoreService, NotificationService, StorageService, SettingsService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

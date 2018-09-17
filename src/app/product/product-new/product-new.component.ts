@@ -60,7 +60,7 @@ export class ProductNewComponent implements OnInit {
     // this.save();  // Realtime DB see save above
     // this.userService.getCurrentUserId();
 
-    const productObj = Object.assign({key: this.productFirestoreService.generateId(),
+    const productObj = Object.assign({key: this.productFirestoreService.getPushKey(),
                                             image: this.image,
                                             productCategory: this.selectedCategory,
                                             createdDate: firebase.firestore.FieldValue.serverTimestamp()},

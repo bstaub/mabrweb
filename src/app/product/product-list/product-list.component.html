@@ -2,7 +2,7 @@
       <!-- <div class="media" *ngFor="let product of products | async" style="width: 300px;"> -->
       <!--<div class="media" *ngFor="let product of products; let i = index">-->
       <div class="media" *ngFor="let product of products | async; let i = index">
-        <app-detail-list [product]='product' [count]='i'></app-detail-list>
+        <app-product-item [product]='product' [count]='i'></app-product-item>
       </div>
 </div>
 

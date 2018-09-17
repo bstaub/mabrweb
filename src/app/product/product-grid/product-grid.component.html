@@ -30,7 +30,7 @@
 <section class="products" *ngIf="products" >
 
   <ng-container *ngIf="filteredProducts">
-        <div class="product-card" class="product-card"
+        <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
              *ngFor="let product of filteredProducts; let i = index">
           <div class="product-image">
             <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
@@ -39,11 +39,11 @@
             <h5>{{product.name}}</h5>
             <h6>CHF {{product.price}}.--</h6>
           </div>
-        </div>
+        </a>
   </ng-container>
 
   <ng-container *ngIf="!filteredProducts">
-        <div class="product-card" class="product-card"
+        <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
              *ngFor="let product of products | async; let i = index">
           <div class="product-image">
             <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
@@ -52,7 +52,7 @@
             <h5>{{product.name}}</h5>
             <h6>CHF {{product.price}}.--</h6>
           </div>
-        </div>
+        </a>
   </ng-container>
 
 </section>

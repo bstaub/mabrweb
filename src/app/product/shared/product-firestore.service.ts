@@ -16,6 +16,7 @@ export class ProductFirestoreService {
 
   constructor(public afs: AngularFirestore) {
 
+    // const pushkey = this.afs.createId();
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
 
     this.products = this.productCollection.snapshotChanges().pipe(
@@ -31,14 +32,22 @@ export class ProductFirestoreService {
     return this.products;
   }
 
-  getProduct(key) {
+  getProduct(key: string) {
     this.productDoc = this.afs.doc(`products/${key}`);
     return this.productDoc;
   }
 
   addProduct(product: Product) {
     // this.productCollection.add(product);
-    this.productCollection.add(product);
+    this.productCollection.add(product).then( (docRef) => {
+      // console.log('Product written with ID: ', docRef.id);
+      const NewProductKey: Product = {
+        key: docRef.id,
+      };
+      this.setProduct(NewProductKey);
+    }) .catch(function(error) {
+      console.error('Error adding document: ', error);
+    });
   }
 
   deleteProduct(key: string) {
@@ -69,6 +78,10 @@ export class ProductFirestoreService {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
+  }
+
+  getPushKey() {
+    return this.afs.createId();  // https://stackoverrun.com/de/q/12841034  (internal pushkey from firestore)
   }
 
   getCategory(productCategory: Product) {

@@ -9,11 +9,12 @@ import {ProductGridComponent} from './product-grid/product-grid.component';
 export const PRODUCT_ROUTES: Routes = [
   {
     path: '',
-    redirectTo: 'list',
+    redirectTo: 'grid',
     pathMatch: 'full'
   },
-  {path: 'list', component: ProductListComponent},
   {path: 'grid', component: ProductGridComponent},
-  {path: 'detail', component: ProductDetailComponent},
+  {path: 'list', component: ProductListComponent},
+  {path: 'detail/:id', component: ProductDetailComponent},
+  {path: 'detail/:id/edit', component: ProductDetailComponent},
   {path: 'new', component: ProductNewComponent, canActivate: [AdminGuard]},
 ];

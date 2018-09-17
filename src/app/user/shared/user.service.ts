@@ -98,8 +98,15 @@ export class UserService {
     // this.myForm.patchValue({'userId': this.userId});
   }
 
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get
   get currentUserId(): any {
     return this.authenticated ? this.afAuth.auth.currentUser.uid : null;
+  }
+
+  // Test, geht irgendwie noch nicht sauber!
+  loginStatus(): any {
+    // return 123;
+    return this.authenticated ? true : 0;
   }
 
   getCurrentUser() {

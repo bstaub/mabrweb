@@ -27,12 +27,14 @@ const db = firebase.firestore();
 
 const productsCollection = db.collection('products');
 const ordersCollection = db.collection('orders');
+const ordersCollection_temp = db.collection('orders_temp');
 
 
 
 
 const productKeys = [];
 const orderKeys = [];
+const orderKeys_temp = [];
 
 
 
@@ -88,6 +90,30 @@ dbData.orders.forEach(order => {
 });
 
 
+dbData.orders_temp.forEach(order => {
+
+
+  ordersCollection_temp.add({
+    shopOrderId: order.shopOrderId,
+    userId: order.userId,
+    orderDate: order.orderDate,
+    status: order.status,
+    totalValue: order.totalValue
+  }).then(function (docRef) {
+    console.log('Order_temp written with ID: ', docRef.id);
+    orderKeys_temp.push( docRef.id);
+
+
+
+  }) .catch(function(error) {
+    console.error('Error adding document: ', error);
+  });
+
+
+
+});
+
+
 setTimeout(function () {
 
 
@@ -120,6 +146,36 @@ setTimeout(function () {
 
 
 
+
+setTimeout(function () {
+
+
+  orderKeys_temp.forEach((orderKey) => {
+
+    productKeys.forEach((productKey) => {
+
+      /*
+      db.collection('productsPerOrder').add({
+        orderId: db.doc('orders/' + orderKey)
+        productId: db.doc('products/' + productKey),
+        qty: Math.floor(Math.random() * 10) + 1
+
+      });
+      */
+
+      db.collection('productsPerOrder_temp').doc(orderKey).collection('products').doc(productKey).set({
+        orderId: db.doc('orders/' + orderKey),
+        productId: db.doc('products/' + productKey),
+        qty: Math.floor(Math.random() * 10) + 1
+
+      });
+
+    });
+
+  });
+
+
+}, 5000);
 
 
 

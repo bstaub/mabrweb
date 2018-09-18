@@ -7,6 +7,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {Subscription} from 'rxjs';
 import {Order} from '../order.model';
+import {UserService} from '../../user/shared/user.service';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class OrderEditComponent implements OnInit {
   constructor(private orderService: OrderService,
               private orderServiceFirestore: OrderFirestoreService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private userService: UserService) {
 
 
   }
@@ -35,7 +37,7 @@ export class OrderEditComponent implements OnInit {
   onSubmit() {
 
     const newOrder = this.orderForm.value;
-    console.log(this.orderKey);
+    //console.log(this.orderKey);
     if (this.isNew) {
       this.orderServiceFirestore.addOrder(newOrder);
     } else {
@@ -79,8 +81,8 @@ export class OrderEditComponent implements OnInit {
           });
 
 
-          this.order = orderData;
-          console.log(this.order);
+          //this.order = orderData;
+          //console.log(this.order);
 
         } else {
           this.isNew = true;
@@ -102,7 +104,9 @@ export class OrderEditComponent implements OnInit {
 
 
     if (this.isNew) {
-      this.userId = firebase.auth().currentUser.uid;
+
+
+      this.userId = this.userService.getCurrentUserId();
       this.orderForm.patchValue({'userId': this.userId});
     }
 

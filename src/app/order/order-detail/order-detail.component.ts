@@ -58,17 +58,18 @@ export class OrderDetailComponent implements OnInit {
               newProduct.productId.get()
                 .then(res => {
                   newProduct.productData = res.data()
-                  productsArray.push(newProduct)
+                  if (newProduct.productData) {
+                    productsArray.push(newProduct)
+                  }
                 })
                 .catch(err => console.error(err));
-            } else {
-              productsArray.push(newProduct)
-            }
+            };
           })
         })
           .catch(err => console.error(err));
 
         this.products = productsArray;
+
 
       }
     );
@@ -94,12 +95,14 @@ export class OrderDetailComponent implements OnInit {
 
 
     let newProductperOrder = new ProductsPerOrder();
-    newProductperOrder.orderId = 'orders/' + this.orderId;
-    newProductperOrder.productId = 'products/' + this.selectedProduct;
+    newProductperOrder.orderId = this.orderId;
+    newProductperOrder.productId = this.selectedProduct;
     newProductperOrder.qty = amount;
 
-    console.log(newProductperOrder);
-    this.orderFirestoreService.addProductToOrder(this.orderId, newProductperOrder);
+
+    this.orderFirestoreService.addProductToOrder(newProductperOrder);
+    this.router.navigate(['/bestellung',this.orderId]);
+
   }
 
 

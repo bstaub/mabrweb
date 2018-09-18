@@ -43,6 +43,16 @@ export class OrderFirestoreService {
     return this.orderDoc;
   }
 
+  geOrdersForUser () {
+    this.orders = this.orderCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Order;
+        const key = a.payload.doc.id;
+        return { key, ...data };
+      }))
+    );
+
+  }
 
 
   getProductsPerOrder(key) {
@@ -54,8 +64,13 @@ export class OrderFirestoreService {
     this.orderCollection.add(order);
   }
 
-  addProductToOrder(key, productPerOrder: Object) {
-    this.afs.doc(`productsPerOrder/${key}`).collection('products').add(productPerOrder);
+  addProductToOrder(productPerOrder: ProductsPerOrder) {
+    this.afs.doc(`productsPerOrder/${productPerOrder.orderId}`).collection('products').doc(productPerOrder.productId).set({
+      orderId: this.afs.collection('orders').doc(productPerOrder.orderId).ref,
+      productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
+      qty: +productPerOrder.qty
+
+    });
   }
 
   deleteOrder(key: string) {

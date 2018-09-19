@@ -66,7 +66,7 @@ export const dbData = {
       'name': 'Schach Spiel',
       'description': 'Eine Party Schach spielen',
       'price': 60,
-      'image': 'https://firebasestorage.googleapis.com/v0/b/mabrweb-e6503.appspot.com/o/kny8iie0zh?alt=media&token=df77a95f-7b8e-46db-acf3-6afcdd1d620b',
+      'image': 'https://firebasestorage.googleapis.com/v0/b/mabrweb-e6503.appspot.com/o/k1z5qk4g7k?alt=media&token=118633f0-4a26-424c-8e67-7b86cd118db4',
       'picture': 'https://picsum.photos/800/800?image=2',
       'createdDate': new Date(),
       'productCategory': 'Games'

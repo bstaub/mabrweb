@@ -38,6 +38,7 @@ dbData.products.forEach(product => {
     description: product.description,
     price: product.price,
     picture: product.picture,
+    image: product.image,
     createdDate: product.createdDate
   }).then(function (docRef) {
     console.log('Product written with ID: ', docRef.id);

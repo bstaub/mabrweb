@@ -1,4 +1,21 @@
 export const dbData = {
+  'categories': [
+    {
+      'id': '1',
+      'name': 'Kleider',
+      'description': 'Alles über Kleider',
+    },
+    {
+      'id': '2',
+      'name': 'Computer',
+      'description': 'Alles über Computer',
+    },
+    {
+      'id': '3',
+      'name': 'Games',
+      'description': 'Alles über Games',
+    },
+  ],
   'products': [
     {
       'name': 'MacBook',
@@ -27,7 +44,7 @@ export const dbData = {
       'price': 1100,
       'picture': 'https://picsum.photos/800/800?image=2',
       'createdDate': new Date()
-    }
+    },
   ],
   'orders': [
     {
@@ -72,9 +89,6 @@ export const dbData = {
       'status': 'pending',
       'totalValue': 0,
     },
-
-
-
   ],
   'orders_temp': [
     {
@@ -119,12 +133,7 @@ export const dbData = {
       'status': 'pending',
       'totalValue': 0,
     },
-
-
-
   ],
-
-
 };
 
 

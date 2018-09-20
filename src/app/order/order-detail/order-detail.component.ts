@@ -6,6 +6,8 @@ import {Observable} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProductFirestoreService} from '../../product/shared/product-firestore.service';
 import {ProductsPerOrder} from '../productsPerOrder.model';
+import * as firebase from 'firebase';
+import {UserService} from '../../user/shared/user.service';
 
 
 
@@ -22,6 +24,8 @@ export class OrderDetailComponent implements OnInit {
   products: any[];
   allProducts: any;
   selectedProduct: string;
+  user: any;
+  userId: string;
 
 
   constructor(
@@ -29,27 +33,37 @@ export class OrderDetailComponent implements OnInit {
     private orderService: OrderService,
     private orderFirestoreService: OrderFirestoreService,
     private productFireStoreService: ProductFirestoreService,
-    private router: Router) {}
+    private router: Router,
+    private userService: UserService) {}
 
 
 
 
   ngOnInit() {
+    this.user = this.userService.getCurrentUser();
+
+
 
     this.getAllProducts();
 
     this.activatedRoute.params.subscribe(
       params => {
         this.orderId = params['id'];
-        // this.selectedOrder = this.orderService.getOrder(params['id']).valueChanges();
-        // this.order = this.orderService.getProductsPerOrder(params['id']).valueChanges();
 
         this.selectedOrder = this.orderFirestoreService.getOrder(params['id']).valueChanges();
 
         this.products = [];
         let productsArray = [];
 
-        this.orderFirestoreService.getProductsPerOrder(this.orderId).ref.get().then(function (res) {
+        if (this.user) {
+          this.userId = this.user.uid;
+          console.log('orderDetails - user Ok');
+        } else {
+          this.userId = '0';
+          console.log('orderDetails - No user');
+        }
+
+        this.orderFirestoreService.getProductsPerOrder(this.orderId, this.userId).ref.get().then(function (res) {
 
           res.forEach(doc => {
             let newProduct = doc.data();
@@ -99,8 +113,15 @@ export class OrderDetailComponent implements OnInit {
     newProductperOrder.productId = this.selectedProduct;
     newProductperOrder.qty = amount;
 
+    if (this.user) {
+      this.orderFirestoreService.addProductToOrder(newProductperOrder);
+      console.log('onAddProductControl - user Ok');
+    } else {
+      this.orderFirestoreService.addProductToOrderAnonymus(newProductperOrder);
+      console.log('onAddProductControl - No user');
+    }
 
-    this.orderFirestoreService.addProductToOrder(newProductperOrder);
+
     this.router.navigate(['/bestellung',this.orderId]);
 
   }
@@ -108,7 +129,6 @@ export class OrderDetailComponent implements OnInit {
 
   onDelete() {
     this.router.navigate(['/bestellung']);
-    // this.orderService.deleteOrder(this.orderId);
     this.orderFirestoreService.deleteOrder(this.orderId);
   }
 

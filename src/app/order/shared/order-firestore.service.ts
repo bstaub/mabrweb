@@ -11,10 +11,13 @@ import {ProductsPerOrder} from '../productsPerOrder.model';
 })
 export class OrderFirestoreService {
   orderCollection: AngularFirestoreCollection<Order>;
+  orderCollectionPerUser: AngularFirestoreCollection<Order>;
   productsOrderCollection: AngularFirestoreCollection<any>;
   orders: Observable<Order[]>;
   orderDoc: AngularFirestoreDocument<Order>;
   order: Order;
+
+  item
 
 
   constructor(public afs: AngularFirestore) {
@@ -23,6 +26,8 @@ export class OrderFirestoreService {
 
 
 
+
+
     this.orders = this.orderCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Order;
@@ -34,31 +39,49 @@ export class OrderFirestoreService {
 
 
 
-  getOrders() {
+  getUserOrders(userId) {
+
+    this.orderCollectionPerUser = this.afs.collection('orders', ref => ref.where('userId','==', userId ))
+    this.getOrderData();
     return this.orders;
   }
+
+  getAnonymusOrders() {
+
+    this.orderCollectionPerUser = this.afs.collection('orders_temp', ref => ref.where('userId','==', '0' ));
+    this.getOrderData();
+    return this.orders;
+  }
+
+
+  getOrderData(){
+    this.orders = this.orderCollectionPerUser.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Order;
+        const key = a.payload.doc.id;
+        return { key, ...data };
+      }))
+    );
+  }
+
 
   getOrder(key) {
     this.orderDoc = this.afs.doc(`orders/${key}`);
     return this.orderDoc;
   }
 
-  geOrdersForUser () {
-    this.orders = this.orderCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Order;
-        const key = a.payload.doc.id;
-        return { key, ...data };
-      }))
-    );
-
-  }
 
 
-  getProductsPerOrder(key) {
-    this.productsOrderCollection = this.afs.doc(`productsPerOrder/${key}`).collection('products');
+  getProductsPerOrder(key, userId) {
+
+    if (userId == '0') {
+      this.productsOrderCollection = this.afs.doc(`productsPerOrder_temp/${key}`).collection('products');
+    } else {
+      this.productsOrderCollection = this.afs.doc(`productsPerOrder/${key}`).collection('products');
+    }
     return  this.productsOrderCollection;
   }
+
 
   addOrder(order: Order) {
     this.orderCollection.add(order);
@@ -66,6 +89,15 @@ export class OrderFirestoreService {
 
   addProductToOrder(productPerOrder: ProductsPerOrder) {
     this.afs.doc(`productsPerOrder/${productPerOrder.orderId}`).collection('products').doc(productPerOrder.productId).set({
+      orderId: this.afs.collection('orders').doc(productPerOrder.orderId).ref,
+      productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
+      qty: +productPerOrder.qty
+
+    });
+  }
+
+  addProductToOrderAnonymus(productPerOrder: ProductsPerOrder) {
+    this.afs.doc(`productsPerOrder_temp/${productPerOrder.orderId}`).collection('products').doc(productPerOrder.productId).set({
       orderId: this.afs.collection('orders').doc(productPerOrder.orderId).ref,
       productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
       qty: +productPerOrder.qty

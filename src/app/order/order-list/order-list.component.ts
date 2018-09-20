@@ -12,43 +12,43 @@ import {UserService} from '../../user/shared/user.service';
   styles: []
 })
 export class OrderListComponent implements OnInit {
-  // orders: any;
   orders: any;
   title: string;
+  userId: string;
+  user: any;
 
   constructor(private orderService: OrderService,
               private orderServiceFirestore: OrderFirestoreService,
               private router: Router,
               private userService: UserService) { }
 
-  ngOnInit() {
-    this.getAllOrders();
-    //this.title = this.userService.getCurrentUserId();
-    //console.log(this.title);
 
+  ngOnInit() {
+    this.user = this.userService.getCurrentUser();
+    this.getAllOrders();
   }
+
 
   onNewOrder() {
     this.router.navigate(['/bestellung', 'neu']);
-
   }
 
 
+
   getAllOrders () {
+    if (this.user) {
+      this.userId = this.user.uid;
+      console.log('getAllOrders - user OK');
+      this.orders = this.orderServiceFirestore.getUserOrders(this.userId);
 
-    this.orders = this.orderServiceFirestore.getOrders();
-    //console.log(this.orders)
 
-    /*
-    // Use snapshotChanges().map() to store the key
-    this.orderService.getOrderList().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
-      )
-    ).subscribe(orders => {
-      this.orders = orders;
-    });
-    */
+    } else {
+      this.userId = '0';
+      console.log('getAllOrders - No user');
+      this.orders = this.orderServiceFirestore.getAnonymusOrders();
+    }
+
+
   }
 
 }

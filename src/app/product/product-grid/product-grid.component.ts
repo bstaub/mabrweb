@@ -5,6 +5,7 @@ import {ProductService} from '../shared/product.service';
 import {ProductFirestoreService} from '../shared/product-firestore.service';
 import {ProductCategoryService} from '../shared/product-category.service';
 import {ProductCategory} from '../product-category.model';
+import {getProjectAsAttrValue} from '@angular/core/src/render3/node_selector_matcher';
 
 @Component({
   selector: 'app-product-grid',
@@ -32,13 +33,20 @@ export class ProductGridComponent implements OnInit {
     this.products = this.productFireStoreService.getProducts();
   }
 
-  deleteProducts() {
-    this.productService.deleteAll();
+  deleteProduct() {
+    this.productFireStoreService.deleteAll();
   }
+
 
   selectedCategory(event) {
     const categoryName = event.target.value;
-    this.filteredProducts = this.productFireStoreService.getCategory(categoryName);
+    if (categoryName === '/') {  // when no category is selected (/), set filteredProduct to null
+      this.filteredProducts = null;
+      this.products = this.productFireStoreService.getProducts();
+    } else {
+      this.filteredProducts = this.productFireStoreService.getCategory(categoryName);
+    }
+
   }
 
 }

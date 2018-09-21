@@ -107,4 +107,7 @@ export class ProductFirestoreService {
   }
 
 
+  deleteAll() {
+
+  }
 }

@@ -23,7 +23,7 @@
 
         <span class="button is-small btn-primary" *ngIf='!product.active' (click)='updateActive(true)'>aktiv</span>
 
-        <span class="button is-small btn-secondary" (click)='deleteProduct()'>Editieren</span>
+        <span class="button is-small btn-secondary" (click)='updateProduct($event, product)'>Editieren</span>
 
         <span class="button is-small btn-danger" (click)='deleteProduct()'>Löschen</span>
 

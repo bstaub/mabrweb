@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ProductService} from '../shared/product.service';
 import {Product} from '../product.model';
+import {ProductFirestoreService} from '../shared/product-firestore.service';
+import {OrderFirestoreService} from '../../order/shared/order-firestore.service';
 
 @Component({
   selector: 'app-product-item',
@@ -12,7 +14,7 @@ export class ProductItemComponent implements OnInit {
   @Input() product: Product;
   @Input() count: number;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductFirestoreService, private orderServcie: OrderFirestoreService) { }
 
   ngOnInit() {
   }
@@ -25,9 +27,16 @@ export class ProductItemComponent implements OnInit {
     this.productService.deleteProduct(this.product.key);
   }
 
+  updateProduct(event, product) {
+
+  }
+
   addtoBasket(product) {
-    this.productService.setbasket(product);
+    console.log(product);
+    this.orderServcie.addProductToOrder(product);
+    // this.productService.setbasket(product);
     alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
   }
+
 
 }

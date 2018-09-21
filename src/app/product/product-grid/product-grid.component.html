@@ -6,7 +6,7 @@
       <label>Filter by:</label>
       <select [(ngModel)]="selectedProduct" (change)="selectedCategory($event)">
         <!--<option value="">- Wählen -</option>-->
-        <option value="/">-wählen-</option>
+        <option value="/">-alle Kategorien-</option>
         <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
       </select>
     </div>
@@ -14,14 +14,14 @@
     <div class="collection-sort">
       <label>Sort by:</label>
       <select>
-        <option value="/">Featured</option>
-        <option value="/">Best Selling</option>
-        <option value="/">Alphabetically, A-Z</option>
-        <option value="/">Alphabetically, Z-A</option>
-        <option value="/">Price, low to high</option>
-        <option value="/">Price, high to low</option>
-        <option value="/">Date, new to old</option>
-        <option value="/">Date, old to new</option>
+        <option value="/">Default</option>
+        <option value="/">Bestseller</option>
+        <option value="/">alphabetisch, A-Z</option>
+        <option value="/">alphabetisch, Z-A</option>
+        <option value="/">Preis, tief nach hoch</option>
+        <option value="/">Price, hoch nach tief</option>
+        <option value="/">Datum, neu nach alt</option>
+        <option value="/">Datum, alt nach neu</option>
       </select>
     </div>
   </div>

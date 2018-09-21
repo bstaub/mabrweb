@@ -1,10 +1,13 @@
-<div *ngIf="products" class="row product-list">
-      <!-- <div class="media" *ngFor="let product of products | async" style="width: 300px;"> -->
-      <!--<div class="media" *ngFor="let product of products; let i = index">-->
-      <div class="media" *ngFor="let product of products | async; let i = index">
-        <app-product-item [product]='product' [count]='i'></app-product-item>
-      </div>
+<div class="container-fluid">
+  <div *ngIf="products" class="product-list">
+    <!-- <div class="media" *ngFor="let product of products | async" style="width: 300px;"> -->
+    <!--<div class="media" *ngFor="let product of products; let i = index">-->
+    <div *ngFor="let product of products | async; let i = index">
+      <app-product-item [product]='product' [count]='i'></app-product-item>
+    </div>
+  </div>
 </div>
+
 
 
 

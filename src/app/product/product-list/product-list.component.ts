@@ -11,18 +11,7 @@ import {Product} from '../product.model';
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styles: [`
-    ul { 
-      padding: 0; 
-    }  
-    li {
-      list-style-type: none;
-    }
-    .product-list{
-      border: 1px solid black;
-      background-color: #ecf1f3;
-      padding: 10px;
-      margin-top: 40px;
-    }
+
   `]
 })
 export class ProductListComponent implements OnInit {

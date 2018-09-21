@@ -1,7 +1,7 @@
 <div *ngIf="selectedOrder">
   <h1>Allgemeine Infos</h1>
   <div>
-    <label>Best.Nr.: </label> {{(selectedOrder | async)?.shopOrderId}}
+    <label>Best.Nr.: </label> {{orderId}}
   </div>
   <div>
     <label>User: </label> {{(selectedOrder | async)?.userId}}
@@ -17,13 +17,11 @@
   <div>
     <label>Gesamtbetrag: </label> {{(selectedOrder | async)?.totalValue}}
   </div>
-  <div>
-    <label>id: </label> {{orderId}}
-  </div>
+
 
   <hr/>
   <button class="btn btn-primary" (click)="onDelete()">Löschen</button>
-  <button class="btn btn-primary" (click)="onEdit()">Bearbeiten</button>
+  <!--<button class="btn btn-primary" (click)="onEdit()">Bearbeiten</button>-->
   <button *ngIf="!user" class="btn btn-primary" (click)="onAuthorize()">Authorisieren</button>
   <button  *ngIf="user" class="btn btn-primary" (click)="onSubmitOrder()">Bestellung Absenden</button>
   <hr/>

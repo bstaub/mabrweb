@@ -39,13 +39,13 @@ export class OrderListComponent implements OnInit {
     if (this.user) {
       this.userId = this.user.uid;
       console.log('getAllOrders - user OK');
-      this.orders = this.orderServiceFirestore.getUserOrders(this.userId);
+      this.orders = this.orderServiceFirestore.getUserOrder(this.userId);
 
 
     } else {
       this.userId = '0';
       console.log('getAllOrders - No user');
-      this.orders = this.orderServiceFirestore.getAnonymusOrders();
+      this.orders = this.orderServiceFirestore.getAnonymusOrder();
     }
 
 

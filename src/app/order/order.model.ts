@@ -1,8 +1,8 @@
 export class Order {
   key: string;
   shopOrderId: string;
-  orderDate: string;
+  orderDate: any;
   status: string;
-  totalValue: string;
+  totalValue: number;
   userId: string;
 }

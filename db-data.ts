@@ -82,39 +82,11 @@ export const dbData = {
     },
     {
       'shopOrderId': 'XXX-002',
-      'userId': 'nzQhDDE9YhP16ybqpzvS8J59y9m2',
+      'userId': 'uKEL1UM9Hrdirhol55S6HiElT702',
       'orderDate': new Date(),
       'status': 'pending',
       'totalValue': 0,
-    },
-    {
-      'shopOrderId': 'XXX-003',
-      'userId': 'nzQhDDE9YhP16ybqpzvS8J59y9m2',
-      'orderDate': new Date(),
-      'status': 'pending',
-      'totalValue': 0,
-    },
-    {
-      'shopOrderId': 'XXX-004',
-      'userId': 'nzQhDDE9YhP16ybqpzvS8J59y9m2',
-      'orderDate': new Date(),
-      'status': 'pending',
-      'totalValue': 0,
-    },
-    {
-      'shopOrderId': 'XXX-005',
-      'userId': 'nzQhDDE9YhP16ybqpzvS8J59y9m2',
-      'orderDate': new Date(),
-      'status': 'done',
-      'totalValue': 0,
-    },
-    {
-      'shopOrderId': 'XXX-006',
-      'userId': 'nzQhDDE9YhP16ybqpzvS8J59y9m2',
-      'orderDate': new Date(),
-      'status': 'pending',
-      'totalValue': 0,
-    },
+    }
   ],
   'orders_temp': [
     {
@@ -123,42 +95,7 @@ export const dbData = {
       'orderDate': new Date(),
       'status': 'pending',
       'totalValue': 100,
-    },
-    {
-      'shopOrderId': '0',
-      'userId': '0',
-      'orderDate': new Date(),
-      'status': 'pending',
-      'totalValue': 0,
-    },
-    {
-      'shopOrderId': '0',
-      'userId': '0',
-      'orderDate': new Date(),
-      'status': 'pending',
-      'totalValue': 0,
-    },
-    {
-      'shopOrderId': '0',
-      'userId': '0',
-      'orderDate': new Date(),
-      'status': 'pending',
-      'totalValue': 0,
-    },
-    {
-      'shopOrderId': '0',
-      'userId': '0',
-      'orderDate': new Date(),
-      'status': 'pending',
-      'totalValue': 0,
-    },
-    {
-      'shopOrderId': '0',
-      'userId': '0',
-      'orderDate': new Date(),
-      'status': 'pending',
-      'totalValue': 0,
-    },
+    }
   ],
 };
 

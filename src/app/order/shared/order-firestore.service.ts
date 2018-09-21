@@ -13,11 +13,11 @@ export class OrderFirestoreService {
   orderCollection: AngularFirestoreCollection<Order>;
   orderCollectionPerUser: AngularFirestoreCollection<Order>;
   productsOrderCollection: AngularFirestoreCollection<any>;
+  productsPerOrderDocument: AngularFirestoreDocument<any>;
   orders: Observable<Order[]>;
   orderDoc: AngularFirestoreDocument<Order>;
   order: Order;
 
-  item
 
 
   constructor(public afs: AngularFirestore) {
@@ -70,6 +70,11 @@ export class OrderFirestoreService {
     return this.orderDoc;
   }
 
+  getOrderAnonymus(key) {
+    this.orderDoc = this.afs.doc(`orders_temp/${key}`);
+    return this.orderDoc;
+  }
+
 
 
   getProductsPerOrder(key, userId) {
@@ -97,11 +102,13 @@ export class OrderFirestoreService {
   }
 
   addProductToOrderAnonymus(productPerOrder: ProductsPerOrder) {
+    console.log('addProductsToOrderAnonymus: ' + productPerOrder.orderId);
+    console.log('addProductsToOrderAnonymus - Product: ' + productPerOrder.productId);
+
     this.afs.doc(`productsPerOrder_temp/${productPerOrder.orderId}`).collection('products').doc(productPerOrder.productId).set({
       orderId: this.afs.collection('orders').doc(productPerOrder.orderId).ref,
       productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
       qty: +productPerOrder.qty
-
     });
   }
 
@@ -109,6 +116,34 @@ export class OrderFirestoreService {
     this.orderDoc = this.afs.doc(`orders/${key}`);
     this.orderDoc.delete();
   }
+
+  deleteOrderAnonymus(key: string) {
+    this.orderDoc = this.afs.doc(`orders_temp/${key}`);
+    this.orderDoc.delete();
+  }
+
+  deleteProductsPerOrder(key: string) {
+    this.productsPerOrderDocument = this.afs.doc(`productsPerOrder/${key}`);
+    this.productsPerOrderDocument.delete();
+  }
+
+  deleteProductsPerOrderAnonymus(key: string) {
+    console.log()
+    this.productsPerOrderDocument = this.afs.doc(`productsPerOrder_temp/${key}`);
+    console.log(`productsPerOrder_temp/${key}`);
+    this.productsPerOrderDocument.delete().then(function() {
+      console.log("Document successfully deleted!");
+    }).catch(function(error) {
+      console.error("Error removing document: ", error);
+    });
+
+
+
+  }
+
+
+
+
 
   updateOrder(orderKey, order: Order) {
     this.orderDoc = this.afs.doc(`orders/${orderKey}`);

@@ -20,12 +20,13 @@ export class OrderDetailComponent implements OnInit {
   addProductForm: FormGroup;
   selectedOrder: Observable<any>;
   order: Observable<any>;
-  private orderId: string;
+  orderId: string;
   products: any[];
   allProducts: any;
   selectedProduct: string;
   user: any;
   userId: string;
+  productAmount: number;
 
 
   constructor(
@@ -41,7 +42,8 @@ export class OrderDetailComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.userService.getCurrentUser();
-
+    this.productAmount = 0;
+    this.selectedProduct = '';
 
 
     this.getAllProducts();
@@ -105,13 +107,12 @@ export class OrderDetailComponent implements OnInit {
 
   }
 
-  onAddProductControl(amount:number) {
-
+  onAddProductControl() {
 
     let newProductperOrder = new ProductsPerOrder();
     newProductperOrder.orderId = this.orderId;
     newProductperOrder.productId = this.selectedProduct;
-    newProductperOrder.qty = amount;
+    newProductperOrder.qty = this.productAmount;
 
     if (this.user) {
       this.orderFirestoreService.addProductToOrder(newProductperOrder);
@@ -121,15 +122,23 @@ export class OrderDetailComponent implements OnInit {
       console.log('onAddProductControl - No user');
     }
 
-
-    this.router.navigate(['/bestellung',this.orderId]);
+    this.selectedProduct = '';
+    this.productAmount = 0;
+    this.router.navigate(['/bestellung', this.orderId]);
 
   }
 
 
   onDelete() {
     this.router.navigate(['/bestellung']);
-    this.orderFirestoreService.deleteOrder(this.orderId);
+
+    if (this.user) {
+      this.orderFirestoreService.deleteOrder(this.orderId);
+      this.orderFirestoreService.deleteProductsPerOrder(this.orderId);
+    } else {
+      this.orderFirestoreService.deleteOrderAnonymus(this.orderId);
+      this.orderFirestoreService.deleteProductsPerOrderAnonymus(this.orderId);
+    }
   }
 
 

@@ -3,9 +3,6 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {OrderService} from '../order.service';
 import {OrderFirestoreService} from '../shared/order-firestore.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AngularFireAuth} from '@angular/fire/auth';
-import * as firebase from 'firebase';
-import {Subscription} from 'rxjs';
 import {Order} from '../order.model';
 import {UserService} from '../../user/shared/user.service';
 
@@ -22,6 +19,7 @@ export class OrderEditComponent implements OnInit {
   public order: Order;
   private anonymeOrder: boolean;
   private userId: string;
+  user: any;
 
 
   constructor(private orderService: OrderService,
@@ -37,7 +35,7 @@ export class OrderEditComponent implements OnInit {
   onSubmit() {
 
     const newOrder = this.orderForm.value;
-    //console.log(this.orderKey);
+
     if (this.isNew) {
       this.orderServiceFirestore.addOrder(newOrder);
     } else {
@@ -58,31 +56,16 @@ export class OrderEditComponent implements OnInit {
 
 
   ngOnInit() {
-    var orderData;
+
+    this.user = this.userService.getCurrentUser();
+
 
     this.activatedRoute.params.subscribe(
       params => {
         if (params.hasOwnProperty('id')) {
 
-
           this.isNew = false;
           this.orderKey = params['id'];
-          this.orderServiceFirestore.getOrder(this.orderKey).ref.get()
-            .then(function (doc) {
-
-              orderData = doc.data() as Order;
-              orderData.id = doc.id;
-
-
-              // this.order = orderData;
-              // console.log(orderData);
-            }).catch(function (error) {
-            console.log('Error getting document:', error);
-          });
-
-
-          //this.order = orderData;
-          //console.log(this.order);
 
         } else {
           this.isNew = true;
@@ -93,7 +76,60 @@ export class OrderEditComponent implements OnInit {
       }
     );
 
-    // console.log(this.order);
+
+    var orderData;
+    if (!this.isNew) {
+
+      if (this.user) {
+
+        this.orderServiceFirestore.getOrder(this.orderKey).ref.get()
+          .then(function (doc) {
+
+            orderData = doc.data() as Order;
+            orderData.id = doc.id;
+
+          }).then(function () {
+
+        })
+          .catch(function (error) {
+          console.log('Error getting document:', error);
+        });
+
+      } else {
+
+        this.orderServiceFirestore.getOrderAnonymus(this.orderKey).ref.get()
+          .then(function (doc) {
+
+            orderData = doc.data() as Order;
+            orderData.id = doc.id;
+
+          }).catch(function (error) {
+          console.log('Error getting document:', error);
+        });
+
+
+      }
+
+
+
+    }
+
+
+
+
+
+
+
+    setTimeout(function () {
+
+
+      this.order = orderData;
+      console.log(this.order);
+
+
+    }, 1000);
+
+
 
     this.orderForm = new FormGroup({
       'userId': new FormControl('', Validators.required),
@@ -105,10 +141,20 @@ export class OrderEditComponent implements OnInit {
 
     if (this.isNew) {
 
+      //this.userId = this.userService.getCurrentUserId();
+      //this.orderForm.patchValue({'userId': this.userId});
+    }  else {
 
-      this.userId = this.userService.getCurrentUserId();
-      this.orderForm.patchValue({'userId': this.userId});
+      //this.orderForm.patchValue({'userId': this.order.userId});
+      //this.orderForm.patchValue({'shopOrderId': this.order.shopOrderId});
+
+
     }
+
+
+
+
+
 
 
   }

@@ -17,12 +17,15 @@
   <div>
     <label>Gesamtbetrag: </label> {{(selectedOrder | async)?.totalValue}}
   </div>
+  <div>
+    <label>id: </label> {{orderId}}
+  </div>
 
   <hr/>
   <button class="btn btn-primary" (click)="onDelete()">Löschen</button>
   <button class="btn btn-primary" (click)="onEdit()">Bearbeiten</button>
-  <button class="btn btn-primary" (click)="onAuthorize()">Authorisieren</button>
-  <button class="btn btn-primary" (click)="onSubmitOrder()">Bestellung Absenden</button>
+  <button *ngIf="!user" class="btn btn-primary" (click)="onAuthorize()">Authorisieren</button>
+  <button  *ngIf="user" class="btn btn-primary" (click)="onSubmitOrder()">Bestellung Absenden</button>
   <hr/>
   <h1>Bestellpositionen</h1>
 
@@ -42,12 +45,12 @@
             <option *ngFor="let product of allProducts | async" [value]="product.key">{{product.name}}</option>
           </select>
         </div>
-        <div><input type="text" class="form-control" #productAmount></div>
+        <div><input type="text" class="form-control" [(ngModel)]="productAmount"></div>
         <div>
           <button
             type="button"
             class="btn btn-primary"
-            (click)="onAddProductControl(productAmount.value)">+
+            (click)="onAddProductControl()">+
           </button>
         </div>
       </div>

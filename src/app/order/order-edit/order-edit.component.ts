@@ -20,6 +20,8 @@ export class OrderEditComponent implements OnInit {
   private anonymeOrder: boolean;
   private userId: string;
   user: any;
+  allUsers: any;
+  selectedUser: string;
 
 
   constructor(private orderService: OrderService,
@@ -32,15 +34,23 @@ export class OrderEditComponent implements OnInit {
   }
 
 
-  onSubmit() {
+  onAuthorize() {
 
-    const newOrder = this.orderForm.value;
+    console.log(this.selectedUser);
+    console.log(this.order);
 
-    if (this.isNew) {
-      this.orderServiceFirestore.addOrder(newOrder);
-    } else {
-      this.orderServiceFirestore.updateOrder(this.orderKey, newOrder);
-    }
+    var orderData;
+    this.orderServiceFirestore.getOrderDocAnonymus(this.orderKey).ref.get()
+      .then(function (doc) {
+
+        orderData = doc.data() as Order;
+        orderData.id = doc.id;
+        this.orderServiceFirestore.updateOrder(this.orderKey, orderData)
+
+      }).catch(function (error) {
+      console.log('Error getting document:', error);
+    });
+    console.log(orderData);
 
     this.onNavigateBack();
 
@@ -58,6 +68,7 @@ export class OrderEditComponent implements OnInit {
   ngOnInit() {
 
     this.user = this.userService.getCurrentUser();
+    this.getAllUsers();
 
 
     this.activatedRoute.params.subscribe(
@@ -82,7 +93,7 @@ export class OrderEditComponent implements OnInit {
 
       if (this.user) {
 
-        this.orderServiceFirestore.getOrder(this.orderKey).ref.get()
+        this.orderServiceFirestore.getOrderDoc(this.orderKey,this.user.uid).ref.get()
           .then(function (doc) {
 
             orderData = doc.data() as Order;
@@ -97,7 +108,7 @@ export class OrderEditComponent implements OnInit {
 
       } else {
 
-        this.orderServiceFirestore.getOrderAnonymus(this.orderKey).ref.get()
+        this.orderServiceFirestore.getOrderDocAnonymus(this.orderKey).ref.get()
           .then(function (doc) {
 
             orderData = doc.data() as Order;
@@ -152,10 +163,12 @@ export class OrderEditComponent implements OnInit {
     }
 
 
+  }
 
 
+  getAllUsers () {
 
-
+    this.allUsers = this.userService.getUsers()
 
   }
 

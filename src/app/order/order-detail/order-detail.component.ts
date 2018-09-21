@@ -52,7 +52,7 @@ export class OrderDetailComponent implements OnInit {
       params => {
         this.orderId = params['id'];
 
-        this.selectedOrder = this.orderFirestoreService.getOrder(params['id']).valueChanges();
+
 
         this.products = [];
         let productsArray = [];
@@ -65,6 +65,7 @@ export class OrderDetailComponent implements OnInit {
           console.log('orderDetails - No user');
         }
 
+        this.selectedOrder = this.orderFirestoreService.getOrderDoc(params['id'], this.userId).valueChanges();
         this.orderFirestoreService.getProductsPerOrder(this.orderId, this.userId).ref.get().then(function (res) {
 
           res.forEach(doc => {
@@ -110,14 +111,16 @@ export class OrderDetailComponent implements OnInit {
   onAddProductControl() {
 
     let newProductperOrder = new ProductsPerOrder();
-    newProductperOrder.orderId = this.orderId;
+    //newProductperOrder.orderId = this.orderId;
     newProductperOrder.productId = this.selectedProduct;
     newProductperOrder.qty = this.productAmount;
 
     if (this.user) {
+      newProductperOrder.userId = this.user.uid;
       this.orderFirestoreService.addProductToOrder(newProductperOrder);
       console.log('onAddProductControl - user Ok');
     } else {
+      newProductperOrder.userId = '0';
       this.orderFirestoreService.addProductToOrderAnonymus(newProductperOrder);
       console.log('onAddProductControl - No user');
     }
@@ -147,7 +150,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   onAuthorize() {
-
+    this.router.navigate(['/bestellung', this.orderId, 'bearbeiten']);
   }
 
   onSubmitOrder() {

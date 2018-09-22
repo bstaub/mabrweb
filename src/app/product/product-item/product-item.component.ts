@@ -3,6 +3,8 @@ import {ProductService} from '../shared/product.service';
 import {Product} from '../product.model';
 import {ProductFirestoreService} from '../shared/product-firestore.service';
 import {OrderFirestoreService} from '../../order/shared/order-firestore.service';
+import {ProductsPerOrder} from '../../order/productsPerOrder.model';
+import {UserService} from '../../user/shared/user.service';
 
 @Component({
   selector: 'app-product-item',
@@ -14,7 +16,11 @@ export class ProductItemComponent implements OnInit {
   @Input() product: Product;
   @Input() count: number;
 
-  constructor(private productService: ProductFirestoreService, private orderServcie: OrderFirestoreService) { }
+  productperOrder: ProductsPerOrder;
+
+  constructor(private productService: ProductFirestoreService, private orderServcie: OrderFirestoreService,
+              private userService: UserService
+              ) { }
 
   ngOnInit() {
   }
@@ -31,9 +37,19 @@ export class ProductItemComponent implements OnInit {
 
   }
 
-  addtoBasket(product) {
+  addToBasket(product) {
+    console.log('start addToBasket');
     console.log(product);
-    this.orderServcie.addProductToOrder(product);
+
+    this.productperOrder = {
+      productId: product.key,
+      userId: this.userService.getCurrentUserId(),
+      qty: product.itemcount
+    };
+
+    console.log(this.productperOrder);
+
+    this.orderServcie.addProductToOrderAnonymus(this.productperOrder);
     // this.productService.setbasket(product);
     alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
   }

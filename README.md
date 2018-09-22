@@ -41,40 +41,41 @@ enviroments: firebase config erstellen für test und prod
 
 ### Shop functionality
 
-#### Shop Front Page
+#### Shop Front Page (32h)
 
 - Featured Products with link to corresponding product detail page
 - Features for Latest Products, Slider
 
-#### Products
+#### Products (16h)
 
 - Products fetched from FireBase backend (no cache first)
-- Sorting: Products can be sorted by date created, price and name
-- Products can be viewed in a grid or a list view
-- Products are shown paged via a PagingService
+- Sorting: Products can be sorted by date created, price and name (8h)
+- Products can be viewed in a grid or a list view (ok)
+- Products are shown paged via a PagingService (8h)
 - When logged in as a user with adminstrative rights, additional buttons are shown for product CRUD operations
+- Categories (ok)
 
-#### Product CRUD
+#### Product CRUD (16h)
 
-- Add a new product
+- Add a new product (Admin CRUD) 16h
 - Edit existing product
 - Delete existing product
-- Images handled with Firebase Storage
+- Images handled with Firebase Storage  (exclusiv)
 
 #### Services
 
-- Messageservice (Success and Failure Message output for User)
-- Settingsservice (Settings can be defined globaly)
-- Filestorageservice (Image can be stored in Firebase)
-- PageingService (List can paged)
-- PageService (SEO)
+- Messageservice (Success and Failure Message output for User) (8h)
+- Settingsservice (Settings can be defined globaly) (4h)
+- Filestorageservice (Image can be stored in Firebase) ok
+- PageingService (List can paged) (8h)
+- PageService (SEO) (4h)
 
 #### Cart
 
 - Products can be added from the list/grid View or product detail view
 - Cart is handled via a CartService (OrderService)
-- (Adding the same product multiple times, increases the amount in cart)
-- Cart has a dedicated cart page
+- (Adding the same product multiple times, increases the amount in cart)  (4h)
+- Cart has a dedicated cart page  (8h)
 - Quantity of each cart item can be adjusted via cart page
 - Cart can be cleared at once
 - Single products can be removed from cart
@@ -202,5 +203,25 @@ The unfinished project can be found under: [XXX](https://github.com/xxx)
 - Rating is updated in a reactive manner, even for cached products
 
 
+####
 
+```
+Module:
+
+* User Module (Shop ist zugäugig für alle Benutzer. Bestellung erfolgt mit eingelogtem Benutzer)
+* Security (Rollen, Datenbank Berechtigung)
+* Bestellung (Bestell-Prozess abbilden)
+* Artikel CRUD (Möglichkeit zum Erfassen, Bearbeiten, Löschen,Lesen von Artikeln)
+* Produktsuche (Fülltest Suche über Produktliste)
+* Shop Einstiegsseite (zB. Slider, Top Produkte..)
+
+
+Optional:
+
+* Artikelfilter
+* Aktionen
+* Kommentar und Feedback (Rating)
+* Bestellstatistiken
+* Push Notification
+```
 

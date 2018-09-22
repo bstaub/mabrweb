@@ -1,4 +1,4 @@
-export class ProductsPerOrder {
+export class ProductPerOrder {
   productId?: string;
   userId?: string;
   qty?: number;

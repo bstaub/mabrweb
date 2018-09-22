@@ -3,9 +3,11 @@ import {Observable} from 'rxjs';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import {map} from 'rxjs/operators';
 import {Order} from '../order.model';
-import {ProductsPerOrder} from '../productsPerOrder.model';
+import {ProductPerOrder} from '../productPerOrder.model';
 import {Product} from '../../product/product.model';
 import * as firebase from 'firebase';
+import {UserService} from '../../user/shared/user.service';
+
 
 
 @Injectable({
@@ -22,14 +24,17 @@ export class OrderFirestoreService {
   orders_temp: Observable<Order[]>;
   orderDoc: AngularFirestoreDocument<Order>;
   order: Order;
-  order_temp: any;
+  user: any;
 
 
 
 
-  constructor(public afs: AngularFirestore) {
+  constructor(public afs: AngularFirestore,
+              private userService: UserService) {
+
     this.orderCollection = this.afs.collection('orders');
     this.orderCollection_temp = this.afs.collection('orders_temp');
+
 
 
     this.orders = this.orderCollection.snapshotChanges().pipe(
@@ -38,6 +43,7 @@ export class OrderFirestoreService {
         const key = a.payload.doc.id;
         return { key, ...data };
       }))
+
     );
 
     this.orders_temp = this.orderCollection_temp.snapshotChanges().pipe(
@@ -47,6 +53,8 @@ export class OrderFirestoreService {
         return { key, ...data };
       }))
     );
+
+    this.user = this.userService.getCurrentUser();
   }
 
 
@@ -117,7 +125,7 @@ export class OrderFirestoreService {
     this.orderCollection.add(data);
   }
 
-  addOrderAnonymus(order: Order, productPerOrder: ProductsPerOrder) {
+  addOrderAnonymus(order: Order, productPerOrder: ProductPerOrder) {
     const db = firebase.firestore();
     var data = JSON.parse(JSON.stringify(order));
     this.orderCollection_temp.add(data).then(function (orderDocRef) {
@@ -132,9 +140,25 @@ export class OrderFirestoreService {
 
   }
 
+  addProductToOrder(productPerOrder: ProductPerOrder) {
+
+    this.user = this.userService.getCurrentUser();
+
+    if (this.user) {
+      productPerOrder.userId = this.user.uid;
+      this.addProductToOrderUser(productPerOrder);
+      console.log('onAddProductControl - user Ok');
+    } else {
+      productPerOrder.userId = '0';
+      this.addProductToOrderAnonymus(productPerOrder);
+      console.log('onAddProductControl - No user');
+    }
 
 
-  addProductToOrder(productPerOrder: ProductsPerOrder) {
+  }
+
+
+  addProductToOrderUser(productPerOrder: ProductPerOrder) {
 
     const db = firebase.firestore();
 
@@ -186,8 +210,9 @@ export class OrderFirestoreService {
 
   }
 
-  addProductToOrderAnonymus(productPerOrder: ProductsPerOrder) {
+  addProductToOrderAnonymus(productPerOrder: ProductPerOrder) {
 
+    console.log('addProductToOrderAnonymus');
     const db = firebase.firestore();
 
 

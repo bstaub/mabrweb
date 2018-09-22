@@ -5,7 +5,7 @@ import {OrderFirestoreService} from '../shared/order-firestore.service';
 import {Observable} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProductFirestoreService} from '../../product/shared/product-firestore.service';
-import {ProductsPerOrder} from '../productsPerOrder.model';
+import {ProductPerOrder} from '../productPerOrder.model';
 import * as firebase from 'firebase';
 import {UserService} from '../../user/shared/user.service';
 
@@ -110,20 +110,11 @@ export class OrderDetailComponent implements OnInit {
 
   onAddProductControl() {
 
-    let newProductperOrder = new ProductsPerOrder();
-    //newProductperOrder.orderId = this.orderId;
+    let newProductperOrder = new ProductPerOrder();
     newProductperOrder.productId = this.selectedProduct;
     newProductperOrder.qty = this.productAmount;
 
-    if (this.user) {
-      newProductperOrder.userId = this.user.uid;
-      this.orderFirestoreService.addProductToOrder(newProductperOrder);
-      console.log('onAddProductControl - user Ok');
-    } else {
-      newProductperOrder.userId = '0';
-      this.orderFirestoreService.addProductToOrderAnonymus(newProductperOrder);
-      console.log('onAddProductControl - No user');
-    }
+    this.orderFirestoreService.addProductToOrder(newProductperOrder);
 
     this.selectedProduct = '';
     this.productAmount = 0;

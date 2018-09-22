@@ -3,7 +3,7 @@ import {AuthService} from '../user/shared/auth.service';
 import {User} from '../user/user';
 import {Observable} from 'rxjs';
 import * as firebase from 'firebase';
-import {ProductsPerOrder} from './productsPerOrder.model';
+import {ProductPerOrder} from './productPerOrder.model';
 import {ProductFirestoreService} from '../product/shared/product-firestore.service';
 import {OrderFirestoreService} from './shared/order-firestore.service';
 import {UserService} from '../user/shared/user.service';
@@ -63,7 +63,7 @@ export class OrderStartComponent implements OnInit {
   }
   onAddProductControl() {
 
-    let newProductperOrder = new ProductsPerOrder();
+    let newProductperOrder = new ProductPerOrder();
     //newProductperOrder.orderId = this.orderId;
     newProductperOrder.productId = this.selectedProduct;
     newProductperOrder.qty = this.productAmount;

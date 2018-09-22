@@ -3,7 +3,7 @@ import {ProductService} from '../shared/product.service';
 import {Product} from '../product.model';
 import {ProductFirestoreService} from '../shared/product-firestore.service';
 import {OrderFirestoreService} from '../../order/shared/order-firestore.service';
-import {ProductsPerOrder} from '../../order/productsPerOrder.model';
+import {ProductPerOrder} from '../../order/productPerOrder.model';
 import {UserService} from '../../user/shared/user.service';
 
 @Component({
@@ -16,9 +16,9 @@ export class ProductItemComponent implements OnInit {
   @Input() product: Product;
   @Input() count: number;
 
-  productperOrder: ProductsPerOrder;
+  productPerOrder: ProductPerOrder;
 
-  constructor(private productService: ProductFirestoreService, private orderServcie: OrderFirestoreService,
+  constructor(private productService: ProductFirestoreService, private orderFirestoreService: OrderFirestoreService,
               private userService: UserService
               ) { }
 
@@ -41,15 +41,14 @@ export class ProductItemComponent implements OnInit {
     console.log('start addToBasket');
     console.log(product);
 
-    this.productperOrder = {
+    this.productPerOrder = {
       productId: product.key,
-      userId: this.userService.getCurrentUserId(),
       qty: product.itemcount
     };
 
-    console.log(this.productperOrder);
+    this.orderFirestoreService.addProductToOrder(this.productPerOrder);
+    console.log(this.productPerOrder);
 
-    this.orderServcie.addProductToOrderAnonymus(this.productperOrder);
     // this.productService.setbasket(product);
     alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
   }

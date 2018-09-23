@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getUser() {
-    this.localStorageUser = this.userService.getProfileFromLocalStorage();
+    // this.localStorageUser = this.userService.getProfileFromLocalStorage();
     return this.userService.getUser(this.uid)
       .subscribe( data => {
         this.user = data;

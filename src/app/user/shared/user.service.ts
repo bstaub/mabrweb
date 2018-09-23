@@ -43,7 +43,29 @@ export class UserService {
   }
 
   getCurrentUser() {
-    return firebase.auth().currentUser;
+    // https://firebase.google.com/docs/auth/web/manage-users
+
+    // return firebase.auth().currentUser;
+
+    const user = firebase.auth().currentUser;
+    if (user) {  // User signed in
+        return user;
+    } else { // no user is signed in
+      return 0;
+    }
+
+    /*
+    const user = firebase.auth().currentUser;
+    if (user) {  // User signed in
+      this.userService.getUser(firebase.auth().currentUser.uid).subscribe( currentUser => {
+        console.log('cur: ', currentUser);
+        return currentUser;
+      });
+    } else { // no user is signed in
+      return 0;
+    }
+    */
+
   }
 
   get authenticated(): boolean {

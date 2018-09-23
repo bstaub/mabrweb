@@ -44,6 +44,7 @@ import {ProductItemComponent} from './product/product-item/product-item.componen
 import {ProductFirestoreService} from './product/shared/product-firestore.service';
 import {ProductCategoryService} from './product/shared/product-category.service';
 import {OrderFirestoreService} from './order/shared/order-firestore.service';
+import { SortPipe } from './product/shared/pipe/sort.pipe';
 
 
 
@@ -73,7 +74,8 @@ import {OrderFirestoreService} from './order/shared/order-firestore.service';
     ProfileComponent,
     ResetPasswordComponent,
     ProductGridComponent,
-    ProductItemComponent
+    ProductItemComponent,
+    SortPipe
   ],
   imports: [
     BrowserModule,

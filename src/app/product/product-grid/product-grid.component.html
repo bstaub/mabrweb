@@ -13,15 +13,15 @@
 
     <div class="collection-sort">
       <label>Sort by:</label>
-      <select>
-        <option value="/">Default</option>
-        <option value="/">Bestseller</option>
-        <option value="/">alphabetisch, A-Z</option>
-        <option value="/">alphabetisch, Z-A</option>
-        <option value="/">Preis, tief nach hoch</option>
-        <option value="/">Price, hoch nach tief</option>
-        <option value="/">Datum, neu nach alt</option>
-        <option value="/">Datum, alt nach neu</option>
+      <select [(ngModel)]="selectedSort" (change)="selectedSortOption($event)">
+        <option value="default">Default</option>
+        <option value="bestseller">Bestseller</option>
+        <option value="a-z">alphabetisch, A-Z</option>
+        <option value="z-a">alphabetisch, Z-A</option>
+        <option value="low-high">Preis, tief nach hoch</option>
+        <option value="high-low">Price, hoch nach tief</option>
+        <option value="new-old">Datum, neu nach alt</option>
+        <option value="old-new">Datum, alt nach neu</option>
       </select>
     </div>
   </div>

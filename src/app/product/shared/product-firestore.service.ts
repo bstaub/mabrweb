@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
-import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, Query} from 'angularfire2/firestore';
 import {map} from 'rxjs/operators';
 import {Product} from '../product.model';
 
@@ -14,12 +14,88 @@ export class ProductFirestoreService {
   productDoc: AngularFirestoreDocument<Product>;
   filteredProducts: any[];
 
+  productCollectionNameDesc: AngularFirestoreCollection<Product>;
+  productCollectionNameAsc: AngularFirestoreCollection<Product>;
+  productCollectionPriceAsc: AngularFirestoreCollection<Product>;
+  productCollectionPriceDesc: AngularFirestoreCollection<Product>;
+  productCollectionCreatedDateAsc: AngularFirestoreCollection<Product>;
+  productCollectionCreatedDateDesc: AngularFirestoreCollection<Product>;
+
   constructor(public afs: AngularFirestore) {
 
     // const pushkey = this.afs.createId();
+    /*
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
 
     this.products = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return { key, ...data };
+      }))
+    );
+    */
+
+    this.sortProductsByNameAsc();
+    // this.sortProductsByNameDesc();
+
+  }
+
+  sortProductsByNameDesc() {
+    this.productCollectionNameDesc = this.afs.collection('products', ref => ref.orderBy('name', 'desc'));
+    this.products = this.productCollectionNameDesc.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return { key, ...data };
+      }))
+    );
+  }
+  sortProductsByNameAsc() {
+    this.productCollectionNameAsc = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+    this.products = this.productCollectionNameAsc.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return { key, ...data };
+      }))
+    );
+  }
+  sortProductsByPriceAsc() { // Test Fail
+    this.productCollectionPriceAsc = this.afs.collection('products', ref => ref.orderBy('price', 'asc'));
+    this.products = this.productCollectionPriceAsc.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return { key, ...data };
+      }))
+    );
+  }
+  sortProductsByPriceDesc() { // Test Fail
+    this.productCollectionPriceDesc = this.afs.collection('products', ref => ref.orderBy('price', 'desc'));
+    this.products = this.productCollectionPriceAsc.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return { key, ...data };
+      }))
+    );
+  }
+  sortProductsByCreatedDateAsc() { // Test Fail
+    this.productCollectionCreatedDateAsc = this.afs.collection('products', ref => ref.where('createdDate', '>', '0'));
+    this.products = this.productCollectionCreatedDateAsc.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return { key, ...data };
+      }))
+    );
+  }
+  sortProductsByCreatedDateDesc() {  // Test Fail
+    // Do 01 Jan 2037 00:00:00 UTC  --> 2114380800
+    // https://www.unixtimeconverter.io/2114380800
+    this.productCollectionCreatedDateDesc = this.afs.collection('products', ref => ref.where('createdDate', '<', 'toDay'));
+    this.products = this.productCollectionCreatedDateAsc.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Product;
         const key = a.payload.doc.id;

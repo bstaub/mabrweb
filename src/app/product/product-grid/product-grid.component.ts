@@ -16,8 +16,12 @@ export class ProductGridComponent implements OnInit {
 
   products: Observable<Product[]>;
   categories: Observable<ProductCategory[]>;
-  selectedProduct: string;
   filteredProducts: any[];
+
+  selectedProduct: string; // just for show Product Category in Template
+  selectedSort: string;
+
+
 
   constructor(private productService: ProductService,
               private productFireStoreService: ProductFirestoreService,
@@ -47,6 +51,34 @@ export class ProductGridComponent implements OnInit {
       this.filteredProducts = this.productFireStoreService.getCategory(categoryName);
     }
 
+  }
+
+  selectedSortOption(event) {
+    const selectedSortOption = event.target.value;
+    if (selectedSortOption === 'a-z') {
+      this.productFireStoreService.sortProductsByNameAsc();
+      this.products = this.productFireStoreService.getProducts();
+    }
+    if (selectedSortOption === 'z-a') {
+      this.productFireStoreService.sortProductsByNameDesc();
+      this.products = this.productFireStoreService.getProducts();
+    }
+    if (selectedSortOption === 'low-high') {
+      this.productFireStoreService.sortProductsByPriceAsc();
+      this.products = this.productFireStoreService.getProducts();
+    }
+    if (selectedSortOption === 'high-low') {
+      this.productFireStoreService.sortProductsByPriceDesc();
+      this.products = this.productFireStoreService.getProducts();
+    }
+    if (selectedSortOption === 'old-new') {
+      this.productFireStoreService.sortProductsByCreatedDateAsc();
+      this.products = this.productFireStoreService.getProducts();
+    }
+    if (selectedSortOption === 'new-old') {
+      this.productFireStoreService.sortProductsByCreatedDateDesc();
+      this.products = this.productFireStoreService.getProducts();
+    }
   }
 
 }

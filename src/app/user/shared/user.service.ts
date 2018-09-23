@@ -3,7 +3,7 @@ import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} 
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {User} from '../user';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 
@@ -32,9 +32,6 @@ export class UserService {
         return {id, ...data};
       }))
     );
-
-
-
 
   }
 
@@ -112,8 +109,5 @@ export class UserService {
   getCurrentUser() {
     return firebase.auth().currentUser;
   }
-
-
-
 
 }

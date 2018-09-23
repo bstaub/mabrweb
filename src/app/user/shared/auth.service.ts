@@ -7,7 +7,7 @@ import {UserService} from './user.service';
 import {NotificationService} from '../../shared/notification.service';
 
 import * as firebase from 'firebase/app';
-import {Observable, of} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
@@ -47,6 +47,18 @@ export class AuthService {
       }
     }));
 
+  }
+
+  isAuthenticated() {
+    const state = new Subject<boolean>();
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        state.next(true);
+      } else {
+        state.next( false);
+      }
+    });
+    return state.asObservable();
   }
 
   getAuth() {

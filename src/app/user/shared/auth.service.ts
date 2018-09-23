@@ -27,6 +27,7 @@ export class AuthService {
     private notifier: NotificationService
   ) {
     // Get Current Auth User
+    /*
     this.user = afAuth.authState;
     this.user.subscribe(
       (user) => {
@@ -46,6 +47,7 @@ export class AuthService {
         return of(null);  // Angular6 without Observable.of, just of with import {of}
       }
     }));
+    */
 
   }
 
@@ -54,6 +56,7 @@ export class AuthService {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         state.next(true);
+        // console.log('yes user: ', user);
       } else {
         state.next( false);
       }
@@ -65,10 +68,13 @@ export class AuthService {
     return this.afAuth.authState.pipe(map(auth => auth));
   }
 
+  /*
   getAuthUser() {
     return this.userDetails;
   }
+  */
 
+  /*
   isLoggedIn() {
     if (this.userDetails == null ) {
       return false;
@@ -76,6 +82,7 @@ export class AuthService {
       return true;
     }
   }
+  */
 
   // 1. Register
   createUserInFirebaseAuthListEmailVerified(email, password, username) {

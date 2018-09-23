@@ -21,9 +21,7 @@ export class UserService {
                private afAuth: AngularFireAuth,
   ) {
     // this.users = this.afs.collection('users').valueChanges();
-
     this.usersCollection = this.afs.collection('users', ref => ref.orderBy('email', 'asc'));
-
 
     this.users = this.usersCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -44,46 +42,8 @@ export class UserService {
     return this.userDoc.valueChanges();
   }
 
-  addUser(user: User) {
-    return this.usersCollection.add(user);  // need return for async logout call in register process!
-  }
-
-  setUser(user: User) {
-    this.userDoc = this.afs.doc(`users/${user.id}`);
-    return this.userDoc.set(user, {merge: true});
-  }
-
-  setUserMerge(user: User) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.id}`);
-    const data: User = {
-      downloadUrl: 'xxx',
-      area: 'luzernXXX'
-    };
-    return userRef.set(data, {merge: true});
-  }
-
-  deleteUser(user: User) {
-    this.userDoc = this.afs.doc(`users/${user.id}`);
-    this.userDoc.delete();
-  }
-
-  updateUser(user: User) {
-    this.userDoc = this.afs.doc(`users/${user.id}`);
-    this.userDoc.update(user);
-
-  }
-
-  // LocalStorage Functions start
-  setUserToLocalStorage(userFromDatabase) {
-    localStorage.setItem('user', JSON.stringify(userFromDatabase));
-  }
-
-  destroyUserLocalStorage() {
-    localStorage.removeItem('user');
-  }
-
-  getProfileFromLocalStorage() {
-    return JSON.parse(localStorage.getItem('user')) || [];
+  getCurrentUser() {
+    return firebase.auth().currentUser;
   }
 
   get authenticated(): boolean {
@@ -100,14 +60,59 @@ export class UserService {
     return this.authenticated ? this.afAuth.auth.currentUser.uid : null;
   }
 
+  addUser(user: User) {
+    return this.usersCollection.add(user);  // need return for async logout call in register process!
+  }
+
+  setUser(user: User) {
+    this.userDoc = this.afs.doc(`users/${user.id}`);
+    return this.userDoc.set(user, {merge: true});
+  }
+
+  updateUser(user: User) {
+    this.userDoc = this.afs.doc(`users/${user.id}`);
+    this.userDoc.update(user);
+
+  }
+
+  deleteUser(user: User) {
+    this.userDoc = this.afs.doc(`users/${user.id}`);
+    this.userDoc.delete();
+  }
+
+
+  /*
+  setUserMerge(user: User) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.id}`);
+    const data: User = {
+      downloadUrl: 'xxx',
+      area: 'luzernXXX'
+    };
+    return userRef.set(data, {merge: true});
+  }
+  */
+
+  /*
   // Test, geht irgendwie noch nicht sauber!
   loginStatus(): any {
     // return 123;
     return this.authenticated ? true : 0;
   }
+  */
 
-  getCurrentUser() {
-    return firebase.auth().currentUser;
+
+  // LocalStorage Functions start
+  setUserToLocalStorage(userFromDatabase) {
+    localStorage.setItem('user', JSON.stringify(userFromDatabase));
   }
+
+  getProfileFromLocalStorage() {
+    return JSON.parse(localStorage.getItem('user')) || [];
+  }
+
+  destroyUserLocalStorage() {
+    localStorage.removeItem('user');
+  }
+  // LocalStorage Function end
 
 }

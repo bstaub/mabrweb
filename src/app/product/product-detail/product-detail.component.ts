@@ -58,24 +58,11 @@ export class ProductDetailComponent implements OnInit {
 
 
   addToBasket(product) {
-    console.log('start addToBasket');
-    console.log(product);
-    console.log(product);
-
     this.productPerOrder = {
       productId: this.productId,
       qty: product.itemcount
     };
-
     this.orderFirestoreService.addProductToOrder(this.productPerOrder);
-
-
-
-
-    console.log(this.productPerOrder);
-
-
-    // this.productService.setbasket(product);
     alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
   }
 

@@ -25,6 +25,7 @@ export class OrderFirestoreService {
   orderDoc: AngularFirestoreDocument<Order>;
   order: Order;
   user: any;
+  orderData: Order[];
 
 
 
@@ -75,6 +76,7 @@ export class OrderFirestoreService {
 
 
   getOrderData(){
+
     this.orders = this.orderCollectionPerUser.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Order;
@@ -82,6 +84,25 @@ export class OrderFirestoreService {
         return { key, ...data };
       }))
     );
+
+    //console.log(this.order)
+  }
+
+  getOrderDocAnonymusData(){
+    var orderArray = [];
+    var order = null;
+    this.afs.collection('orders_temp', ref => ref.where('userId','==', '0' )).ref.get().then(function (res) {
+      res.forEach(doc => {
+        order = doc.data() as Order;
+        order.key = doc.id;
+        orderArray.push(order);
+      })})
+
+    //console.log(order);
+    //console.log(orderArray);
+    //console.log(orderArray[0]);
+    return orderArray;
+
   }
 
 
@@ -289,8 +310,8 @@ export class OrderFirestoreService {
 
 
 
-  updateOrder(orderKey, order: Order) {
-    this.orderDoc = this.afs.doc(`orders/${orderKey}`);
+  updateOrder(order: Order) {
+    this.orderDoc = this.afs.doc(`orders/${order.key}`);
     this.orderDoc.update(order);
 
   }

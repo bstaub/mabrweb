@@ -61,7 +61,7 @@ export class ProductFirestoreService {
       }))
     );
   }
-  sortProductsByPriceAsc() { // Test Fail
+  sortProductsByPriceAsc() {
     this.productCollectionPriceAsc = this.afs.collection('products', ref => ref.orderBy('price', 'asc'));
     this.products = this.productCollectionPriceAsc.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -71,9 +71,9 @@ export class ProductFirestoreService {
       }))
     );
   }
-  sortProductsByPriceDesc() { // Test Fail
+  sortProductsByPriceDesc() {
     this.productCollectionPriceDesc = this.afs.collection('products', ref => ref.orderBy('price', 'desc'));
-    this.products = this.productCollectionPriceAsc.snapshotChanges().pipe(
+    this.products = this.productCollectionPriceDesc.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Product;
         const key = a.payload.doc.id;

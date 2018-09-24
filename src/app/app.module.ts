@@ -45,6 +45,7 @@ import {ProductFirestoreService} from './product/shared/product-firestore.servic
 import {ProductCategoryService} from './product/shared/product-category.service';
 import {OrderFirestoreService} from './order/shared/order-firestore.service';
 import { SortPipe } from './product/shared/pipe/sort.pipe';
+import { MdToHtmlPipe } from './product/shared/pipe/md-to-html.pipe';
 
 
 
@@ -75,7 +76,8 @@ import { SortPipe } from './product/shared/pipe/sort.pipe';
     ResetPasswordComponent,
     ProductGridComponent,
     ProductItemComponent,
-    SortPipe
+    SortPipe,
+    MdToHtmlPipe
   ],
   imports: [
     BrowserModule,

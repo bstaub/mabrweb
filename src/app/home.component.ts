@@ -14,7 +14,8 @@ export class HomeComponent implements OnInit, AfterContentChecked {
   uid: string;
   currentUser: any;
 
-  constructor(private authService: AuthService, private userService: UserService) { }
+  constructor(private authService: AuthService, private userService: UserService) {
+  }
 
   ngOnInit() {
     // this.authService.isAuthenticated().subscribe(auth => console.log(auth));
@@ -38,7 +39,7 @@ export class HomeComponent implements OnInit, AfterContentChecked {
   getUser() {
     // this.localStorageUser = this.userService.getProfileFromLocalStorage();
     return this.userService.getUser(this.currentUser.uid)
-      .subscribe( data => {
+      .subscribe(data => {
         this.user = data;
         console.log(this.user);
       });

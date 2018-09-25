@@ -131,7 +131,7 @@ export class OrderDetailComponent implements OnInit {
       this.orderFirestoreService.deleteProductsPerOrder(this.orderId);
     } else {
       this.orderFirestoreService.deleteOrderAnonymus(this.orderId);
-      this.orderFirestoreService.deleteProductsPerOrderAnonymus(this.orderId);
+      this.orderFirestoreService.deleteProductsPerOrderAnonymus(this.orderId, this.products);
     }
   }
 

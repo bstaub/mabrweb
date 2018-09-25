@@ -47,6 +47,8 @@ export class OrderFirestoreService {
 
     );
 
+
+
     this.orders_temp = this.orderCollection_temp.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Order;
@@ -131,16 +133,18 @@ export class OrderFirestoreService {
 
   getProductsPerOrder(key, userId) {
 
-    if (userId == '0') {
-      this.productsOrderCollection = this.afs.doc(`productsPerOrder_temp/${key}`).collection('products');
+    if ((userId == '0') || (!userId)) {
+      console.log('getProd - noUser');
+      this.productsOrderCollection = this.afs.doc(`productsPerOrder_temp/${key}`,).collection('products')
     } else {
+      console.log('getProd - User OK');
       this.productsOrderCollection = this.afs.doc(`productsPerOrder/${key}`).collection('products');
     }
     return  this.productsOrderCollection;
   }
 
 
-  addOrder(order: Order) {
+  addUserOrder(order: Order) {
 
     var data = JSON.parse(JSON.stringify(order));
     this.orderCollection.add(data);
@@ -158,7 +162,15 @@ export class OrderFirestoreService {
       });
     })
 
+/*
+    this.user = this.orderCollection_temp.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data();
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      })).sub
 
+*/
   }
 
   addProductToOrder(productPerOrder: ProductPerOrder) {
@@ -268,8 +280,6 @@ export class OrderFirestoreService {
         doc.forEach(function (documentSnapshot) {
           var data = documentSnapshot.data();
           var orderKey  = documentSnapshot.id;
-          console.log(data);
-          console.log(orderKey);
           db.doc(`productsPerOrder_temp/${orderKey}`).collection('products').doc(productPerOrder.productId).set({
             orderId: db.collection('orders').doc(orderKey),
             productId: db.collection('products').doc(productPerOrder.productId),
@@ -286,6 +296,12 @@ export class OrderFirestoreService {
     this.orderDoc.delete();
   }
 
+  deleteAnonymusOrder(key: string) {
+    this.orderDoc = this.afs.doc(`orders_temp/${key}`);
+    this.orderDoc.delete();
+  }
+
+
   deleteOrderAnonymus(key: string) {
     this.orderDoc = this.afs.doc(`orders_temp/${key}`);
     this.orderDoc.delete();
@@ -296,15 +312,27 @@ export class OrderFirestoreService {
     this.productsPerOrderDocument.delete();
   }
 
-  deleteProductsPerOrderAnonymus(key: string) {
-    console.log()
-    this.productsPerOrderDocument = this.afs.doc(`productsPerOrder_temp/${key}`);
-    console.log(`productsPerOrder_temp/${key}`);
-    this.productsPerOrderDocument.delete().then(function() {
-      console.log("Document successfully deleted!");
-    }).catch(function(error) {
-      console.error("Error removing document: ", error);
-    });
+  deleteProductsPerOrderAnonymus(key: string, products: any[]) {
+    const db = firebase.firestore();
+    console.log(products);
+    products.forEach((product)=> {
+      console.log(product.id);
+
+      this.productsPerOrderDocument = this.afs.doc(`productsPerOrder_temp/${key}`).collection('products').doc(product.id);
+      console.log(`productsPerOrder_temp/${key}`);
+      this.productsPerOrderDocument.delete().then(function() {
+        console.log("Document temp successfully deleted!");
+      }).catch(function(error) {
+        console.error("Error removing temp document: ", error);
+      });
+
+
+
+    })
+
+
+
+
 
   }
 

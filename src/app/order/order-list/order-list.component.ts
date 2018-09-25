@@ -3,6 +3,7 @@ import {OrderService} from '../order.service';
 import {OrderFirestoreService} from '../shared/order-firestore.service';
 import {Router} from '@angular/router';
 import {UserService} from '../../user/shared/user.service';
+import {User} from '../../user/user';
 
 
 
@@ -15,7 +16,11 @@ export class OrderListComponent implements OnInit {
   orders: any;
   title: string;
   userId: string;
+  //user: User;
   user: any;
+
+  uid: string;
+
 
   constructor(private orderService: OrderService,
               private orderServiceFirestore: OrderFirestoreService,
@@ -25,8 +30,22 @@ export class OrderListComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.userService.getCurrentUser();
+
+    //this.uid = this.userService.getCurrentUserId();
+    //this.getUser();
+
     this.getAllOrders();
   }
+
+  getUser() {
+    // this.localStorageUser = this.userService.getProfileFromLocalStorage();
+    return this.userService.getUser(this.uid)
+      .subscribe( data => {
+        this.user = data;
+      });
+  }
+
+
 
 
   onNewOrder() {

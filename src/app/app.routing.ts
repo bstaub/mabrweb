@@ -10,12 +10,16 @@ import {UserRegisterComponent} from './user/user-register/user-register.componen
 import {ProductComponent} from './product/product.component';
 import {OrderComponent} from './order/order.component';
 import {ProfileComponent} from './user/profile/profile.component';
-import {AuthuserGuard} from './user/guards/authuser.guard';
 import {Auth2Guard} from './user/guards/auth2.guard';
 import {ResetPasswordComponent} from './user/reset-password/reset-password.component';
+import {ADMIN_ROUTES} from './admin/admin.routing';
+import {AdminGuard} from './user/guards/admin.guard';
+import {AdminComponent} from './admin/admin.component';
+
 
 const APP_ROUTES: Routes = [
   {path: '', component: HomeComponent },
+  {path: 'admin', component: AdminComponent, children: ADMIN_ROUTES, canActivate: [AdminGuard] },
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES },
   {path: 'bestellung', component: OrderComponent, children: ORDER_ROUTES},
   {path: 'user', component: UserListComponent, children: USER_ROUTES, canActivate: [Auth2Guard]},

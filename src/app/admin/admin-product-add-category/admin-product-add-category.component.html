@@ -1,0 +1,18 @@
+<div class="product-add">
+  <div class="col-xs-12">
+    <h3>Produkt erfassen</h3>
+    <div>
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="category">Kategorie</label> <input type="text"
+                                                                class="form-control" id="category" required
+                                                                [(ngModel)]="category"
+                                                                name="beschreibung">
+        </div>
+
+        <button type="submit" class="btn btn-success">Bestätigen</button>
+      </form>
+    </div>
+
+  </div>
+</div>

@@ -1,27 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-
-import {Product} from '../product.model';
-import {ProductService} from '../shared/product.service';
-import {ProductFirestoreService} from '../shared/product-firestore.service';
-import * as firebase from 'firebase';
-import {StorageService} from '../../shared/storage.service';
-import {ProductCategoryService} from '../shared/product-category.service';
-import {ProductCategory} from '../product-category.model';
+import { Component, OnInit } from '@angular/core';
+import {Product} from '../../product/product.model';
 import {Observable} from 'rxjs';
+import {ProductCategory} from '../../product/product-category.model';
+import {ProductService} from '../../product/shared/product.service';
+import {ProductFirestoreService} from '../../product/shared/product-firestore.service';
+import {StorageService} from '../../shared/storage.service';
+import {ProductCategoryService} from '../../product/shared/product-category.service';
+import * as firebase from 'firebase';
 
 @Component({
-  selector: 'app-product-new',
-  templateUrl: './product-new.component.html',
-  styles: [`
-    .product-new {
-      border: 1px solid black;
-      background-color: #ecf1f3;
-      padding: 10px;
-      margin-top: 40px;
-    }
-  `]
+  selector: 'app-admin-product-add',
+  templateUrl: './admin-product-add.component.html',
+  styleUrls: ['./admin-product-add.component.css']
 })
-export class ProductNewComponent implements OnInit {
+export class AdminProductAddComponent implements OnInit {
 
   product: Product = new Product();
   categories: Observable<ProductCategory[]>;
@@ -61,14 +53,14 @@ export class ProductNewComponent implements OnInit {
     // this.userService.getCurrentUserId();
 
     if (!this.image) {  // add default noImage Pic, when no image is choosen..
-        this.image = 'https://firebasestorage.googleapis.com/v0/b/mabrweb-e6503.appspot.com/o/mvi9oepg?alt=media&token=69801fdc-bbb0-4e19-84e3-e87b5615ca0b';
+      this.image = 'https://firebasestorage.googleapis.com/v0/b/mabrweb-e6503.appspot.com/o/mvi9oepg?alt=media&token=69801fdc-bbb0-4e19-84e3-e87b5615ca0b';
     }
 
     const productObj = Object.assign({key: this.productFirestoreService.getPushKey(),
-                                            image: this.image,
-                                            productCategory: this.selectedCategory,
-                                            createdDate: firebase.firestore.FieldValue.serverTimestamp()},
-                                            this.product);
+        image: this.image,
+        productCategory: this.selectedCategory,
+        createdDate: firebase.firestore.FieldValue.serverTimestamp()},
+      this.product);
 
     this.productFirestoreService.addProduct(productObj);
   }
@@ -94,6 +86,5 @@ export class ProductNewComponent implements OnInit {
 
       });
   }
-
 
 }

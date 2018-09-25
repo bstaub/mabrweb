@@ -1,4 +1,4 @@
-<div class="product-new">
+<div class="product-add">
   <div class="col-xs-12">
     <h3>Produkt erfassen</h3>
     <div [hidden]="submitted" style="width: 300px;">
@@ -19,16 +19,16 @@
         </div>
 
         <div class="form-group">
-          <label for="price">Preis</label> <input type="text" class="form-control" id="price" required
+          <label for="price">Preis</label> <input type="number" class="form-control" id="price" required
                                                   [(ngModel)]="product.price" name="price">
         </div>
 
         <div class="form-group">
-        <label for="category">Kategorie</label>
-        <select [(ngModel)]="selectedCategory" id="category" name="selectedCategory">
-        <option value="/">-alle Kategorien-</option>
-        <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
-        </select>
+          <label for="category">Kategorie</label>
+          <select [(ngModel)]="selectedCategory" id="category" name="selectedCategory">
+            <option value="/">-alle Kategorien-</option>
+            <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
+          </select>
         </div>
 
         <div class="form-group">

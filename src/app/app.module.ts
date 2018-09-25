@@ -19,7 +19,6 @@ import {UserRegisterComponent} from './user/user-register/user-register.componen
 import {Routing} from './app.routing';
 import {OrderDetailComponent} from './order/order-detail/order-detail.component';
 import {OrderListComponent} from './order/order-list/order-list.component';
-import {ProductNewComponent} from './product/product-new/product-new.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProductComponent} from './product/product.component';
 import {OrderItemComponent} from './order/order-list/order-item.component';
@@ -44,11 +43,15 @@ import {ProductItemComponent} from './product/product-item/product-item.componen
 import {ProductFirestoreService} from './product/shared/product-firestore.service';
 import {ProductCategoryService} from './product/shared/product-category.service';
 import {OrderFirestoreService} from './order/shared/order-firestore.service';
-import { SortPipe } from './product/shared/pipe/sort.pipe';
-import { MdToHtmlPipe } from './product/shared/pipe/md-to-html.pipe';
-
-
-
+import {SortPipe} from './product/shared/pipe/sort.pipe';
+import {MdToHtmlPipe} from './product/shared/pipe/md-to-html.pipe';
+import {AdminProductAddComponent} from './admin/admin-product-add/admin-product-add.component';
+import {AdminProductEditComponent} from './admin/admin-product-edit/admin-product-edit.component';
+import {AdminHomeComponent} from './admin/admin-home/admin-home.component';
+import {AdminComponent} from './admin/admin.component';
+import { AdminProductListComponent } from './admin/admin-product-list/admin-product-list.component';
+import { AdminProductItemComponent } from './admin/admin-product-item/admin-product-item.component';
+import { AdminProductAddCategoryComponent } from './admin/admin-product-add-category/admin-product-add-category.component';
 
 
 @NgModule({
@@ -56,7 +59,6 @@ import { MdToHtmlPipe } from './product/shared/pipe/md-to-html.pipe';
     AppComponent,
     ProductListComponent,
     ProductDetailComponent,
-    ProductNewComponent,
     HeaderComponent,
     NaviComponent,
     HomeComponent,
@@ -77,7 +79,14 @@ import { MdToHtmlPipe } from './product/shared/pipe/md-to-html.pipe';
     ProductGridComponent,
     ProductItemComponent,
     SortPipe,
-    MdToHtmlPipe
+    MdToHtmlPipe,
+    AdminProductAddComponent,
+    AdminProductEditComponent,
+    AdminHomeComponent,
+    AdminComponent,
+    AdminProductListComponent,
+    AdminProductItemComponent,
+    AdminProductAddCategoryComponent,
   ],
   imports: [
     BrowserModule,

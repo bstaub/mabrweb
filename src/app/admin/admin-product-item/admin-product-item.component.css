@@ -1,0 +1,10 @@
+.media {
+  border: 1px solid black;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+span{
+  margin-right: 5px;
+  padding: 5px;
+}

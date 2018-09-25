@@ -7,6 +7,7 @@ import {Settings} from '../models/Settings';
 export class SettingsService {
   settings: Settings = {
     allowRegistration: true,
+    allowAdministration: true,
   }
   constructor() {
     if (localStorage.getItem('settings') != null) {

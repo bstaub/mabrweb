@@ -26,14 +26,14 @@ export class HomeComponent implements OnInit, AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-    if ((this.userService.getCurrentUser()) !== 0) {
-      this.currentUser = this.userService.getCurrentUser();
-      console.log('constentChecked first: ', this.currentUser);
+    // if ((this.userService.getCurrentUser()) !== 0) {
+      // this.currentUser = this.userService.getCurrentUser();
+      // console.log('constentChecked first: ', this.currentUser);
       // this.userService.getUser(this.currentUser.uid).pipe(first()).subscribe( currentUserTable => console.log(currentUserTable) );
       // this.userService.getUser(this.currentUser.uid).pipe(take(1)).subscribe( currentUserTable => console.log(currentUserTable) );
       // this.userService.getUser(this.currentUser.uid).subscribe( currentUserTable => console.log(currentUserTable) );
 
-    }
+    // }
   }
 
   getUser() {

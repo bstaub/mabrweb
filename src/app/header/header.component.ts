@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: boolean;
   loggedInUser: string;
   showRegister: boolean;
+  showAdmin: boolean;
   name: string;
   uid: string;
   email: string;
@@ -68,6 +69,7 @@ export class HeaderComponent implements OnInit {
       }
     });
     this.showRegister = this.settingsService.getSettings().allowRegistration;
+    this.showAdmin = this.settingsService.getSettings().allowAdministration;
 
   }
 

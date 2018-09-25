@@ -1,0 +1,36 @@
+<div *ngIf="product" class="media">
+
+
+  <img src="{{product.image || '//:0'}}" class="img-fluid" alt="Dummy Images" class="align-self-start mr-3" style="width:200px">
+
+
+  <div class="media-body">
+
+    <div>
+      <label>Name: </label> {{product.name}}
+    </div>
+    <div>
+      <label>Beschreibung: </label> {{product.description}}
+    </div>
+    <div>
+      <label>Preis: </label> {{product.price}}
+    </div>
+    <div>
+      <label>Status: </label> {{product.active}}
+    </div>
+
+    <span class="button is-small btn-primary" *ngIf='product.active' (click)='updateActive(false)'>inaktiv</span>
+
+    <span class="button is-small btn-primary" *ngIf='!product.active' (click)='updateActive(true)'>aktiv</span>
+
+    <span class="button is-small btn-secondary" (click)='updateProduct($event, product)'>Editieren</span>
+
+    <span class="button is-small btn-danger" (click)='deleteProduct()'>Löschen</span>
+
+    <div>
+      <input type="text" name="anzahl" style="width: 50px;height: 36px;border-radius: 5px;" [(ngModel)]="product.itemcount" name="itemcount"><button class="btn btn-outline-success mt-3 mb-3" style="display: inline-block;" (click)='addToBasket(product)'>in den Warenkorb</button>
+    </div>
+
+  </div>
+
+</div>

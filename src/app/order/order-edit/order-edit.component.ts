@@ -4,6 +4,7 @@ import {OrderFirestoreService} from '../shared/order-firestore.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Order} from '../order.model';
 import {UserService} from '../../user/shared/user.service';
+import {ProductPerOrder} from '../productPerOrder.model';
 
 
 
@@ -29,7 +30,7 @@ export class OrderEditComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private userService: UserService) {
 
-    this.orderArray = this.orderFirestoreService.getOrderDocAnonymusData()
+    this.orderArray = this.orderFirestoreService.getOrderDocAnonymusData();
 
 
   }
@@ -45,9 +46,22 @@ export class OrderEditComponent implements OnInit {
     order.userId = this.selectedUser;
     this.orderFirestoreService.deleteOrderAnonymus(this.orderArray[0].key);
     this.orderFirestoreService.deleteProductsPerOrderAnonymus(this.orderArray[0].key, this.products);
+    this.orderFirestoreService.addUserOrder(order);
+
+    this.products.forEach((product) => {
+      const newProductPerOrder = new ProductPerOrder();
+      newProductPerOrder.productId = product.id;
+      newProductPerOrder.qty = product.qty;
+      newProductPerOrder.userId = this.selectedUser;
+      console.log(newProductPerOrder);
+
+      this.orderFirestoreService.addProductToOrderUser(newProductPerOrder);
+
+    });
 
 
   }
+
 
   onCancel() {
     this.onNavigateBack();
@@ -67,7 +81,7 @@ export class OrderEditComponent implements OnInit {
 
 
 
-    var productsArray = [];
+    const productsArray = [];
 
 
 
@@ -79,24 +93,24 @@ export class OrderEditComponent implements OnInit {
           this.orderFirestoreService.getProductsPerOrder(params['id'], this.userId).ref.get().then(function (res) {
 
             res.forEach(doc => {
-              let newProduct = doc.data();
+              const newProduct = doc.data();
               newProduct.id = doc.id;
               if (newProduct.productId) {
                 newProduct.productId.get()
-                  .then(res => {
-                    newProduct.productData = res.data()
+                  .then(ressource => {
+                    newProduct.productData = ressource.data();
                     if (newProduct.productData) {
-                      productsArray.push(newProduct)
+                      productsArray.push(newProduct);
                     }
                   })
                   .catch(err => console.error(err));
-              };
-            })
+              }
+            });
           })
             .catch(err => console.error(err));
 
           this.products = productsArray;
-          //console.log(productsArray);
+
 
 
         }
@@ -116,7 +130,7 @@ export class OrderEditComponent implements OnInit {
 
   getAllUsers () {
 
-    this.allUsers = this.userService.getUsers()
+    this.allUsers = this.userService.getUsers();
 
   }
 

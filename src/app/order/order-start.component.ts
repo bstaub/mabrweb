@@ -52,7 +52,7 @@ export class OrderStartComponent implements OnInit {
       console.log('onAddProductControl - user Ok');
     } else {
       newProductperOrder.userId = '0';
-      this.orderFirestoreService.addProductToOrderAnonymus(newProductperOrder);
+      //this.orderFirestoreService.addProductToOrderAnonymus(newProductperOrder);
       console.log('onAddProductControl - No user');
     }
 

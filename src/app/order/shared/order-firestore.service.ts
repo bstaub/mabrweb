@@ -14,18 +14,20 @@ import {LocalStorageService} from '../../shared/local-storage.service';
   providedIn: 'root'
 })
 export class OrderFirestoreService {
+
+  orders: Observable<Order[]>;
+
+  orderPerUser: AngularFirestoreCollection<Order>;
   orderCollection: AngularFirestoreCollection<Order>;
-  orderDocument: AngularFirestoreDocument<Order>;
-  orderCollection_temp: AngularFirestoreCollection<Order>;
-  orderCollectionPerUser: AngularFirestoreCollection<Order>;
+
+
   productsOrderCollection: AngularFirestoreCollection<any>;
   productsPerOrderDocument: AngularFirestoreDocument<any>;
-  orders: Observable<Order[]>;
-  orders_temp: Observable<Order[]>;
+
   orderDoc: AngularFirestoreDocument<Order>;
   order: Order;
   user: any;
-  orderData: Order[];
+
 
 
 
@@ -36,7 +38,6 @@ export class OrderFirestoreService {
               private localStorageService: LocalStorageService) {
 
     this.orderCollection = this.afs.collection('orders');
-    this.orderCollection_temp = this.afs.collection('orders_temp');
 
 
 
@@ -51,23 +52,14 @@ export class OrderFirestoreService {
 
 
 
-    this.orders_temp = this.orderCollection_temp.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Order;
-        const key = a.payload.doc.id;
-        return { key, ...data };
-      }))
-    );
-
     this.user = this.userService.getCurrentUser();
   }
 
 
   // Anzeige der Produktdaten
   getUserOrder(userId) {
-    console.log('filter ' +userId);
-    this.orderCollectionPerUser = this.afs.collection('orders', ref => ref.where('userId', '==', userId ));
-    this.orders = this.orderCollectionPerUser.snapshotChanges().pipe(
+    this.orderPerUser = this.afs.collection('orders', ref => ref.where('userId', '==', userId ));
+    this.orders = this.orderPerUser.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Order;
         const key = a.payload.doc.id;
@@ -82,7 +74,7 @@ export class OrderFirestoreService {
 
   getOrderData() {
 
-    this.orders = this.orderCollectionPerUser.snapshotChanges().pipe(
+    this.orders = this.orderPerUser.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Order;
         const key = a.payload.doc.id;
@@ -93,21 +85,7 @@ export class OrderFirestoreService {
 
   }
 
-  getOrderDocAnonymusData() {
-    const orderArray = [];
-    let order = null;
-    this.afs.collection('orders_temp', ref => ref.where('userId', '==', '0' )).ref.get().then(function (res) {
-      res.forEach(doc => {
-        order = doc.data() as Order;
-        order.key = doc.id;
-        orderArray.push(order);
-      });
-    });
 
-
-    return orderArray;
-
-  }
 
 
   getOrderDoc(key, userId) {
@@ -129,9 +107,8 @@ export class OrderFirestoreService {
     return  this.productsOrderCollection;
   }
 
-
+  // Bestellung hinzufügen
   addUserOrder(order: Order) {
-
     const data = JSON.parse(JSON.stringify(order));
     this.orderCollection.add(data);
   }
@@ -147,12 +124,12 @@ export class OrderFirestoreService {
     if (this.user) {
       productPerOrder.userId = this.user.uid;
       this.addProductToOrderUser(productPerOrder);
-      console.log('onAddProductControl - user Ok');
+      // console.log('onAddProductControl - user Ok');
     } else {
 
       let productStore = [];
       productStore = this.localStorageService.getData('products');
-      console.log(productStore);
+      // console.log(productStore);
       productStore.push({
         productId:productPerOrder.productId,
         qty:productPerOrder.qty,
@@ -160,7 +137,7 @@ export class OrderFirestoreService {
       });
 
       this.localStorageService.setData('products',productStore);
-      console.log('onAddProductControl - No user');
+      // console.log('onAddProductControl - No user');
     }
 
 
@@ -221,10 +198,34 @@ export class OrderFirestoreService {
   }
 
 
+  clearScart(){
+    if (this.user) {
+      //this.deleteOrder(this.orderId);
+      //this.deleteProductsPerOrder(this.orderId);
+    } else {
+      this.localStorageService.destroyUserLocalStorage('products');
+    }
+
+  }
 
   deleteOrder(key: string) {
     this.orderDoc = this.afs.doc(`orders/${key}`);
     this.orderDoc.delete();
+  }
+  deleteUserOrder(userId: string) {
+    this.afs.collection('orders', ref => ref.where('userId', '==', userId )).ref.get()
+      .then(querySnapshot => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete().then(() => {
+            console.log("Document successfully deleted!");
+          }).catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
+        })
+      })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+      });
   }
 
   deleteAnonymusOrder(key: string) {

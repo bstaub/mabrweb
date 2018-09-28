@@ -30,7 +30,6 @@ export class OrderEditComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private userService: UserService) {
 
-    this.orderArray = this.orderFirestoreService.getOrderDocAnonymusData();
 
 
   }

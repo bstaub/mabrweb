@@ -1,21 +1,28 @@
+<div class="container">
+
 
 <h1>Bestellpositionen</h1>
 
-<div *ngFor="let product of productStore ">
+<div *ngFor="let product of productStore">
   Artikel: <b>{{product.description}}</b> Anzahl: <b>{{product.qty}}</b>
 </div>
 
-<hr>
+<hr/>
+<button class="btn btn-primary" (click)="onDelete()">Warenkorb Löschen</button>
+<hr/>
 <br>
 <br>
 <br>
 
-<div *ngFor="let orderData of order | async">
+
+
+
+<div *ngIf="user" class="row">
   <h1>Allgemeine Infos</h1>
   <div>
-    <label>Best.Nr.: </label> {{orderData.key}}
+    <label>Best.Nr.: </label> {{order?.key}}
   <div>
-    <label>User: </label> {{orderData.userId}}
+    <label>User: </label> {{order?.userId}}
   </div>
   <!--
   <div>
@@ -23,24 +30,43 @@
   </div>
   -->
   <div>
-    <label>Status: </label> {{orderData.status}}
+    <label>Status: </label> {{order?.status}}
   </div>
   <div>
-    <label>Gesamtbetrag: </label> {{orderData.totalValue}}
+    <label>Gesamtbetrag: </label> {{order?.totalValue}}
   </div>
 
 
   <hr/>
-  <!--
-  <button class="btn btn-primary" (click)="onDelete()">Löschen</button>
-  <button class="btn btn-primary" (click)="onEdit()">Bearbeiten</button>
-  <button *ngIf="!user" class="btn btn-primary" (click)="onAuthorize()">Authorisieren</button>
-  <button  *ngIf="user" class="btn btn-primary" (click)="onSubmitOrder()">Bestellung Absenden</button>
-  <hr/>
-  -->
-
-
+  </div>
 </div>
+
+
+  <div *ngIf="!user" class="row">
+    <div class="col-lg-4">
+      <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" ngModel class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" ngModel class="form-control" required>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Einloggen und Warenkorb übernehmen</button>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 
 
 

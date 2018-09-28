@@ -7,6 +7,9 @@ import {ProductFirestoreService} from '../../product/shared/product-firestore.se
 import {UserService} from '../../user/shared/user.service';
 import {LocalStorageService} from '../../shared/local-storage.service';
 import {Order} from '../order.model';
+import {NgForm} from '@angular/forms';
+import {AuthService} from '../../user/shared/auth.service';
+import {ProductPerOrder} from '../productPerOrder.model';
 
 
 
@@ -17,13 +20,13 @@ import {Order} from '../order.model';
 })
 export class OrderDetailComponent implements OnInit {
 
+  productStore: any[];
   orderId: string;
   orderData: Order[];
-  products: any[];
   user: any;
   userId: string;
-  productStore: any[];
-  order: Observable<any>;
+  //order: Observable<any>;
+  order: any;
 
 
   constructor(
@@ -33,7 +36,8 @@ export class OrderDetailComponent implements OnInit {
     private productFireStoreService: ProductFirestoreService,
     private router: Router,
     private userService: UserService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private authService: AuthService
   ) {
 
 
@@ -53,126 +57,125 @@ export class OrderDetailComponent implements OnInit {
 
 
 
+
   getProducts(){
     let productsArray = [];
 
     if (this.user) {
-      console.log('getProd - User OK'+ this.user.uid);
-      this.order = this.orderFirestoreService.getUserOrder(this.user.uid);
+
+      this.localStorageService.destroyUserLocalStorage('products');
+      //this.order = this.orderFirestoreService.getUserOrder(this.user.uid);
 
 
       this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) =>{
-        this.orderData = res;
-      })
+        this.order = res[0];
+        this.orderFirestoreService.getProductsPerOrder(this.order.key).ref.get().then( (res) =>{
 
-      console.log(this.orderData);
-      console.log(this.order);
+          res.forEach(doc => {
+            let newProduct = doc.data();
+            newProduct.id = doc.id;
+            if (newProduct.productId) {
+              newProduct.productId.get()
+                .then(res => {
+                  newProduct.productData = res.data()
+                  if (newProduct.productData) {
+                    productsArray.push(newProduct)
 
-      this.orderFirestoreService.getProductsPerOrder(this.orderId).ref.get().then(function (res) {
+                    let productStore = [];
+                    productStore = this.localStorageService.getData('products');
+                    productStore.push({
+                      productId:newProduct.id,
+                      qty:newProduct.qty,
+                      description:newProduct.productData.name
+                    });
+                    this.localStorageService.setData('products',productStore);
 
-        res.forEach(doc => {
-          let newProduct = doc.data();
-          newProduct.id = doc.id;
-          if (newProduct.productId) {
-            newProduct.productId.get()
-              .then(res => {
-                newProduct.productData = res.data()
-                if (newProduct.productData) {
-                  productsArray.push(newProduct)
-                }
-              })
-              .catch(err => console.error(err));
-          };
+                  }
+                })
+            };
+          })
         })
-      })
-        .catch(err => console.error(err));
+          .catch(err => console.error(err));
 
-      this.productStore = productsArray;
-      console.log(this.order);
+      })
+
+
+      this.productStore = this.localStorageService.getData('products');
+      console.log(this.productStore);
+
 
       //this.productsOrderCollection = this.afs.doc(`productsPerOrder/${key}`).collection('products');
     } else {
 
 
-      console.log('getProd - noUser');
+      // console.log('getProd - noUser');
       this.productStore = this.localStorageService.getData('products');
-      console.log(this.productStore);
+      //console.log(this.productStore);
     }
 
 
   }
 
   onDelete() {
+    this.orderFirestoreService.clearScart();
+    this.productStore = [];
+
     this.router.navigate(['/bestellung']);
 
-    if (this.user) {
-      this.orderFirestoreService.deleteOrder(this.orderId);
-      this.orderFirestoreService.deleteProductsPerOrder(this.orderId);
-    } else {
-      this.orderFirestoreService.deleteOrderAnonymus(this.orderId);
-      this.orderFirestoreService.deleteProductsPerOrderAnonymus(this.orderId, this.products);
-    }
+
   }
 
 
-  onEdit() {
-    this.router.navigate(['/bestellung', this.orderId, 'bearbeiten']);
+  onSubmit(form: NgForm) {
+
+
+    this.authService.loginWithUserPassword(form.value.email, form.value.password)
+      .then( userData => {
+
+        if (userData && userData.user.emailVerified) {
+
+          setTimeout(() => {
+
+            const order = new Order();
+            order.shopOrderId = 'ShopID XXX-123';
+            order.orderDate = new Date();
+            order.status = 'pending';
+            order.totalValue = 100;
+            order.userId = userData.user.uid;
+
+            //this.orderFirestoreService.deleteUserOrder(userData.user.uid)
+            this.orderFirestoreService.addUserOrder(order);
+            console.log(this.productStore);
+            console.log(this.user);
+            this.productStore.forEach((product) => {
+              const newProductPerOrder = new ProductPerOrder();
+              newProductPerOrder.productId = product.productId;
+              newProductPerOrder.qty = product.qty;
+              newProductPerOrder.userId = userData.user.uid;
+              console.log(newProductPerOrder);
+
+              this.orderFirestoreService.addProductToOrderUser(newProductPerOrder);
+
+            });
+
+            this.router.navigateByUrl('/bestellung');
+
+          }, 2000);
+        }
+
+      })
+      .catch( err => {
+        console.log('error bs: ' + err);
+      });
+
+
   }
 
-  onAuthorize() {
-    this.router.navigate(['/bestellung', this.orderId, 'bearbeiten']);
-  }
 
 
 
 
 
-
-  /* exOnNgInit
-     this.activatedRoute.params.subscribe(
-       params => {
-         this.orderId = params['id'];
-
-
-
-         this.products = [];
-         let productsArray = [];
-
-         if (this.user) {
-           this.userId = this.user.uid;
-           //console.log('orderDetails - user Ok');
-         } else {
-           this.userId = '0';
-           //console.log('orderDetails - No user');
-         }
-
-         this.selectedOrder = this.orderFirestoreService.getOrderDoc(params['id'], this.userId).valueChanges();
-         this.orderFirestoreService.getProductsPerOrder(this.orderId, this.userId).ref.get().then(function (res) {
-
-           res.forEach(doc => {
-             let newProduct = doc.data();
-             newProduct.id = doc.id;
-             if (newProduct.productId) {
-               newProduct.productId.get()
-                 .then(res => {
-                   newProduct.productData = res.data()
-                   if (newProduct.productData) {
-                     productsArray.push(newProduct)
-                   }
-                 })
-                 .catch(err => console.error(err));
-             };
-           })
-         })
-           .catch(err => console.error(err));
-
-         this.products = productsArray;
-
-
-       }
-     );
-
-   */
 
 
 }

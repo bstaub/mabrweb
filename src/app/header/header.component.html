@@ -29,6 +29,54 @@
         </div>
       </li>
     </ul>
+
+
+    <div class="pull-right">
+      <ul>
+        <li class="submenu">
+          <img src="assets/cart.png" id="img-cart">
+          <div id="shopping-cart" style="display: none">
+
+            <table id="cart-content" class="u-full-width">
+              <thead>
+              <tr>
+                <th>Bild</th>
+                <th>Name</th>
+                <th>Preis</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody><tr>
+
+                <td>
+                  <img src="#" width="100">
+                </td>
+                <td>Name1</td>
+                <td>CHF 10</td>
+                <td>
+                  <a href="#" class="remove" data-id="12">X</a>
+                </td>
+
+              </tr><tr>
+
+                <td>
+                  <img src="#" width="100">
+                </td>
+                <td>Name2</td>
+                <td>CHF 15</td>
+                <td>
+                  <a href="#" class="remove" data-id="10">X</a>
+                </td>
+
+              </tr></tbody>
+            </table>
+
+            <a href="#" id="clear-cart" class="button u-full-width">Warenkorb löschen</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>

@@ -73,6 +73,20 @@ export class OrderDetailComponent implements OnInit {
 
   }
 
+
+  onOrder(){
+    const order = new Order();
+    order.shopOrderId = 'done-123-001'
+    order.orderDate = new Date();
+    order.status = 'done';
+    order.totalValue = this.order.totalValue;
+    order.userId = this.user.uid;
+    this.orderId = this.orderFirestoreService.closeUserOrder(order);
+    console.log(this.orderId);
+    this.orderFirestoreService.closeProductsPerOrder(this.orderId,this.user.uid, this.productStore);
+    this.onDelete();
+
+  }
   onEnterOrderData() {
     this.router.navigate(['/checkout']);
   }

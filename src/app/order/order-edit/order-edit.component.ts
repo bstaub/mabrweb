@@ -43,18 +43,18 @@ export class OrderEditComponent implements OnInit {
     order.status = this.orderArray[0].status;
     order.totalValue = 100;
     order.userId = this.selectedUser;
-    this.orderFirestoreService.deleteOrderAnonymus(this.orderArray[0].key);
+    //this.orderFirestoreService.deleteOrderAnonymus(this.orderArray[0].key);
     //this.orderFirestoreService.deleteProductsPerOrderAnonymus(this.orderArray[0].key, this.products);
-    this.orderFirestoreService.addUserOrder(order);
+    //this.orderFirestoreService.addUserOrder(order);
 
     this.products.forEach((product) => {
       const newProductPerOrder = new ProductPerOrder();
       newProductPerOrder.productId = product.id;
       newProductPerOrder.qty = product.qty;
-      newProductPerOrder.userId = this.selectedUser;
+      newProductPerOrder.orderId = this.selectedUser;
       console.log(newProductPerOrder);
 
-      this.orderFirestoreService.addProductToOrderUser(newProductPerOrder);
+      //this.orderFirestoreService.addProductToOrderUser(newProductPerOrder);
 
     });
 

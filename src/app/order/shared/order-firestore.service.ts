@@ -20,6 +20,7 @@ export class OrderFirestoreService {
 
   orderPerUser: AngularFirestoreCollection<Order>;
   orderCollection: AngularFirestoreCollection<Order>;
+  orderCollection_completed: AngularFirestoreCollection<Order>;
 
 
   productsOrderCollection: AngularFirestoreCollection<any>;
@@ -38,6 +39,7 @@ export class OrderFirestoreService {
               private localStorageService: LocalStorageService) {
 
     this.orderCollection = this.afs.collection('orders');
+    this.orderCollection_completed = this.afs.collection('orders_completed');
 
 
 
@@ -81,18 +83,40 @@ export class OrderFirestoreService {
     return  this.productsOrderCollection;
   }
 
-  // Bestellung hinzufügen
-  addUserOrder(order: Order) {
+  // Bestellung abschliessen
+  closeUserOrder(order: Order) {
+
     const data = JSON.parse(JSON.stringify(order));
     const ref =  this.afs.createId();
 
-    this.orderCollection.doc(ref).set(data).then(function (docRef) {
-      console.log(ref);
+    this.orderCollection_completed.doc(ref).set(data).then(function (docRef) {
+      //console.log(ref);
     })
 
     return ref;
-
   }
+
+  // Zuweisung automatisch generierter Key bei Abschluss
+  closeProductsPerOrder(orderId: string, userId: string, products: Array<any>){
+    products.forEach((product) => {
+      const productPerOrder = new ProductPerOrder();
+      productPerOrder.productId = product.productId;
+      productPerOrder.qty = product.qty;
+      productPerOrder.orderId = orderId;
+
+      this.afs.doc(`productsPerOrder_completed/${orderId}`).collection('products').doc(productPerOrder.productId).set({
+        orderId: this.afs.collection('orders').doc(orderId).ref,
+        productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
+        qty: +productPerOrder.qty
+      }).then(function() {
+         console.log('Document successfully archieved!');
+      }).catch(function(error) {
+         console.error('Error archiving document: ', error);
+      });
+
+    });
+  }
+
 
   // Initial Order erstellen
   creatNewUserOrder(userId: string) {
@@ -100,7 +124,7 @@ export class OrderFirestoreService {
     order.shopOrderId = 'ShopID XXX-123';
     order.orderDate = new Date();
     order.status = 'pending';
-    order.totalValue = 100;
+    order.totalValue = 0;
     order.userId = userId;
 
     const data = JSON.parse(JSON.stringify(order));
@@ -112,33 +136,29 @@ export class OrderFirestoreService {
 
   }
 
-  //Warenkorb in Firestore speichern (Objektaufbereitung)
+  //Warenkorb in Firestore speichern (userId als Key wenn Status pending )
   saveProducts(userId: string, products: Array<any>){
 
    products.forEach((product) => {
-      const newProductPerOrder = new ProductPerOrder();
-      newProductPerOrder.productId = product.productId;
-      newProductPerOrder.qty = product.qty;
-      newProductPerOrder.userId = userId;
+      const productPerOrder = new ProductPerOrder();
+      productPerOrder.productId = product.productId;
+      productPerOrder.qty = product.qty;
+      productPerOrder.orderId = userId;
 
-      this.addProductToOrderUser(newProductPerOrder);
+     this.afs.doc(`productsPerOrder/${productPerOrder.orderId}`).collection('products').doc(productPerOrder.productId).set({
+       userId: this.afs.collection('orders').doc(productPerOrder.orderId).ref,
+       productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
+       qty: +productPerOrder.qty
+     }).then(function() {
+       // console.log('Document successfully added!');
+     }).catch(function(error) {
+       // console.error('Error adding document: ', error);
+     });
 
     });
   }
 
-//Warenkorb in Firestore speichern (Speicherprozess)
-  addProductToOrderUser(productPerOrder: ProductPerOrder) {
 
-    this.afs.doc(`productsPerOrder/${productPerOrder.userId}`).collection('products').doc(productPerOrder.productId).set({
-      orderId: this.afs.collection('orders').doc(productPerOrder.userId).ref,
-      productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
-      qty: +productPerOrder.qty
-    }).then(function() {
-      // console.log('Document successfully added!');
-    }).catch(function(error) {
-      // console.error('Error adding document: ', error);
-    });
-  }
 
   //Warenkorb von Firestore in LocalStorage speichern
   loadProducts(userId: string){
@@ -254,16 +274,7 @@ export class OrderFirestoreService {
     this.orderDoc.delete();
   }
 
-  deleteAnonymusOrder(key: string) {
-    this.orderDoc = this.afs.doc(`orders_temp/${key}`);
-    this.orderDoc.delete();
-  }
 
-
-  deleteOrderAnonymus(key: string) {
-    this.orderDoc = this.afs.doc(`orders_temp/${key}`);
-    this.orderDoc.delete();
-  }
 
 
 
@@ -278,15 +289,6 @@ export class OrderFirestoreService {
 
     });
   }
-
-
-  updateOrder(order: Order) {
-    this.orderDoc = this.afs.doc(`orders/${order.key}`);
-    this.orderDoc.update(order);
-
-  }
-
-
 
 
 

@@ -1,6 +1,6 @@
 export class ProductPerOrder {
   productId: string;
-  userId?: string;
+  orderId?: string;
   qty: number;
   description?: string
 }

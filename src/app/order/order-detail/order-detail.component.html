@@ -66,8 +66,9 @@
     </div>
   </div>
 
-
+  <button *ngIf="user" class="btn btn-primary" (click)="onOrder()">(Bestellung abschicken)</button>&nbsp;
   <button *ngIf="user" class="btn btn-primary" (click)="onEnterOrderData()">Bestelldaten eingeben</button>
+
 </div>
 
 

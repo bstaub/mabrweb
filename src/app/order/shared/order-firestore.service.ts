@@ -112,7 +112,7 @@ export class OrderFirestoreService {
 
   }
 
-  //Warenkorb in Firestore speichern
+  //Warenkorb in Firestore speichern (Objektaufbereitung)
   saveProducts(userId: string, products: Array<any>){
 
    products.forEach((product) => {
@@ -120,13 +120,24 @@ export class OrderFirestoreService {
       newProductPerOrder.productId = product.productId;
       newProductPerOrder.qty = product.qty;
       newProductPerOrder.userId = userId;
-      console.log(newProductPerOrder);
 
       this.addProductToOrderUser(newProductPerOrder);
 
     });
+  }
 
+//Warenkorb in Firestore speichern (Speicherprozess)
+  addProductToOrderUser(productPerOrder: ProductPerOrder) {
 
+    this.afs.doc(`productsPerOrder/${productPerOrder.userId}`).collection('products').doc(productPerOrder.productId).set({
+      orderId: this.afs.collection('orders').doc(productPerOrder.userId).ref,
+      productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
+      qty: +productPerOrder.qty
+    }).then(function() {
+      // console.log('Document successfully added!');
+    }).catch(function(error) {
+      // console.error('Error adding document: ', error);
+    });
   }
 
   //Warenkorb von Firestore in LocalStorage speichern
@@ -135,7 +146,7 @@ export class OrderFirestoreService {
 
     const productsArray = [];
 
-
+    this.localStorageService.destroyUserLocalStorage('products')
     this.getProductsPerOrder(userId).ref.get().then( (res) => {
       res.forEach(doc => {
         const newProduct = doc.data();
@@ -146,7 +157,6 @@ export class OrderFirestoreService {
             .then(ressource => {
               newProduct.productData = ressource.data();
               if (newProduct.productData) {
-                //productsArray.push(newProduct);
 
                 let productStore = [];
                 productStore = this.localStorageService.getData('products');
@@ -218,58 +228,8 @@ export class OrderFirestoreService {
 
   }
 
+  //
 
-  addProductToOrderUser(productPerOrder: ProductPerOrder) {
-
-    const db = firebase.firestore();
-
-    // https://medium.com/@scarygami/cloud-firestore-quicktip-documentsnapshot-vs-querysnapshot-70aef6d57ab3
-
-    const orderCollection_temp =   this.afs.collection('orders');
-
-    let order;
-
-    this.afs.collection('orders', ref => ref.where('userId', '==', productPerOrder.userId )).ref.get().then (function (doc) {
-
-      if (doc.empty) {
-        console.log('new order');
-        order = new Order();
-        order.shopOrderId = 'test';
-        order.orderDate = new Date();
-        order.status = 'pending';
-        order.totalValue = 0;
-        order.userId = productPerOrder.userId;
-        console.log(order);
-
-        const data = JSON.parse(JSON.stringify(order));
-        orderCollection_temp.add(data).then(function (orderDocRef) {
-          db.collection('productsPerOrder').doc(orderDocRef.id).collection('products').doc(productPerOrder.productId).set({
-            orderId: db.doc('orders/' + orderDocRef.id),
-            productId: db.doc('products/' + productPerOrder.productId),
-            qty: productPerOrder.qty
-
-          });
-        });
-
-
-      } else {
-        console.log('order exist');
-        doc.forEach(function (documentSnapshot) {
-          const data = documentSnapshot.data();
-          const orderKey  = documentSnapshot.id;
-          console.log(data);
-          console.log(orderKey);
-          db.doc(`productsPerOrder/${orderKey}`).collection('products').doc(productPerOrder.productId).set({
-            orderId: db.collection('orders').doc(orderKey),
-            productId: db.collection('products').doc(productPerOrder.productId),
-            qty: +productPerOrder.qty
-          });
-        });
-
-      }
-    });
-
-  }
 
    // Warenkorb löschen
   clearScart(products: any[]){

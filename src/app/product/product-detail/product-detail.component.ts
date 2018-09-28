@@ -60,7 +60,8 @@ export class ProductDetailComponent implements OnInit {
   addToBasket(product) {
     this.productPerOrder = {
       productId: this.productId,
-      qty: product.itemcount
+      qty: product.itemcount,
+      description: product.name
     };
     this.orderFirestoreService.addProductToOrder(this.productPerOrder);
     alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');

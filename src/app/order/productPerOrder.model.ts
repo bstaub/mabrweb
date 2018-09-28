@@ -1,5 +1,6 @@
 export class ProductPerOrder {
-  productId?: string;
+  productId: string;
   userId?: string;
-  qty?: number;
+  qty: number;
+  description?: string
 }

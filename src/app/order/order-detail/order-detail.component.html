@@ -1,10 +1,21 @@
-<div *ngIf="selectedOrder">
+
+<h1>Bestellpositionen</h1>
+
+<div *ngFor="let product of productStore ">
+  Artikel: <b>{{product.description}}</b> Anzahl: <b>{{product.qty}}</b>
+</div>
+
+<hr>
+<br>
+<br>
+<br>
+
+<div *ngFor="let orderData of order | async">
   <h1>Allgemeine Infos</h1>
   <div>
-    <label>Best.Nr.: </label> {{orderId}}
-  </div>
+    <label>Best.Nr.: </label> {{orderData.key}}
   <div>
-    <label>User: </label> {{(selectedOrder | async)?.userId}}
+    <label>User: </label> {{orderData.userId}}
   </div>
   <!--
   <div>
@@ -12,50 +23,24 @@
   </div>
   -->
   <div>
-    <label>Status: </label> {{(selectedOrder | async)?.status}}
+    <label>Status: </label> {{orderData.status}}
   </div>
   <div>
-    <label>Gesamtbetrag: </label> {{(selectedOrder | async)?.totalValue}}
+    <label>Gesamtbetrag: </label> {{orderData.totalValue}}
   </div>
 
 
   <hr/>
+  <!--
   <button class="btn btn-primary" (click)="onDelete()">Löschen</button>
-  <!--<button class="btn btn-primary" (click)="onEdit()">Bearbeiten</button>-->
+  <button class="btn btn-primary" (click)="onEdit()">Bearbeiten</button>
   <button *ngIf="!user" class="btn btn-primary" (click)="onAuthorize()">Authorisieren</button>
   <button  *ngIf="user" class="btn btn-primary" (click)="onSubmitOrder()">Bestellung Absenden</button>
   <hr/>
-  <h1>Bestellpositionen</h1>
-
-  <div *ngFor="let product of products ">
-    Artikel: <b>{{product.productData.description}}</b> Anzahl: <b>{{product.qty}}</b>
+  -->
 
 
-  </div>
-
-
-  <div>
-    <div>
-      <div>
-        <div>
-          <select [(ngModel)]="selectedProduct">
-            <option value="">- Select -</option>
-            <option *ngFor="let product of allProducts | async" [value]="product.key">{{product.name}}</option>
-          </select>
-        </div>
-        <div><input type="text" class="form-control" [(ngModel)]="productAmount"></div>
-        <div>
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="onAddProductControl()">+
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-
 
 
 

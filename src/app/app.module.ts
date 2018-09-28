@@ -49,9 +49,10 @@ import {AdminProductAddComponent} from './admin/admin-product-add/admin-product-
 import {AdminProductEditComponent} from './admin/admin-product-edit/admin-product-edit.component';
 import {AdminHomeComponent} from './admin/admin-home/admin-home.component';
 import {AdminComponent} from './admin/admin.component';
-import { AdminProductListComponent } from './admin/admin-product-list/admin-product-list.component';
-import { AdminProductItemComponent } from './admin/admin-product-item/admin-product-item.component';
-import { AdminProductAddCategoryComponent } from './admin/admin-product-add-category/admin-product-add-category.component';
+import {AdminProductListComponent} from './admin/admin-product-list/admin-product-list.component';
+import {AdminProductItemComponent} from './admin/admin-product-item/admin-product-item.component';
+import {AdminProductAddCategoryComponent} from './admin/admin-product-add-category/admin-product-add-category.component';
+import {LocalStorageService} from './shared/local-storage.service';
 
 
 @NgModule({
@@ -100,7 +101,7 @@ import { AdminProductAddCategoryComponent } from './admin/admin-product-add-cate
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AdminGuard, AuthuserGuard, Auth2Guard, UserService, ProductFirestoreService, ProductCategoryService, OrderFirestoreService, NotificationService, StorageService, SettingsService],
+  providers: [AuthService, AdminGuard, AuthuserGuard, Auth2Guard, UserService, ProductFirestoreService, ProductCategoryService, OrderFirestoreService, NotificationService, StorageService, SettingsService, LocalStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

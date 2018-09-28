@@ -90,7 +90,7 @@ export class OrderEditComponent implements OnInit {
       params => {
         if (params.hasOwnProperty('id')) {
 
-          this.orderFirestoreService.getProductsPerOrder(params['id'], this.userId).ref.get().then(function (res) {
+          this.orderFirestoreService.getProductsPerOrder(this.userId).ref.get().then(function (res) {
 
             res.forEach(doc => {
               const newProduct = doc.data();

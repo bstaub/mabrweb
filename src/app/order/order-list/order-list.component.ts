@@ -29,12 +29,19 @@ export class OrderListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.user = this.userService.getCurrentUser();
+    setTimeout(() => {
+      this.user = this.userService.getCurrentUser();
+      this.getAllOrders();
+      console.log('reload!!!');
+      console.log(this.user);
+    }, 1200)
+
+
 
     //this.uid = this.userService.getCurrentUserId();
     //this.getUser();
 
-    this.getAllOrders();
+
   }
 
   getUser() {
@@ -61,10 +68,11 @@ export class OrderListComponent implements OnInit {
       this.orders = this.orderServiceFirestore.getUserOrder(this.userId);
 
 
+
     } else {
       this.userId = '0';
       console.log('getAllOrders - No user');
-      this.orders = this.orderServiceFirestore.getAnonymusOrder();
+      //this.orders = this.orderServiceFirestore.getAnonymusOrder();
     }
 
 

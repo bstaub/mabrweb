@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../user/shared/auth.service';
-import {User} from '../user/user';
-import {Observable} from 'rxjs';
-import * as firebase from 'firebase';
 import {ProductPerOrder} from './productPerOrder.model';
 import {ProductFirestoreService} from '../product/shared/product-firestore.service';
 import {OrderFirestoreService} from './shared/order-firestore.service';
@@ -14,26 +10,7 @@ import {Router} from '@angular/router';
   selector: 'app-order-start',
   template: `
     
-    <div>
-      <div>
-        <div>
-          <div>
-            <select [(ngModel)]="selectedProduct">
-              <option value="">- Select -</option>
-              <option *ngFor="let product of allProducts | async" [value]="product.key">{{product.name}}</option>
-            </select>
-          </div>
-          <div><input type="text" class="form-control" [(ngModel)]="productAmount"></div>
-          <div>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="onAddProductControl()">+
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+   
 
 
   `,
@@ -52,6 +29,7 @@ export class OrderStartComponent implements OnInit {
                private userService: UserService) { }
 
   ngOnInit() {
+    console.log('order-start')
     this.user = this.userService.getCurrentUser();
     this.getAllProducts();
   }

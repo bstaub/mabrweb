@@ -3,11 +3,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {OrderService} from '../order.service';
 import {OrderFirestoreService} from '../shared/order-firestore.service';
 import {Observable} from 'rxjs';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProductFirestoreService} from '../../product/shared/product-firestore.service';
-import {ProductPerOrder} from '../productPerOrder.model';
-import * as firebase from 'firebase';
 import {UserService} from '../../user/shared/user.service';
+import {LocalStorageService} from '../../shared/local-storage.service';
+import {Order} from '../order.model';
 
 
 
@@ -17,16 +16,14 @@ import {UserService} from '../../user/shared/user.service';
   styles: []
 })
 export class OrderDetailComponent implements OnInit {
-  addProductForm: FormGroup;
-  selectedOrder: Observable<any>;
-  order: Observable<any>;
+
   orderId: string;
+  orderData: Order[];
   products: any[];
-  allProducts: any;
-  selectedProduct: string;
   user: any;
   userId: string;
-  productAmount: number;
+  productStore: any[];
+  order: Observable<any>;
 
 
   constructor(
@@ -35,93 +32,75 @@ export class OrderDetailComponent implements OnInit {
     private orderFirestoreService: OrderFirestoreService,
     private productFireStoreService: ProductFirestoreService,
     private router: Router,
-    private userService: UserService) {}
+    private userService: UserService,
+    private localStorageService: LocalStorageService
+  ) {
 
 
+  }
 
 
   ngOnInit() {
-    this.user = this.userService.getCurrentUser();
-    this.productAmount = 0;
-    this.selectedProduct = '';
+
+    setTimeout(() => {
+      this.user = this.userService.getCurrentUser();
+
+      this.getProducts();
+    }, 1000)
 
 
-    this.getAllProducts();
-
-    this.activatedRoute.params.subscribe(
-      params => {
-        this.orderId = params['id'];
+  }
 
 
 
-        this.products = [];
-        let productsArray = [];
+  getProducts(){
+    let productsArray = [];
 
-        if (this.user) {
-          this.userId = this.user.uid;
-          console.log('orderDetails - user Ok');
-        } else {
-          this.userId = '0';
-          console.log('orderDetails - No user');
-        }
+    if (this.user) {
+      console.log('getProd - User OK'+ this.user.uid);
+      this.order = this.orderFirestoreService.getUserOrder(this.user.uid);
 
-        this.selectedOrder = this.orderFirestoreService.getOrderDoc(params['id'], this.userId).valueChanges();
-        this.orderFirestoreService.getProductsPerOrder(this.orderId, this.userId).ref.get().then(function (res) {
 
-          res.forEach(doc => {
-            let newProduct = doc.data();
-            newProduct.id = doc.id;
-            if (newProduct.productId) {
-              newProduct.productId.get()
-                .then(res => {
-                  newProduct.productData = res.data()
-                  if (newProduct.productData) {
-                    productsArray.push(newProduct)
-                  }
-                })
-                .catch(err => console.error(err));
-            };
-          })
+      this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) =>{
+        this.orderData = res;
+      })
+
+      console.log(this.orderData);
+      console.log(this.order);
+
+      this.orderFirestoreService.getProductsPerOrder(this.orderId).ref.get().then(function (res) {
+
+        res.forEach(doc => {
+          let newProduct = doc.data();
+          newProduct.id = doc.id;
+          if (newProduct.productId) {
+            newProduct.productId.get()
+              .then(res => {
+                newProduct.productData = res.data()
+                if (newProduct.productData) {
+                  productsArray.push(newProduct)
+                }
+              })
+              .catch(err => console.error(err));
+          };
         })
-          .catch(err => console.error(err));
+      })
+        .catch(err => console.error(err));
 
-        this.products = productsArray;
+      this.productStore = productsArray;
+      console.log(this.order);
 
-
-      }
-    );
-
-
-    this.addProductForm = new FormGroup({
-      'products': new FormControl('', Validators.required),
+      //this.productsOrderCollection = this.afs.doc(`productsPerOrder/${key}`).collection('products');
+    } else {
 
 
-    });
+      console.log('getProd - noUser');
+      this.productStore = this.localStorageService.getData('products');
+      console.log(this.productStore);
+    }
 
-
-
-  }
-
-  getAllProducts () {
-
-    this.allProducts = this.productFireStoreService.getProducts();
 
   }
-
-  onAddProductControl() {
-
-    let newProductperOrder = new ProductPerOrder();
-    newProductperOrder.productId = this.selectedProduct;
-    newProductperOrder.qty = this.productAmount;
-
-    this.orderFirestoreService.addProductToOrder(newProductperOrder);
-
-    this.selectedProduct = '';
-    this.productAmount = 0;
-    this.router.navigate(['/bestellung', this.orderId]);
-
-  }
-
 
   onDelete() {
     this.router.navigate(['/bestellung']);
@@ -144,11 +123,56 @@ export class OrderDetailComponent implements OnInit {
     this.router.navigate(['/bestellung', this.orderId, 'bearbeiten']);
   }
 
-  onSubmitOrder() {
-
-  }
 
 
+
+
+
+  /* exOnNgInit
+     this.activatedRoute.params.subscribe(
+       params => {
+         this.orderId = params['id'];
+
+
+
+         this.products = [];
+         let productsArray = [];
+
+         if (this.user) {
+           this.userId = this.user.uid;
+           //console.log('orderDetails - user Ok');
+         } else {
+           this.userId = '0';
+           //console.log('orderDetails - No user');
+         }
+
+         this.selectedOrder = this.orderFirestoreService.getOrderDoc(params['id'], this.userId).valueChanges();
+         this.orderFirestoreService.getProductsPerOrder(this.orderId, this.userId).ref.get().then(function (res) {
+
+           res.forEach(doc => {
+             let newProduct = doc.data();
+             newProduct.id = doc.id;
+             if (newProduct.productId) {
+               newProduct.productId.get()
+                 .then(res => {
+                   newProduct.productData = res.data()
+                   if (newProduct.productData) {
+                     productsArray.push(newProduct)
+                   }
+                 })
+                 .catch(err => console.error(err));
+             };
+           })
+         })
+           .catch(err => console.error(err));
+
+         this.products = productsArray;
+
+
+       }
+     );
+
+   */
 
 
 }

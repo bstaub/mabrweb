@@ -37,14 +37,14 @@ export class ProductItemComponent implements OnInit {
 
   }
 
+
   addToBasket(product) {
     this.productPerOrder = {
       productId: product.key,
-      qty: product.itemcount
+      qty: product.itemcount,
+      description: product.name
     };
     this.orderFirestoreService.addProductToOrder(this.productPerOrder);
     alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
   }
-
-
 }

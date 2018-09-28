@@ -3,12 +3,15 @@
 
 <h1>Bestellpositionen</h1>
 
+
 <div *ngFor="let product of productStore">
   Artikel: <b>{{product.description}}</b> Anzahl: <b>{{product.qty}}</b>
 </div>
 
 <hr/>
-<button class="btn btn-primary" (click)="onDelete()">Warenkorb Löschen</button>
+  <button class="btn btn-primary" (click)="onDelete()">Warenkorb Löschen</button>&nbsp;
+  <button *ngIf="user" class="btn btn-primary" (click)="onSaveScart(order?.userId)">Warenkorb Speichern</button>&nbsp;
+
 <hr/>
 <br>
 <br>
@@ -17,7 +20,7 @@
 
 
 
-<div *ngIf="user" class="row">
+<div *ngIf="user" >
   <h1>Allgemeine Infos</h1>
   <div>
     <label>Best.Nr.: </label> {{order?.key}}
@@ -44,7 +47,7 @@
 
   <div *ngIf="!user" class="row">
     <div class="col-lg-4">
-      <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <form (ngSubmit)="onLoginWithOrder(f)" #f="ngForm">
 
         <div class="form-group">
           <label for="email">Email</label>
@@ -61,6 +64,9 @@
       </form>
     </div>
   </div>
+
+
+  <button *ngIf="user" class="btn btn-primary" (click)="onEnterOrderData()">Bestelldaten eingeben</button>
 </div>
 
 

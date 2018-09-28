@@ -10,6 +10,7 @@ import {Order} from '../order.model';
 import {NgForm} from '@angular/forms';
 import {AuthService} from '../../user/shared/auth.service';
 import {ProductPerOrder} from '../productPerOrder.model';
+import {NotificationService} from '../../shared/notification.service';
 
 
 
@@ -37,7 +38,8 @@ export class OrderDetailComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private localStorageService: LocalStorageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notifier: NotificationService
   ) {
 
 
@@ -59,140 +61,51 @@ export class OrderDetailComponent implements OnInit {
 
 
   getProducts(){
-    let productsArray = [];
 
     if (this.user) {
-
-      // this.localStorageService.destroyUserLocalStorage('products');
-      //this.order = this.orderFirestoreService.getUserOrder(this.user.uid);
-
-
       this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) =>{
         this.order = res[0];
-        /*
-        this.orderFirestoreService.getProductsPerOrder(this.order.key).ref.get().then( (res) =>{
-
-          res.forEach(doc => {
-            let newProduct = doc.data();
-            newProduct.id = doc.id;
-            if (newProduct.productId) {
-              newProduct.productId.get()
-                .then(res => {
-                  newProduct.productData = res.data()
-                  if (newProduct.productData) {
-                    productsArray.push(newProduct)
-
-                    let productStore = [];
-                    productStore = this.localStorageService.getData('products');
-                    productStore.push({
-                      productId:newProduct.id,
-                      qty:newProduct.qty,
-                      description:newProduct.productData.name
-                    });
-                    this.localStorageService.setData('products',productStore);
-
-                  }
-                })
-            };
-          })
-
-        })
-          .catch(err => console.error(err));
-  */
       })
-
-
-      this.productStore = this.localStorageService.getData('products');
-      console.log(this.productStore);
-
-
-      //this.productsOrderCollection = this.afs.doc(`productsPerOrder/${key}`).collection('products');
-    } else {
-
-
-      // console.log('getProd - noUser');
-      this.productStore = this.localStorageService.getData('products');
-      //console.log(this.productStore);
     }
 
+    this.productStore = this.localStorageService.getData('products');
 
+
+  }
+
+  onEnterOrderData() {
+    this.router.navigate(['/checkout']);
   }
 
   onDelete() {
-    this.orderFirestoreService.clearScart();
+    this.orderFirestoreService.clearScart(this.productStore);
     this.productStore = [];
-
     this.router.navigate(['/bestellung']);
+  }
+
+  onSaveScart(userId :string){
+    this.orderFirestoreService.clearScartStorage(this.productStore);
+    this.orderFirestoreService.saveProducts(userId, this.productStore);
 
 
   }
 
 
-  onSubmit(form: NgForm) {
-    let productsArray = [];
+  onLoginWithOrder(form: NgForm) {
 
     this.authService.loginWithUserPassword(form.value.email, form.value.password)
       .then( userData => {
 
         if (userData && userData.user.emailVerified) {
+          this.notifier.display('success', 'Login erfolgreich');
 
           setTimeout(() => {
 
-            const order = new Order();
-            order.shopOrderId = 'ShopID XXX-123';
-            order.orderDate = new Date();
-            order.status = 'pending';
-            order.totalValue = 100;
-            order.userId = userData.user.uid;
 
-            //this.orderFirestoreService.deleteUserOrder(userData.user.uid)
-            this.orderId = this.orderFirestoreService.addUserOrder(order);
-            console.log(this.orderId);
-            console.log(this.productStore);
-            console.log(this.user);
-            this.productStore.forEach((product) => {
-              const newProductPerOrder = new ProductPerOrder();
-              newProductPerOrder.productId = product.productId;
-              newProductPerOrder.qty = product.qty;
-              newProductPerOrder.userId = userData.user.uid;
-              console.log(newProductPerOrder);
+            this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
+            this.orderFirestoreService.saveProducts(userData.user.uid, this.productStore);
 
-              this.orderFirestoreService.addProductToOrderUser(newProductPerOrder);
 
-            });
-
-            this.localStorageService.destroyUserLocalStorage('products');
-            this.orderFirestoreService.getProductsPerOrder(this.orderId).ref.get().then( (res) =>{
-
-              res.forEach(doc => {
-                let newProduct = doc.data();
-                newProduct.id = doc.id;
-                if (newProduct.productId) {
-                  newProduct.productId.get()
-                    .then(res => {
-                      newProduct.productData = res.data()
-                      if (newProduct.productData) {
-                        productsArray.push(newProduct)
-
-                        let productStore = [];
-                        productStore = this.localStorageService.getData('products');
-                        productStore.push({
-                          productId:newProduct.id,
-                          qty:newProduct.qty,
-                          description:newProduct.productData.name
-                        });
-                        this.localStorageService.setData('products',productStore);
-
-                      }
-                    })
-                };
-              })
-
-            })
-              .catch(err => console.error(err));
-
-            this.productStore = this.localStorageService.getData('products');
-            console.log(this.productStore);
             this.router.navigateByUrl('/bestellung');
 
           }, 2000);

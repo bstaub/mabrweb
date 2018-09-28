@@ -15,6 +15,7 @@ import {ResetPasswordComponent} from './user/reset-password/reset-password.compo
 import {ADMIN_ROUTES} from './admin/admin.routing';
 import {AdminGuard} from './user/guards/admin.guard';
 import {AdminComponent} from './admin/admin.component';
+import {CheckoutEnterdataComponent} from './checkout/checkout-enterdata/checkout-enterdata.component';
 
 
 const APP_ROUTES: Routes = [
@@ -22,6 +23,7 @@ const APP_ROUTES: Routes = [
   {path: 'admin', component: AdminComponent, children: ADMIN_ROUTES, canActivate: [AdminGuard] },
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES },
   {path: 'bestellung', component: OrderComponent, children: ORDER_ROUTES},
+  {path: 'checkout', component: CheckoutEnterdataComponent, children: ORDER_ROUTES},
   {path: 'user', component: UserListComponent, children: USER_ROUTES, canActivate: [Auth2Guard]},
   {path: 'login', component: UserLoginComponent},
   {path: 'register', component: UserRegisterComponent},

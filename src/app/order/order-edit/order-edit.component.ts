@@ -44,7 +44,7 @@ export class OrderEditComponent implements OnInit {
     order.totalValue = 100;
     order.userId = this.selectedUser;
     this.orderFirestoreService.deleteOrderAnonymus(this.orderArray[0].key);
-    this.orderFirestoreService.deleteProductsPerOrderAnonymus(this.orderArray[0].key, this.products);
+    //this.orderFirestoreService.deleteProductsPerOrderAnonymus(this.orderArray[0].key, this.products);
     this.orderFirestoreService.addUserOrder(order);
 
     this.products.forEach((product) => {

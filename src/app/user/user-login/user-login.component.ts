@@ -3,6 +3,7 @@ import {NgForm} from '@angular/forms';
 import {AuthService} from '../shared/auth.service';
 import {NotificationService} from '../../shared/notification.service';
 import {Router} from '@angular/router';
+import {OrderFirestoreService} from '../../order/shared/order-firestore.service';
 
 @Component({
   selector: 'app-user-login',
@@ -11,7 +12,10 @@ import {Router} from '@angular/router';
 })
 export class UserLoginComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router, private notifier: NotificationService) { }
+  constructor(private authService: AuthService,
+              private router: Router,
+              private notifier: NotificationService,
+              private orderFirestoreService: OrderFirestoreService,) { }
 
   ngOnInit() {
   }
@@ -25,6 +29,9 @@ export class UserLoginComponent implements OnInit {
 
           setTimeout(() => {
             // https://stackoverflow.com/questions/45025334/how-to-use-router-navigatebyurl-and-router-navigate-in-angular
+
+            this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
+            this.orderFirestoreService.loadProducts(userData.user.uid);
             this.router.navigateByUrl('');  // geht zur Homepage!
             // this.router.navigate(['/login']);
           }, 2000);

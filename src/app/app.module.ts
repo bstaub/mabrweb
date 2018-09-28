@@ -53,6 +53,7 @@ import {AdminProductListComponent} from './admin/admin-product-list/admin-produc
 import {AdminProductItemComponent} from './admin/admin-product-item/admin-product-item.component';
 import {AdminProductAddCategoryComponent} from './admin/admin-product-add-category/admin-product-add-category.component';
 import {LocalStorageService} from './shared/local-storage.service';
+import {CheckoutEnterdataComponent} from './checkout/checkout-enterdata/checkout-enterdata.component';
 
 
 @NgModule({
@@ -88,6 +89,7 @@ import {LocalStorageService} from './shared/local-storage.service';
     AdminProductListComponent,
     AdminProductItemComponent,
     AdminProductAddCategoryComponent,
+    CheckoutEnterdataComponent,
   ],
   imports: [
     BrowserModule,

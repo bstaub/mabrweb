@@ -54,9 +54,6 @@ export class OrderFirestoreService {
 
 
 
-
-
-
     this.user = this.userService.getCurrentUser();
   }
 
@@ -74,34 +71,6 @@ export class OrderFirestoreService {
     return this.orders;
   }
 
-
-
-
-  getOrderData() {
-
-    this.orders = this.orderPerUser.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Order;
-        const key = a.payload.doc.id;
-        return { key, ...data };
-      }))
-    );
-
-
-  }
-
-
-
-
-  getOrderDoc(key, userId) {
-    if (userId === '0') {
-      this.orderDoc = this.afs.doc(`orders_temp/${key}`);
-    } else {
-      this.orderDoc = this.afs.doc(`orders/${key}`);
-    }
-
-    return this.orderDoc;
-  }
 
 
 
@@ -198,33 +167,10 @@ export class OrderFirestoreService {
     })
       .catch(err => console.error(err));
 
-    console.log(productsArray);
 
-    /*
-   this.productsOrderCollection = this.afs.doc(`productsPerOrder/${userId}`).collection('products');
-   this.products = this.productsOrderCollection.snapshotChanges().pipe(
-     map(actions => actions.map(a => {
-       const data = a.payload.doc.data() as Order;
-       const key = a.payload.doc.id;
-       return { key, ...data };
-     }))
-
-   );
-
-*/
 
 
     }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -347,21 +293,6 @@ export class OrderFirestoreService {
     this.orderDoc = this.afs.doc(`orders/${key}`);
     this.orderDoc.delete();
   }
-  deleteUserOrder(userId: string) {
-    this.afs.collection('orders', ref => ref.where('userId', '==', userId )).ref.get()
-      .then(querySnapshot => {
-        querySnapshot.forEach((doc) => {
-          doc.ref.delete().then(() => {
-            console.log("Document successfully deleted!");
-          }).catch(function (error) {
-            console.error("Error removing document: ", error);
-          });
-        })
-      })
-      .catch(function(error) {
-        console.log("Error getting documents: ", error);
-      });
-  }
 
   deleteAnonymusOrder(key: string) {
     this.orderDoc = this.afs.doc(`orders_temp/${key}`);
@@ -385,13 +316,8 @@ export class OrderFirestoreService {
         console.error('Error removing temp document: ', error);
       });
 
-
-
     });
-
-
   }
-
 
 
   updateOrder(order: Order) {
@@ -400,69 +326,6 @@ export class OrderFirestoreService {
 
   }
 
-  authorizeOrder(orderKey, order: Order) {
-    this.orderDoc = this.afs.doc(`orders/${orderKey}`);
-    this.orderDoc.update(order);
-
-  }
-
-
-
-
-
-
-
-
-
-
-  // ???
-
-  addProductToOrderAnonymus(productPerOrder: ProductPerOrder) {
-
-    console.log('addProductToOrderAnonymus');
-    const db = firebase.firestore();
-
-
-    const orderCollection_temp =   this.afs.collection('orders_temp');
-    let order;
-
-    this.afs.collection('orders_temp', ref => ref.where('userId', '==', '0' )).ref.get().then (function (doc) {
-
-      if (doc.empty) {
-        console.log('new order');
-        order = new Order();
-        order.shopOrderId = 'test';
-        order.orderDate = new Date();
-        order.status = 'pending';
-        order.totalValue = 0;
-        order.userId = '0';
-        console.log(order);
-
-        const data = JSON.parse(JSON.stringify(order));
-        orderCollection_temp.add(data).then(function (orderDocRef) {
-          db.collection('productsPerOrder_temp').doc(orderDocRef.id).collection('products').doc(productPerOrder.productId).set({
-            orderId: db.doc('orders/' + orderDocRef.id),
-            productId: db.doc('products/' + productPerOrder.productId),
-            qty: productPerOrder.qty
-
-          });
-        });
-
-
-      } else {
-        console.log('order exist');
-        doc.forEach(function (documentSnapshot) {
-          const orderKey  = documentSnapshot.id;
-          db.doc(`productsPerOrder_temp/${orderKey}`).collection('products').doc(productPerOrder.productId).set({
-            orderId: db.collection('orders').doc(orderKey),
-            productId: db.collection('products').doc(productPerOrder.productId),
-            qty: +productPerOrder.qty
-          });
-        });
-
-      }
-    });
-  }
 
 
 

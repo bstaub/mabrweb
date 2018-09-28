@@ -110,7 +110,14 @@ export class OrderFirestoreService {
   // Bestellung hinzufügen
   addUserOrder(order: Order) {
     const data = JSON.parse(JSON.stringify(order));
-    this.orderCollection.add(data);
+    const ref =  this.afs.createId();
+
+    this.orderCollection.doc(ref).set(data).then(function (docRef) {
+      console.log(ref);
+    })
+
+    return ref;
+
   }
 
 

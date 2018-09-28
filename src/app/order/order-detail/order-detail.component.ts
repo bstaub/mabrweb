@@ -63,12 +63,13 @@ export class OrderDetailComponent implements OnInit {
 
     if (this.user) {
 
-      this.localStorageService.destroyUserLocalStorage('products');
+      // this.localStorageService.destroyUserLocalStorage('products');
       //this.order = this.orderFirestoreService.getUserOrder(this.user.uid);
 
 
       this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) =>{
         this.order = res[0];
+        /*
         this.orderFirestoreService.getProductsPerOrder(this.order.key).ref.get().then( (res) =>{
 
           res.forEach(doc => {
@@ -94,9 +95,10 @@ export class OrderDetailComponent implements OnInit {
                 })
             };
           })
+
         })
           .catch(err => console.error(err));
-
+  */
       })
 
 
@@ -127,7 +129,7 @@ export class OrderDetailComponent implements OnInit {
 
 
   onSubmit(form: NgForm) {
-
+    let productsArray = [];
 
     this.authService.loginWithUserPassword(form.value.email, form.value.password)
       .then( userData => {
@@ -144,7 +146,8 @@ export class OrderDetailComponent implements OnInit {
             order.userId = userData.user.uid;
 
             //this.orderFirestoreService.deleteUserOrder(userData.user.uid)
-            this.orderFirestoreService.addUserOrder(order);
+            this.orderId = this.orderFirestoreService.addUserOrder(order);
+            console.log(this.orderId);
             console.log(this.productStore);
             console.log(this.user);
             this.productStore.forEach((product) => {
@@ -158,6 +161,38 @@ export class OrderDetailComponent implements OnInit {
 
             });
 
+            this.localStorageService.destroyUserLocalStorage('products');
+            this.orderFirestoreService.getProductsPerOrder(this.orderId).ref.get().then( (res) =>{
+
+              res.forEach(doc => {
+                let newProduct = doc.data();
+                newProduct.id = doc.id;
+                if (newProduct.productId) {
+                  newProduct.productId.get()
+                    .then(res => {
+                      newProduct.productData = res.data()
+                      if (newProduct.productData) {
+                        productsArray.push(newProduct)
+
+                        let productStore = [];
+                        productStore = this.localStorageService.getData('products');
+                        productStore.push({
+                          productId:newProduct.id,
+                          qty:newProduct.qty,
+                          description:newProduct.productData.name
+                        });
+                        this.localStorageService.setData('products',productStore);
+
+                      }
+                    })
+                };
+              })
+
+            })
+              .catch(err => console.error(err));
+
+            this.productStore = this.localStorageService.getData('products');
+            console.log(this.productStore);
             this.router.navigateByUrl('/bestellung');
 
           }, 2000);

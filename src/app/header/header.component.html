@@ -31,11 +31,19 @@
     </ul>
 
 
-    <div class="pull-right">
+
+
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+
+    <div class="pull-right shopping">
       <ul>
         <li class="submenu">
           <img src="assets/cart.png" id="img-cart">
-          <div id="shopping-cart" style="display: none">
+          <div id="shopping-cart">
 
             <table id="cart-content" class="u-full-width">
               <thead>
@@ -46,40 +54,27 @@
                 <th></th>
               </tr>
               </thead>
-              <tbody><tr>
+              <tbody>
 
-                <td>
-                  <img src="#" width="100">
-                </td>
-                <td>Name1</td>
-                <td>CHF 10</td>
-                <td>
-                  <a href="#" class="remove" data-id="12">X</a>
-                </td>
+              <tr *ngFor="let item of itemsForBasket">
+                  <td>
+                    <img src="https://firebasestorage.googleapis.com/v0/b/mabrweb-e6503.appspot.com/o/5nhut7m1rnu?alt=media&token=e027aec1-f324-476e-89a5-e03e8cf80763" width="60">
+                  </td>
+                  <td>{{item.description}}</td>
+                  <td>CHF {{item.qty}}</td>
+                  <td>
+                    <a href="#" class="remove" [attr.data-id]="item.productId" (click)="removeItem($event)">X</a>
+                  </td>
+              </tr>
 
-              </tr><tr>
-
-                <td>
-                  <img src="#" width="100">
-                </td>
-                <td>Name2</td>
-                <td>CHF 15</td>
-                <td>
-                  <a href="#" class="remove" data-id="10">X</a>
-                </td>
-
-              </tr></tbody>
+              </tbody>
             </table>
 
-            <a href="#" id="clear-cart" class="button u-full-width">Warenkorb löschen</a>
+            <a [routerLink]="['bestellung']" id="clear-cart" class="button u-full-width btn btn-outline-primary mt-2">Bestellen</a>
           </div>
         </li>
       </ul>
     </div>
 
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
   </div>
 </nav>

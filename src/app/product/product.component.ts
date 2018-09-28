@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from './shared/product.service';
 import {LocalStorageService} from '../shared/local-storage.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -15,37 +16,16 @@ export class ProductComponent implements OnInit {
 
   basket = [];
   constructor(private productService: ProductService,
-              private localStorageService: LocalStorageService
-
-  ) { }
+              private router: Router) { }
 
   ngOnInit() {
 
   }
 
+
   getBasket() {
-    this.basket = this.productService.getbasket();
-  }
-
-  getProductsFromLocalStorage() {
-    const itemsForBasket = this.localStorageService.getData('products');
-
-    itemsForBasket.forEach(function(item) {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-               <tr>
-                    <td>
-                         <img src="${item.image}" width=100>
-                    </td>
-                    <td>${item.title}</td>
-                    <td>${item.price}</td>
-                    <td>
-                         <a href="#" class="remove" data-id="${item.id}">X</a>
-                    </td>
-               </tr>
-          `;
-      this.shoppingCartContent.appendChild(row);
-    });
+    // this.basket = this.productService.getbasket();
+    this.router.navigate(['/bestellung']);
   }
 
 }

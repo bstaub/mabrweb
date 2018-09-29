@@ -55,6 +55,8 @@ import {AdminProductAddCategoryComponent} from './admin/admin-product-add-catego
 import {LocalStorageService} from './shared/local-storage.service';
 import {CheckoutEnterdataComponent} from './checkout/checkout-enterdata/checkout-enterdata.component';
 import {LocationStrategy, PathLocationStrategy} from '@angular/common';
+import {TestbrunoComponent} from './testbruno/testbruno.component';
+import { MartintestComponent } from './martintest/martintest.component';
 
 
 @NgModule({
@@ -91,6 +93,8 @@ import {LocationStrategy, PathLocationStrategy} from '@angular/common';
     AdminProductItemComponent,
     AdminProductAddCategoryComponent,
     CheckoutEnterdataComponent,
+    TestbrunoComponent,
+    MartintestComponent
   ],
   imports: [
     BrowserModule,
@@ -104,7 +108,18 @@ import {LocationStrategy, PathLocationStrategy} from '@angular/common';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AdminGuard, AuthuserGuard, Auth2Guard, UserService, ProductFirestoreService, ProductCategoryService, OrderFirestoreService, NotificationService, StorageService, SettingsService, LocalStorageService,
+  providers: [AuthService,
+              AdminGuard,
+              AuthuserGuard,
+              Auth2Guard,
+              UserService,
+              ProductFirestoreService,
+              ProductCategoryService,
+              OrderFirestoreService,
+              NotificationService,
+              StorageService,
+              SettingsService,
+              LocalStorageService,
               { provide: LocationStrategy, useClass: PathLocationStrategy }
   ],
   bootstrap: [AppComponent]

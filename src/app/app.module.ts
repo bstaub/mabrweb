@@ -93,6 +93,8 @@ import { MartintestComponent } from './martintest/martintest.component';
     AdminProductItemComponent,
     AdminProductAddCategoryComponent,
     CheckoutEnterdataComponent,
+    TestbrunoComponent,
+    MartintestComponent
   ],
   imports: [
     BrowserModule,

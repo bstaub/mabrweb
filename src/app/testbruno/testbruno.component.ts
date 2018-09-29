@@ -16,6 +16,7 @@ export class TestbrunoComponent implements OnInit {
   testbruno(event) {
     console.log(event);
     console.log(222);
+    console.log(333);
 
   }
 }

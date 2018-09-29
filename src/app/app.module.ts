@@ -55,8 +55,6 @@ import {AdminProductAddCategoryComponent} from './admin/admin-product-add-catego
 import {LocalStorageService} from './shared/local-storage.service';
 import {CheckoutEnterdataComponent} from './checkout/checkout-enterdata/checkout-enterdata.component';
 import {LocationStrategy, PathLocationStrategy} from '@angular/common';
-import {TestbrunoComponent} from './testbruno/testbruno.component';
-import { MartintestComponent } from './martintest/martintest.component';
 
 
 @NgModule({
@@ -93,8 +91,6 @@ import { MartintestComponent } from './martintest/martintest.component';
     AdminProductItemComponent,
     AdminProductAddCategoryComponent,
     CheckoutEnterdataComponent,
-    TestbrunoComponent,
-    MartintestComponent
   ],
   imports: [
     BrowserModule,

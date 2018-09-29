@@ -53,6 +53,7 @@ import { AdminProductAddCategoryComponent } from './admin/admin-product-add-cate
 import { LocalStorageService } from './shared/local-storage.service';
 import { CheckoutEnterdataComponent } from './checkout/checkout-enterdata/checkout-enterdata.component';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { HeaderSearchComponent } from './header/header-search/header-search.component';
 
 
 @NgModule({
@@ -88,6 +89,7 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
     AdminProductItemComponent,
     AdminProductAddCategoryComponent,
     CheckoutEnterdataComponent,
+    HeaderSearchComponent,
   ],
   imports: [
     BrowserModule,

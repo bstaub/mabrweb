@@ -31,6 +31,11 @@ export class ProductFirestoreService {
     );
   }
 
+  getAllSearch(searchTerm: string) {
+    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+    this.getData();
+  }
+
   sortProductsByNameAsc() {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
     this.getData();

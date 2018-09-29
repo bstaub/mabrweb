@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {OrderService} from '../order.service';
-import {OrderFirestoreService} from '../shared/order-firestore.service';
-import {Observable} from 'rxjs';
-import {ProductFirestoreService} from '../../product/shared/product-firestore.service';
-import {UserService} from '../../user/shared/user.service';
-import {LocalStorageService} from '../../shared/local-storage.service';
-import {Order} from '../order.model';
-import {NgForm} from '@angular/forms';
-import {AuthService} from '../../user/shared/auth.service';
-import {ProductPerOrder} from '../productPerOrder.model';
-import {NotificationService} from '../../shared/notification.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { OrderService } from '../order.service';
+import { OrderFirestoreService } from '../shared/order-firestore.service';
+import { Observable } from 'rxjs';
+import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
+import { UserService } from '../../user/shared/user.service';
+import { LocalStorageService } from '../../shared/local-storage.service';
+import { Order } from '../order.model';
+import { NgForm } from '@angular/forms';
+import { AuthService } from '../../user/shared/auth.service';
+import { ProductPerOrder } from '../productPerOrder.model';
+import { NotificationService } from '../../shared/notification.service';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class OrderDetailComponent implements OnInit {
   orderData: Order[];
   user: any;
   userId: string;
-  //order: Observable<any>;
+  // order: Observable<any>;
   order: any;
 
 

@@ -1,9 +1,9 @@
-import {Routes} from '@angular/router';
-import {AdminProductAddComponent} from './admin-product-add/admin-product-add.component';
-import {AdminProductEditComponent} from './admin-product-edit/admin-product-edit.component';
-import {AdminHomeComponent} from './admin-home/admin-home.component';
-import {AdminProductListComponent} from './admin-product-list/admin-product-list.component';
-import {AdminProductAddCategoryComponent} from './admin-product-add-category/admin-product-add-category.component';
+import { Routes } from '@angular/router';
+import { AdminProductAddComponent } from './admin-product-add/admin-product-add.component';
+import { AdminProductEditComponent } from './admin-product-edit/admin-product-edit.component';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { AdminProductListComponent } from './admin-product-list/admin-product-list.component';
+import { AdminProductAddCategoryComponent } from './admin-product-add-category/admin-product-add-category.component';
 
 
 export const ADMIN_ROUTES: Routes = [

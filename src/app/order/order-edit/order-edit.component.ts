@@ -1,11 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {OrderService} from '../order.service';
-import {OrderFirestoreService} from '../shared/order-firestore.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Order} from '../order.model';
-import {UserService} from '../../user/shared/user.service';
-import {ProductPerOrder} from '../productPerOrder.model';
-
+import { Component, OnInit } from '@angular/core';
+import { OrderService } from '../order.service';
+import { OrderFirestoreService } from '../shared/order-firestore.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Order } from '../order.model';
+import { UserService } from '../../user/shared/user.service';
+import { ProductPerOrder } from '../productPerOrder.model';
 
 
 @Component({
@@ -31,7 +30,6 @@ export class OrderEditComponent implements OnInit {
               private userService: UserService) {
 
 
-
   }
 
 
@@ -43,9 +41,9 @@ export class OrderEditComponent implements OnInit {
     order.status = this.orderArray[0].status;
     order.totalValue = 100;
     order.userId = this.selectedUser;
-    //this.orderFirestoreService.deleteOrderAnonymus(this.orderArray[0].key);
-    //this.orderFirestoreService.deleteProductsPerOrderAnonymus(this.orderArray[0].key, this.products);
-    //this.orderFirestoreService.addUserOrder(order);
+    // this.orderFirestoreService.deleteOrderAnonymus(this.orderArray[0].key);
+    // this.orderFirestoreService.deleteProductsPerOrderAnonymus(this.orderArray[0].key, this.products);
+    // this.orderFirestoreService.addUserOrder(order);
 
     this.products.forEach((product) => {
       const newProductPerOrder = new ProductPerOrder();
@@ -54,7 +52,7 @@ export class OrderEditComponent implements OnInit {
       newProductPerOrder.orderId = this.selectedUser;
       console.log(newProductPerOrder);
 
-      //this.orderFirestoreService.addProductToOrderUser(newProductPerOrder);
+      // this.orderFirestoreService.addProductToOrderUser(newProductPerOrder);
 
     });
 
@@ -74,15 +72,11 @@ export class OrderEditComponent implements OnInit {
   ngOnInit() {
 
 
-
     this.user = this.userService.getCurrentUser();
     this.getAllUsers();
 
 
-
     const productsArray = [];
-
-
 
 
     this.activatedRoute.params.subscribe(
@@ -111,23 +105,16 @@ export class OrderEditComponent implements OnInit {
           this.products = productsArray;
 
 
-
         }
 
       }
     );
 
 
-
-
-
-
-
-
   }
 
 
-  getAllUsers () {
+  getAllUsers() {
 
     this.allUsers = this.userService.getUsers();
 

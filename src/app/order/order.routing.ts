@@ -1,6 +1,6 @@
-import {Routes} from '@angular/router';
-import {OrderDetailComponent} from './order-detail/order-detail.component';
-import {OrderEditComponent} from './order-edit/order-edit.component';
+import { Routes } from '@angular/router';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { OrderEditComponent } from './order-edit/order-edit.component';
 
 
 export const ORDER_ROUTES: Routes = [

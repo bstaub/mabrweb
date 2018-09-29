@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {ProductPerOrder} from './productPerOrder.model';
-import {ProductFirestoreService} from '../product/shared/product-firestore.service';
-import {OrderFirestoreService} from './shared/order-firestore.service';
-import {UserService} from '../user/shared/user.service';
-import {Router} from '@angular/router';
+import { ProductPerOrder } from './productPerOrder.model';
+import { ProductFirestoreService } from '../product/shared/product-firestore.service';
+import { OrderFirestoreService } from './shared/order-firestore.service';
+import { UserService } from '../user/shared/user.service';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-order-start',
   template: `
-    
-   
+
+
 
 
   `,
@@ -23,10 +23,11 @@ export class OrderStartComponent implements OnInit {
   productAmount: number;
   user: any;
 
-  constructor( private orderFirestoreService: OrderFirestoreService,
-               private productFireStoreService: ProductFirestoreService,
-               private router: Router,
-               private userService: UserService) { }
+  constructor(private orderFirestoreService: OrderFirestoreService,
+              private productFireStoreService: ProductFirestoreService,
+              private router: Router,
+              private userService: UserService) {
+  }
 
   ngOnInit() {
     console.log('order-start');
@@ -34,11 +35,12 @@ export class OrderStartComponent implements OnInit {
     this.getAllProducts();
   }
 
-  getAllProducts () {
+  getAllProducts() {
 
     this.allProducts = this.productFireStoreService.getProducts();
 
   }
+
   onAddProductControl() {
 
     const newProductperOrder = new ProductPerOrder();

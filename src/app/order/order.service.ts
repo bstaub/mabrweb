@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {AngularFireDatabase, AngularFireList, AngularFireObject} from 'angularfire2/database';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 
 import { Order } from './order.model';
 
@@ -35,29 +35,27 @@ export class OrderService {
   updateOrder(key: string, value: any): void {
     this.ordersRef
       .update(key, value)
-      .then( () => this.handleLog('Update successful'))
+      .then(() => this.handleLog('Update successful'))
       .catch(error => this.handleError(error));
   }
 
   deleteOrder(key: string): void {
     this.ordersRef
       .remove(key)
-      .then( () => this.handleLog('Order Delete successful'))
+      .then(() => this.handleLog('Order Delete successful'))
       .catch(error => this.handleError(error));
 
     this.productsPerOrdersRef
       .remove(key)
-      .then( () => this.handleLog('Products per Order Delete successful'))
+      .then(() => this.handleLog('Products per Order Delete successful'))
       .catch(error => this.handleError(error));
   }
 
   deleteAllOrders(): void {
     this.ordersRef.remove()
-      .then( () => this.handleLog('deleteAll successful'))
+      .then(() => this.handleLog('deleteAll successful'))
       .catch(error => this.handleError(error));
   }
-
-
 
 
   getOrder(id) {
@@ -65,14 +63,12 @@ export class OrderService {
     return this.orderRef = this.db.object<Order>(dbOrderPath);
 
   }
+
   getProductsPerOrder(id) {
     const dbProductsPerOrderPath = '/productsPerOrder/' + id;
     return this.productsPerOrderRef = this.db.object(dbProductsPerOrderPath);
 
   }
-
-
-
 
 
   getOrderListByName(): AngularFireList<Order> {

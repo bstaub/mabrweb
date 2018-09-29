@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from 'rxjs';
-import {Product} from '../../product/product.model';
-import {ProductService} from '../../product/shared/product.service';
-import {ProductFirestoreService} from '../../product/shared/product-firestore.service';
+import { Observable } from 'rxjs';
+import { Product } from '../../product/product.model';
+import { ProductService } from '../../product/shared/product.service';
+import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
 
 @Component({
   selector: 'app-admin-product-list',
@@ -15,7 +15,8 @@ export class AdminProductListComponent implements OnInit {
   // products: Observable<any>;
   products: Observable<Product[]>;
 
-  constructor(private productService: ProductService, private productFireStoreService: ProductFirestoreService) { }
+  constructor(private productService: ProductService, private productFireStoreService: ProductFirestoreService) {
+  }
 
   ngOnInit() {
     this.getProductList();

@@ -1,12 +1,10 @@
-import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from '@angular/fire/firestore';
-import {AngularFireAuth} from '@angular/fire/auth';
+import { Injectable } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
-import {User} from '../user';
-import {Observable, Subject} from 'rxjs';
-import {map} from 'rxjs/operators';
-
-
+import { User } from '../user';
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -17,8 +15,8 @@ export class UserService {
   users: Observable<User[]>;
   userDoc: AngularFirestoreDocument<User>;
 
-  constructor( public  afs: AngularFirestore,
-               private afAuth: AngularFireAuth,
+  constructor(public  afs: AngularFirestore,
+              private afAuth: AngularFireAuth,
   ) {
     // this.users = this.afs.collection('users').valueChanges();
     this.usersCollection = this.afs.collection('users', ref => ref.orderBy('email', 'asc'));
@@ -49,7 +47,7 @@ export class UserService {
 
     const user = firebase.auth().currentUser;
     if (user) {  // User signed in
-        return user;
+      return user;
     } else { // no user is signed in
       return 0;
     }
@@ -135,6 +133,7 @@ export class UserService {
   destroyUserLocalStorage() {
     localStorage.removeItem('user');
   }
+
   // LocalStorage Function end
 
 }

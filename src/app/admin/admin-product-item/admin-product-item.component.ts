@@ -1,9 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Product} from '../../product/product.model';
-import {ProductPerOrder} from '../../order/productPerOrder.model';
-import {ProductFirestoreService} from '../../product/shared/product-firestore.service';
-import {OrderFirestoreService} from '../../order/shared/order-firestore.service';
-import {UserService} from '../../user/shared/user.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { Product } from '../../product/product.model';
+import { ProductPerOrder } from '../../order/productPerOrder.model';
+import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
+import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 
 @Component({
   selector: 'app-admin-product-item',
@@ -17,9 +16,10 @@ export class AdminProductItemComponent implements OnInit {
 
   productPerOrder: ProductPerOrder;
 
-  constructor(private productService: ProductFirestoreService, private orderFirestoreService: OrderFirestoreService,
-              private userService: UserService
-  ) { }
+  constructor(private productService: ProductFirestoreService,
+              private orderFirestoreService: OrderFirestoreService,
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -30,10 +30,6 @@ export class AdminProductItemComponent implements OnInit {
 
   deleteProduct() {
     this.productService.deleteProduct(this.product.key);
-  }
-
-  updateProduct(event, product) {
-
   }
 
   addToBasket(product) {

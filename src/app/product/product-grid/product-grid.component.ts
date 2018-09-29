@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from 'rxjs';
-import {Product} from '../product.model';
-import {ProductService} from '../shared/product.service';
-import {ProductFirestoreService} from '../shared/product-firestore.service';
-import {ProductCategoryService} from '../shared/product-category.service';
-import {ProductCategory} from '../product-category.model';
-import {getProjectAsAttrValue} from '@angular/core/src/render3/node_selector_matcher';
+import { Observable } from 'rxjs';
+import { Product } from '../product.model';
+import { ProductService } from '../shared/product.service';
+import { ProductFirestoreService } from '../shared/product-firestore.service';
+import { ProductCategoryService } from '../shared/product-category.service';
+import { ProductCategory } from '../product-category.model';
 
 @Component({
   selector: 'app-product-grid',
@@ -22,11 +21,11 @@ export class ProductGridComponent implements OnInit {
   selectedSort: string;
 
 
-
   constructor(private productService: ProductService,
               private productFireStoreService: ProductFirestoreService,
-              private productCategory: ProductCategoryService
-              ) { }
+              private productCategory: ProductCategoryService,
+  ) {
+  }
 
   ngOnInit() {
     this.getProductList();
@@ -36,11 +35,6 @@ export class ProductGridComponent implements OnInit {
   getProductList() {
     this.products = this.productFireStoreService.getProducts();
   }
-
-  deleteProduct() {
-    this.productFireStoreService.deleteAll();
-  }
-
 
   selectedCategory(event) {
     const categoryName = event.target.value;

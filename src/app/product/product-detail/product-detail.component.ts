@@ -1,14 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ProductService} from '../shared/product.service';
-import {Product} from '../product.model';
-import {ActivatedRoute} from '@angular/router';
-import {ProductFirestoreService} from '../shared/product-firestore.service';
-import {Observable} from 'rxjs';
-import {AngularFirestoreDocument} from '@angular/fire/firestore';
-import {ProductPerOrder} from '../../order/productPerOrder.model';
-import {UserService} from '../../user/shared/user.service';
-import {OrderService} from '../../order/order.service';
-import {OrderFirestoreService} from '../../order/shared/order-firestore.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { Product } from '../product.model';
+import { ActivatedRoute } from '@angular/router';
+import { ProductFirestoreService } from '../shared/product-firestore.service';
+import { Observable } from 'rxjs';
+import { ProductPerOrder } from '../../order/productPerOrder.model';
+import { UserService } from '../../user/shared/user.service';
+import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 
 @Component({
   selector: 'app-detail-list',
@@ -23,8 +20,6 @@ export class ProductDetailComponent implements OnInit {
   private productId: string;
   public selectedProduct: Observable<Product>;
   user: any;
-
-
 
   productPerOrder: ProductPerOrder;
 
@@ -45,17 +40,6 @@ export class ProductDetailComponent implements OnInit {
     );
 
   }
-
-
-
-  updateActive(isActive: boolean) {
-    // this.productService.updateProduct(this.product.key, {active: isActive});
-  }
-
-  deleteProduct() {
-    // this.productService.deleteProduct(this.product.key);
-  }
-
 
   addToBasket(product) {
     this.productPerOrder = {

@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {User} from '../user';
+import { User } from '../user';
 
-import {UserService} from './user.service';
-import {NotificationService} from '../../shared/notification.service';
+import { UserService } from './user.service';
+import { NotificationService } from '../../shared/notification.service';
 
 import * as firebase from 'firebase/app';
-import {Observable, of, Subject} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
-import {AngularFirestore} from 'angularfire2/firestore';
-import {AngularFireAuth} from '@angular/fire/auth';
+import { Observable, of, Subject } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 @Injectable()
@@ -53,12 +53,12 @@ export class AuthService {
 
   isAuthenticated() {
     const state = new Subject<boolean>();
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         state.next(true);
         // console.log('yes user: ', user);
       } else {
-        state.next( false);
+        state.next(false);
       }
     });
     return state.asObservable();
@@ -86,7 +86,7 @@ export class AuthService {
 
   // 1. Register
   createUserInFirebaseAuthListEmailVerified(email, password, username) {
-    console.log('vor createUserInFirebaseAuthList->' + email + ' / ' + password );
+    console.log('vor createUserInFirebaseAuthList->' + email + ' / ' + password);
 
     const actionCodeSettings = {
       url: 'http://localhost:4200/login',
@@ -94,7 +94,7 @@ export class AuthService {
     };
 
     this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then( userData => {
+      .then(userData => {
         console.log(userData);
         userData.user.sendEmailVerification(actionCodeSettings);
 
@@ -114,7 +114,7 @@ export class AuthService {
         };
         this.userService.setUserToLocalStorage(user);
         this.userService.setUser(user)
-          .then( () => {
+          .then(() => {
             this.afAuth.auth.signOut();  // erst wenn der Benutzer erfasst wird aus Firebase ausloggen!
           })
           .catch(err => console.log(err));
@@ -127,8 +127,8 @@ export class AuthService {
 
   // 2. Login
   loginWithUserPassword(email, password) {
-    console.log('vor auth.EmailAuthProvider.credential->' + email + ' / ' + password );
-    const credential = firebase.auth.EmailAuthProvider.credential( email, password );
+    console.log('vor auth.EmailAuthProvider.credential->' + email + ' / ' + password);
+    const credential = firebase.auth.EmailAuthProvider.credential(email, password);
     return this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
@@ -143,9 +143,9 @@ export class AuthService {
     };
 
     this.afAuth.auth.sendPasswordResetEmail(email, actionCodeSettings)
-      .then( data => {
+      .then(data => {
         console.log('Passwort Reset Mail send Successful');
-        console.log( data );
+        console.log(data);
         this.notifier.display('success', 'Das Passwort Reset Mail wurde erfolgreich verschickt');
 
         setTimeout(() => {

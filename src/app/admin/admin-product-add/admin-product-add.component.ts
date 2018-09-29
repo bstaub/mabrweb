@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Product} from '../../product/product.model';
-import {Observable} from 'rxjs';
-import {ProductCategory} from '../../product/product-category.model';
-import {ProductService} from '../../product/shared/product.service';
-import {ProductFirestoreService} from '../../product/shared/product-firestore.service';
-import {StorageService} from '../../shared/storage.service';
-import {ProductCategoryService} from '../../product/shared/product-category.service';
+import { Product } from '../../product/product.model';
+import { Observable } from 'rxjs';
+import { ProductCategory } from '../../product/product-category.model';
+import { ProductService } from '../../product/shared/product.service';
+import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
+import { StorageService } from '../../shared/storage.service';
+import { ProductCategoryService } from '../../product/shared/product-category.service';
 import * as firebase from 'firebase';
 
 @Component({
@@ -26,7 +26,7 @@ export class AdminProductAddComponent implements OnInit {
     private productService: ProductService,
     private productFirestoreService: ProductFirestoreService,
     private storageService: StorageService,
-    private productCategory: ProductCategoryService
+    private productCategory: ProductCategoryService,
   ) {
   }
 
@@ -56,10 +56,12 @@ export class AdminProductAddComponent implements OnInit {
       this.image = 'https://firebasestorage.googleapis.com/v0/b/mabrweb-e6503.appspot.com/o/mvi9oepg?alt=media&token=69801fdc-bbb0-4e19-84e3-e87b5615ca0b';
     }
 
-    const productObj = Object.assign({key: this.productFirestoreService.getPushKey(),
+    const productObj = Object.assign({
+        key: this.productFirestoreService.getPushKey(),
         image: this.image,
         productCategory: this.selectedCategory,
-        createdDate: firebase.firestore.FieldValue.serverTimestamp()},
+        createdDate: firebase.firestore.FieldValue.serverTimestamp()
+      },
       this.product);
 
     this.productFirestoreService.addProduct(productObj);

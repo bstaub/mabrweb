@@ -132,7 +132,6 @@ export class HeaderComponent implements OnInit {
 
   getProductsFromLocalStorage() {
     this.itemsForBasket = this.localStorageService.getData('products');
-    console.log(this.itemsForBasket);
   }
 
   removeItem(event) {

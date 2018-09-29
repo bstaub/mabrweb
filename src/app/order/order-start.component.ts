@@ -29,7 +29,7 @@ export class OrderStartComponent implements OnInit {
                private userService: UserService) { }
 
   ngOnInit() {
-    console.log('order-start')
+    console.log('order-start');
     this.user = this.userService.getCurrentUser();
     this.getAllProducts();
   }
@@ -41,18 +41,18 @@ export class OrderStartComponent implements OnInit {
   }
   onAddProductControl() {
 
-    let newProductperOrder = new ProductPerOrder();
-    //newProductperOrder.orderId = this.orderId;
+    const newProductperOrder = new ProductPerOrder();
+    // newProductperOrder.orderId = this.orderId;
     newProductperOrder.productId = this.selectedProduct;
     newProductperOrder.qty = this.productAmount;
 
     if (this.user) {
-      newProductperOrder.userId = this.user.uid;
+      // newProductperOrder.userId = this.user.uid;
       this.orderFirestoreService.addProductToOrder(newProductperOrder);
       console.log('onAddProductControl - user Ok');
     } else {
-      newProductperOrder.userId = '0';
-      //this.orderFirestoreService.addProductToOrderAnonymus(newProductperOrder);
+      // newProductperOrder.userId = '0';
+      // this.orderFirestoreService.addProductToOrderAnonymus(newProductperOrder);
       console.log('onAddProductControl - No user');
     }
 

@@ -108,7 +108,18 @@ import { MartintestComponent } from './martintest/martintest.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AdminGuard, AuthuserGuard, Auth2Guard, UserService, ProductFirestoreService, ProductCategoryService, OrderFirestoreService, NotificationService, StorageService, SettingsService, LocalStorageService,
+  providers: [AuthService,
+              AdminGuard,
+              AuthuserGuard,
+              Auth2Guard,
+              UserService,
+              ProductFirestoreService,
+              ProductCategoryService,
+              OrderFirestoreService,
+              NotificationService,
+              StorageService,
+              SettingsService,
+              LocalStorageService,
               { provide: LocationStrategy, useClass: PathLocationStrategy }
   ],
   bootstrap: [AppComponent]

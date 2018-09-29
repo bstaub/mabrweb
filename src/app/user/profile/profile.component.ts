@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../shared/auth.service';
-import {UserService} from '../shared/user.service';
-import {StorageService} from '../../shared/storage.service';
-import {User} from '../user';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../shared/auth.service';
+import { UserService } from '../shared/user.service';
+import { StorageService } from '../../shared/storage.service';
+import { User } from '../user';
 
 
 @Component({
@@ -12,7 +12,8 @@ import {User} from '../user';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private authService: AuthService, private userService: UserService, private storageService: StorageService) { }
+  constructor(private authService: AuthService, private userService: UserService, private storageService: StorageService) {
+  }
 
   uid: string;
   imageUrl: string;
@@ -30,7 +31,7 @@ export class ProfileComponent implements OnInit {
   getUser() {
     // this.localStorageUser = this.userService.getProfileFromLocalStorage();
     return this.userService.getUser(this.uid)
-      .subscribe( data => {
+      .subscribe(data => {
         this.user = data;
       });
   }
@@ -50,7 +51,7 @@ export class ProfileComponent implements OnInit {
 
         });
 
-    });
+      });
 
   }
 }

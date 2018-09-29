@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {ProductCategoryService} from '../../product/shared/product-category.service';
-import {ProductCategory} from '../../product/product-category.model';
+import { Component, OnInit } from '@angular/core';
+import { ProductCategoryService } from '../../product/shared/product-category.service';
 
 @Component({
   selector: 'app-admin-product-add-category',
@@ -10,6 +9,7 @@ import {ProductCategory} from '../../product/product-category.model';
 export class AdminProductAddCategoryComponent implements OnInit {
 
   category: string;
+
   // productCategory: ProductCategory;
 
   constructor(private productCategoryService: ProductCategoryService) {

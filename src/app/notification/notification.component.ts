@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NotificationService} from '../shared/notification.service';
+import { NotificationService } from '../shared/notification.service';
 
 @Component({
   selector: 'app-notification',
@@ -21,7 +21,7 @@ export class NotificationComponent implements OnInit {
   }
 
   reset() {
-    setTimeout(() =>{
+    setTimeout(() => {
       this.type = null;
       this.message = null;
     }, 4000);

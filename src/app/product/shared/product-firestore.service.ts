@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
-import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, Query} from 'angularfire2/firestore';
-import {map} from 'rxjs/operators';
-import {Product} from '../product.model';
+import { Observable } from 'rxjs';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, Query } from 'angularfire2/firestore';
+import { map } from 'rxjs/operators';
+import { Product } from '../product.model';
 
 
 @Injectable({
@@ -20,22 +20,24 @@ export class ProductFirestoreService {
     this.sortProductsByNameAsc();  // Initial sorting List
 
   }
+
   getData() {
     this.products = this.productCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Product;
         const key = a.payload.doc.id;
-        return { key, ...data };
+        return {key, ...data};
       }))
     );
   }
+
   sortProductsByNameAsc() {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
     this.getData();
   }
 
   sortProductsByNameDesc() {
-    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'desc'))
+    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'desc'));
     this.getData();
   }
 
@@ -72,13 +74,13 @@ export class ProductFirestoreService {
 
   addProduct(product: Product) {
     // this.productCollection.add(product);
-    this.productCollection.add(product).then( (docRef) => {
+    this.productCollection.add(product).then((docRef) => {
       // console.log('Product written with ID: ', docRef.id);
       const NewProductKey: Product = {
         key: docRef.id,
       };
       this.setProduct(NewProductKey);
-    }) .catch(function(error) {
+    }).catch(function (error) {
       console.error('Error adding document: ', error);
     });
   }
@@ -123,14 +125,14 @@ export class ProductFirestoreService {
     // getting data from productCategory
     this.afs.collection('products').ref.get().then(snapshot => {
       snapshot.docs.forEach(doc => {
-          const newProduct = doc.data();
-          // newProduct.id = doc.id;
-          if (newProduct.productCategory && newProduct.productCategory === productCategory ) {
-            productsArrayFiltered.push(newProduct);
-          } else {
-            // do nothing
-            // productsArrayFiltered.push(newProduct);
-          }
+        const newProduct = doc.data();
+        // newProduct.id = doc.id;
+        if (newProduct.productCategory && newProduct.productCategory === productCategory) {
+          productsArrayFiltered.push(newProduct);
+        } else {
+          // do nothing
+          // productsArrayFiltered.push(newProduct);
+        }
       });
     });
 

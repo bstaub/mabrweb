@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../shared/auth.service';
+import { AuthService } from '../shared/auth.service';
 
 
 @Component({
@@ -10,7 +10,8 @@ import {AuthService} from '../shared/auth.service';
 export class ResetPasswordComponent implements OnInit {
   email: string;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+  }
 
   ngOnInit() {
   }

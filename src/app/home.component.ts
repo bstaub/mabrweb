@@ -1,7 +1,7 @@
-import {Component, OnInit, AfterContentChecked} from '@angular/core';
-import {AuthService} from './user/shared/auth.service';
-import {UserService} from './user/shared/user.service';
-import {User} from './user/user';
+import { Component, OnInit, AfterContentChecked } from '@angular/core';
+import { AuthService } from './user/shared/auth.service';
+import { UserService } from './user/shared/user.service';
+import { User } from './user/user';
 
 @Component({
   selector: 'app-home',
@@ -27,11 +27,11 @@ export class HomeComponent implements OnInit, AfterContentChecked {
 
   ngAfterContentChecked() {
     // if ((this.userService.getCurrentUser()) !== 0) {
-      // this.currentUser = this.userService.getCurrentUser();
-      // console.log('constentChecked first: ', this.currentUser);
-      // this.userService.getUser(this.currentUser.uid).pipe(first()).subscribe( currentUserTable => console.log(currentUserTable) );
-      // this.userService.getUser(this.currentUser.uid).pipe(take(1)).subscribe( currentUserTable => console.log(currentUserTable) );
-      // this.userService.getUser(this.currentUser.uid).subscribe( currentUserTable => console.log(currentUserTable) );
+    // this.currentUser = this.userService.getCurrentUser();
+    // console.log('constentChecked first: ', this.currentUser);
+    // this.userService.getUser(this.currentUser.uid).pipe(first()).subscribe( currentUserTable => console.log(currentUserTable) );
+    // this.userService.getUser(this.currentUser.uid).pipe(take(1)).subscribe( currentUserTable => console.log(currentUserTable) );
+    // this.userService.getUser(this.currentUser.uid).subscribe( currentUserTable => console.log(currentUserTable) );
 
     // }
   }

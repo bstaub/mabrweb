@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
-import {AuthService} from '../shared/auth.service';
-import {NotificationService} from '../../shared/notification.service';
-import {Router} from '@angular/router';
-import {OrderFirestoreService} from '../../order/shared/order-firestore.service';
+import { NgForm } from '@angular/forms';
+import { AuthService } from '../shared/auth.service';
+import { NotificationService } from '../../shared/notification.service';
+import { Router } from '@angular/router';
+import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 
 @Component({
   selector: 'app-user-login',
@@ -15,14 +15,15 @@ export class UserLoginComponent implements OnInit {
   constructor(private authService: AuthService,
               private router: Router,
               private notifier: NotificationService,
-              private orderFirestoreService: OrderFirestoreService,) { }
+              private orderFirestoreService: OrderFirestoreService,) {
+  }
 
   ngOnInit() {
   }
 
   onSubmit(form: NgForm) {
     this.authService.loginWithUserPassword(form.value.email, form.value.password)
-      .then( userData => {
+      .then(userData => {
 
         if (userData && userData.user.emailVerified) {
           this.notifier.display('success', 'Login erfolgreich');
@@ -40,7 +41,7 @@ export class UserLoginComponent implements OnInit {
         }
 
       })
-      .catch( err => {
+      .catch(err => {
         console.log('error bs: ' + err);
         this.notifier.display('error', err.message);
       });

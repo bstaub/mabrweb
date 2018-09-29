@@ -1,11 +1,10 @@
-import {Routes} from '@angular/router';
-import {UserListComponent} from './user-list/user-list.component';
-import {UserDetailComponent} from './user-detail/user-detail.component';
-import {UserLoginComponent} from './user-login/user-login.component';
-import {UserRegisterComponent} from './user-register/user-register.component';
-import {ProfileComponent} from './profile/profile.component';
-import {ResetPasswordComponent} from './reset-password/reset-password.component';
-import {RegisterGuard} from './guards/register.guard';
+import { Routes } from '@angular/router';
+import { UserListComponent } from './user-list/user-list.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { UserRegisterComponent } from './user-register/user-register.component';
+import { ProfileComponent } from './profile/profile.component';
+import { RegisterGuard } from './guards/register.guard';
 
 
 export const USER_ROUTES: Routes = [

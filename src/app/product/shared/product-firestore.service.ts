@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, Query } from 'angularfire2/firestore';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Product } from '../product.model';
 
 
@@ -31,10 +31,50 @@ export class ProductFirestoreService {
     );
   }
 
+  // https://stackoverflow.com/questions/48751908/filtering-firestore-observable-against-javascript-object-values
+  /*
+  loadData() {
+    this.productCollection = this.afs.collection<any>('products', ref => ref.orderBy('name', 'asc'));
+    return this.productCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const id = a.payload.doc.id;
+          const data = a.payload.doc.data();
+          // data.id = id;
+
+          return { id, data };
+        });
+      })
+    );
+  }
+  */
+
+  /*
   getAllSearch(searchTerm: string) {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
-    this.getData();
+    this.products = this.productCollection.snapshotChanges().pipe(
+      map(val => val.filter( fil => fil.payload.doc.name === searchTerm) ),
+      // f.payload.doc.data.name
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
   }
+  */
+
+  getDataToSearch(): Observable<Product[]> {
+    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+    return this.products = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+  }
+
 
   sortProductsByNameAsc() {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));

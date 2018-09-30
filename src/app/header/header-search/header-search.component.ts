@@ -8,13 +8,21 @@ import { ProductFirestoreService } from '../../product/shared/product-firestore.
 })
 export class HeaderSearchComponent implements OnInit {
 
+  result: any;
+
   constructor(private productFirestoreService: ProductFirestoreService) { }
 
   ngOnInit() {
   }
 
   getAllSearch(searchTerm: string) {
-    // this.productFirestoreService
+    this.productFirestoreService.getDataToSearch()
+      .subscribe( data => {
+        console.log(data);
+        console.log(searchTerm);
+        // https://stackoverflow.com/questions/7615997/what-is-the-javascript-equivalent-of-mysqls-like-clause
+        // this.result = data.name === 'test';
+      });
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, AfterContentInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from '../user/shared/auth.service';
 import { UserService } from '../user/shared/user.service';
@@ -38,7 +38,7 @@ import { LocalStorageService } from '../shared/local-storage.service';
       background-color: white;
       padding: 20px;
       min-height: 400px;
-      min-width: 300px;
+      min-width: 400px;
       border: 1px solid black;
     }
 
@@ -64,7 +64,7 @@ import { LocalStorageService } from '../shared/local-storage.service';
 
   `]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterContentChecked {
 
   itemsForBasket: any;
   // isLoggedIn: boolean = false;
@@ -75,6 +75,7 @@ export class HeaderComponent implements OnInit {
   name: string;
   uid: string;
   email: string;
+  couter: number = 0;
 
   constructor(private afAuth: AngularFireAuth,
               private authService: AuthService,
@@ -85,7 +86,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getProductsFromLocalStorage();
     /*
     this.afAuth.auth.onAuthStateChanged(userData => {
       // we are logged in
@@ -128,6 +128,15 @@ export class HeaderComponent implements OnInit {
     this.showRegister = this.settingsService.getSettings().allowRegistration;
     this.showAdmin = this.settingsService.getSettings().allowAdministration;
 
+
+    // delete only works on ngInit
+    this.getProductsFromLocalStorage();
+  }
+
+  ngAfterContentChecked() {
+    // refresh only works on ngAfterXXX
+    // this.getProductsFromLocalStorage();
+
   }
 
   logout() {
@@ -138,6 +147,7 @@ export class HeaderComponent implements OnInit {
 
   getProductsFromLocalStorage() {
     this.itemsForBasket = this.localStorageService.getData('products');
+    console.log(this.itemsForBasket);
   }
 
   removeItem(event) {

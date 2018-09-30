@@ -42,7 +42,7 @@
     <div class="pull-right shopping">
       <ul>
         <li class="submenu">
-          <img src="assets/cart.png" id="img-cart">
+          <a [routerLink]="['bestellung']"><img src="assets/cart.png" id="img-cart"></a>
           <div id="shopping-cart">
 
             <table id="cart-content" class="u-full-width">
@@ -50,6 +50,7 @@
               <tr>
                 <th>Bild</th>
                 <th>Name</th>
+                <th>Anz.</th>
                 <th>Preis</th>
                 <th></th>
               </tr>
@@ -58,10 +59,11 @@
 
               <tr *ngFor="let item of itemsForBasket">
                   <td>
-                    <img src="https://firebasestorage.googleapis.com/v0/b/mabrweb-e6503.appspot.com/o/5nhut7m1rnu?alt=media&token=e027aec1-f324-476e-89a5-e03e8cf80763" width="60">
+                    <img src="{{item.image}}" width="60">
                   </td>
-                  <td>{{item.description}}</td>
-                  <td>CHF {{item.qty}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.qty}}</td>
+                  <td>CHF {{item.price}}</td>
                   <td>
                     <a href="#" class="remove" [attr.data-id]="item.productId" (click)="removeItem($event)">X</a>
                   </td>

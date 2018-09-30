@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, Query } from 'angularfire2/firestore';
-import { map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { Product } from '../product.model';
 
 
@@ -14,12 +14,24 @@ export class ProductFirestoreService {
   productDoc: AngularFirestoreDocument<Product>;
   filteredProducts: any[];
 
+  // RxJS BehaviorSubject start
+  private messageSource = new BehaviorSubject(0); // initial 0 value, i check this value later
+  currentMessage = this.messageSource.asObservable();
+  // RxJS BehaviorSubject end
+
+
   constructor(public afs: AngularFirestore) {
 
     // const pushkey = this.afs.createId();
     this.sortProductsByNameAsc();  // Initial sorting List
 
   }
+
+  // RxJS BehaviorSubject start
+  changeMessage(message) {
+    this.messageSource.next(message);
+  }
+  // RxJS BehaviorSubject end
 
   getData() {
     this.products = this.productCollection.snapshotChanges().pipe(
@@ -30,6 +42,70 @@ export class ProductFirestoreService {
       }))
     );
   }
+
+  // https://stackoverflow.com/questions/48751908/filtering-firestore-observable-against-javascript-object-values
+  /*
+  loadData() {
+    this.productCollection = this.afs.collection<any>('products', ref => ref.orderBy('name', 'asc'));
+    return this.productCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const id = a.payload.doc.id;
+          const data = a.payload.doc.data();
+          // data.id = id;
+
+          return { id, data };
+        });
+      })
+    );
+  }
+  */
+
+  /*
+  getAllSearch(searchTerm: string) {
+    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+    this.products = this.productCollection.snapshotChanges().pipe(
+      map(val => val.filter( fil => fil.payload.doc.name === searchTerm) ),
+      // f.payload.doc.data.name
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+  }
+  */
+
+  getDataToSearch(): Observable<Product[]> {
+    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+    return this.products = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+  }
+
+  getDataToSearch2(terms: Observable<any>): Observable<any> {
+    return terms.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => this.searchEntries(term))
+    );
+  }
+
+  searchEntries(term) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('name', '==', term).limit(10));
+    return this.products = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+  }
+
 
   sortProductsByNameAsc() {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
@@ -141,7 +217,4 @@ export class ProductFirestoreService {
 
   }
 
-  deleteAll() {
-
-  }
 }

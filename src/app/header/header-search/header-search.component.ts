@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 export class HeaderSearchComponent implements OnInit {
 
   results: Object;
+  resultsArray;
   searchTerm$ = new Subject<String>();
 
   constructor(private productFirestoreService: ProductFirestoreService
@@ -32,6 +33,14 @@ export class HeaderSearchComponent implements OnInit {
         console.log('suche1', searchTerm);
         // https://stackoverflow.com/questions/7615997/what-is-the-javascript-equivalent-of-mysqls-like-clause
         // this.result = data.name === 'test';
+        this.resultsArray = data.filter(item => {
+          // return item.name === searchTerm;
+          return item.name.match(/Spiel/);
+          // return item.name.match(/`${searchTerm}`/
+          // const re = new RegExp(searchTerm, 'g');
+          // item.name.match(re);
+        });
+        console.log(this.resultsArray);
       });
   }
 

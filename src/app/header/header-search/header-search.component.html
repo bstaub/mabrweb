@@ -5,5 +5,11 @@
          aria-label="Search"
          (keyup)="getAllSearch(searchTerm.value)"
          #searchTerm>
+  <input class="form-control mr-sm-2"
+         type="text"
+         placeholder="Search2"
+         aria-label="Search2"
+         (keyup)="searchTerm$.next($event.target.value)"
+         #searchTerm2>
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Suche</button>
 </form>

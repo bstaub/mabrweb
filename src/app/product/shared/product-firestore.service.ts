@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, Query } from 'angularfire2/firestore';
-import { map, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { Product } from '../product.model';
 
 
@@ -66,6 +66,25 @@ export class ProductFirestoreService {
 
   getDataToSearch(): Observable<Product[]> {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+    return this.products = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+  }
+
+  getDataToSearch2(terms: Observable<any>): Observable<any> {
+    return terms.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => this.searchEntries(term))
+    );
+  }
+
+  searchEntries(term) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('name', '==', term).limit(10));
     return this.products = this.productCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Product;

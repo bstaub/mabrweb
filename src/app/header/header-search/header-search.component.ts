@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-header-search',
@@ -8,9 +9,18 @@ import { ProductFirestoreService } from '../../product/shared/product-firestore.
 })
 export class HeaderSearchComponent implements OnInit {
 
-  result: any;
+  results: Object;
+  searchTerm$ = new Subject<String>();
 
-  constructor(private productFirestoreService: ProductFirestoreService) { }
+  constructor(private productFirestoreService: ProductFirestoreService
+  ) {
+    // https://alligator.io/angular/real-time-search-angular-rxjs
+    this.productFirestoreService.getDataToSearch2(this.searchTerm$)
+      .subscribe(result => {
+        this.results = result.results;
+        console.log(result);
+      });
+  }
 
   ngOnInit() {
   }
@@ -19,7 +29,7 @@ export class HeaderSearchComponent implements OnInit {
     this.productFirestoreService.getDataToSearch()
       .subscribe( data => {
         console.log(data);
-        console.log(searchTerm);
+        console.log('suche1', searchTerm);
         // https://stackoverflow.com/questions/7615997/what-is-the-javascript-equivalent-of-mysqls-like-clause
         // this.result = data.name === 'test';
       });

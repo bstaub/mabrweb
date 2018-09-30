@@ -42,12 +42,8 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToBasket(product) {
-    this.productPerOrder = {
-      productId: this.productId,
-      qty: product.itemcount,
-      description: product.name
-    };
-    this.orderFirestoreService.addProductToOrder(this.productPerOrder);
+    product.key = this.productId;
+    this.orderFirestoreService.addProductToOrder(product);
     alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
   }
 

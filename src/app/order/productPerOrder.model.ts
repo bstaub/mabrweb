@@ -2,5 +2,8 @@ export class ProductPerOrder {
   productId: string;
   orderId?: string;
   qty: number;
-  description?: string
+  name?: string;
+  description?: string;
+  image?: string;
+  price?: number;
 }

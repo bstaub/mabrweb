@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ProductService} from '../shared/product.service';
-import {Product} from '../product.model';
-import {ProductFirestoreService} from '../shared/product-firestore.service';
-import {OrderFirestoreService} from '../../order/shared/order-firestore.service';
-import {ProductPerOrder} from '../../order/productPerOrder.model';
-import {UserService} from '../../user/shared/user.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { ProductService } from '../shared/product.service';
+import { Product } from '../product.model';
+import { ProductFirestoreService } from '../shared/product-firestore.service';
+import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
+import { ProductPerOrder } from '../../order/productPerOrder.model';
+import { UserService } from '../../user/shared/user.service';
 
 @Component({
   selector: 'app-product-item',
@@ -20,7 +20,8 @@ export class ProductItemComponent implements OnInit {
 
   constructor(private productService: ProductFirestoreService, private orderFirestoreService: OrderFirestoreService,
               private userService: UserService
-              ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -37,14 +38,8 @@ export class ProductItemComponent implements OnInit {
 
   }
 
-
   addToBasket(product) {
-    this.productPerOrder = {
-      productId: product.key,
-      qty: product.itemcount,
-      description: product.name
-    };
-    this.orderFirestoreService.addProductToOrder(this.productPerOrder);
+    this.orderFirestoreService.addProductToOrder(product);
     alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
   }
 }

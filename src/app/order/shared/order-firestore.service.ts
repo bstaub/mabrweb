@@ -6,6 +6,7 @@ import { Order } from '../order.model';
 import { ProductPerOrder } from '../productPerOrder.model';
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { Product } from '../../product/product.model';
 
 
 @Injectable({
@@ -74,14 +75,8 @@ export class OrderFirestoreService {
 
   // Bestellung abschliessen
   closeUserOrder(order: Order) {
-
-    const data = JSON.parse(JSON.stringify(order));
     const ref = this.afs.createId();
-
-    this.orderCollection_completed.doc(ref).set(data).then(function (docRef) {
-      //console.log(ref);
-    });
-
+    this.orderCollection_completed.doc(ref).set(JSON.parse(JSON.stringify(order)));
     return ref;
   }
 
@@ -115,14 +110,7 @@ export class OrderFirestoreService {
     order.status = 'pending';
     order.totalValue = 0;
     order.userId = userId;
-
-    const data = JSON.parse(JSON.stringify(order));
-    //const ref =  this.afs.createId();
-
-    this.orderCollection.doc(userId).set(data).then(function (docRef) {
-      //console.log(ref);
-    });
-
+    this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(order)));
   }
 
   //Warenkorb in Firestore speichern (userId als Key wenn Status pending )
@@ -139,9 +127,9 @@ export class OrderFirestoreService {
         productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
         qty: +productPerOrder.qty
       }).then(function () {
-        // console.log('Document successfully added!');
+         console.log('Document successfully added!');
       }).catch(function (error) {
-        // console.error('Error adding document: ', error);
+         console.error('Error adding document: ', error);
       });
 
     });
@@ -150,9 +138,6 @@ export class OrderFirestoreService {
 
   //Warenkorb von Firestore in LocalStorage speichern
   loadProducts(userId: string) {
-
-
-    const productsArray = [];
 
     this.localStorageService.destroyUserLocalStorage('products');
     this.getProductsPerOrder(userId).ref.get().then((res) => {
@@ -166,8 +151,8 @@ export class OrderFirestoreService {
               newProduct.productData = ressource.data();
               if (newProduct.productData) {
 
-                let productStore = [];
-                productStore = this.localStorageService.getData('products');
+
+                let productStore = this.localStorageService.getData('products');
                 productStore.push({
                   productId: newProduct.id,
                   qty: newProduct.qty,
@@ -188,50 +173,28 @@ export class OrderFirestoreService {
   }
 
 
-  // 1.) Einstieg von Produktseite
-  addProductToOrder(productPerOrder: ProductPerOrder) {
+  // Einstieg von Produktseite
+  addProductToOrder(product: Product) {
+    let productStore = this.localStorageService.getData('products');
+    productStore.push({
+      productId: product.key,
+      qty: Number(product.itemcount),
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      image: product.image
+    });
+
+    this.localStorageService.setData('products', productStore);
 
     this.user = this.userService.getCurrentUser();
 
     if (this.user) {
-
-      // productPerOrder.userId = this.user.uid;
-      // this.addProductToOrderUser(productPerOrder);
-      // console.log('onAddProductControl - user Ok');
-
-
-      let productStore = [];
-      productStore = this.localStorageService.getData('products');
-      // console.log(productStore);
-      productStore.push({
-        productId: productPerOrder.productId,
-        qty: productPerOrder.qty,
-        description: productPerOrder.description
-      });
-
-      this.localStorageService.setData('products', productStore);
-      // console.log('onAddProductControl - No user');
-
-
-    } else {
-
-      let productStore = [];
-      productStore = this.localStorageService.getData('products');
-      // console.log(productStore);
-      productStore.push({
-        productId: productPerOrder.productId,
-        qty: productPerOrder.qty,
-        description: productPerOrder.description
-      });
-
-      this.localStorageService.setData('products', productStore);
-      // console.log('onAddProductControl - No user');
+      this.saveProducts(this.user.uid, productStore);
     }
 
 
   }
-
-  //
 
 
   // Warenkorb löschen

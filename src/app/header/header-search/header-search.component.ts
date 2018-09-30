@@ -10,8 +10,9 @@ import { Subject } from 'rxjs';
 export class HeaderSearchComponent implements OnInit {
 
   results: Object;
-  resultsArray;
+  resultsArray: any;
   searchTerm$ = new Subject<String>();
+
 
   constructor(private productFirestoreService: ProductFirestoreService
   ) {
@@ -29,18 +30,13 @@ export class HeaderSearchComponent implements OnInit {
   getAllSearch(searchTerm: string) {
     this.productFirestoreService.getDataToSearch()
       .subscribe( data => {
-        console.log(data);
-        console.log('suche1', searchTerm);
-        // https://stackoverflow.com/questions/7615997/what-is-the-javascript-equivalent-of-mysqls-like-clause
-        // this.result = data.name === 'test';
         this.resultsArray = data.filter(item => {
           // return item.name === searchTerm;
-          return item.name.match(/Spiel/);
-          // return item.name.match(/`${searchTerm}`/
-          // const re = new RegExp(searchTerm, 'g');
-          // item.name.match(re);
+          // return item.name.match(/Spiel/);
+          return item.name.toLowerCase().includes(searchTerm.toLowerCase());
         });
-        console.log(this.resultsArray);
+        // https://angularfirebase.com/lessons/sharing-data-between-angular-components-four-methods/
+        this.productFirestoreService.changeMessage(this.resultsArray);  // RxJS BehaviorSubject
       });
   }
 

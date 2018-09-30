@@ -15,11 +15,10 @@ export class ProductGridComponent implements OnInit {
 
   products: Observable<Product[]>;
   categories: Observable<ProductCategory[]>;
-  filteredProducts: any[];
+  filteredProducts: any[] | number;
 
   selectedProduct: string; // just for show Product Category in Template
   selectedSort: string;
-
 
   constructor(private productService: ProductService,
               private productFireStoreService: ProductFirestoreService,
@@ -30,6 +29,17 @@ export class ProductGridComponent implements OnInit {
   ngOnInit() {
     this.getProductList();
     this.categories = this.productCategory.getCategories();
+
+    // RxJS BehaviorSubject start
+    // this.productFireStoreService.currentMessage.subscribe(message => this.filteredProducts = message);
+    this.productFireStoreService.currentMessage.subscribe(message => {
+      if (message !== 0) {
+        this.filteredProducts = message;
+      } else {
+        this.filteredProducts = null;
+      }
+    });
+    // RxJS BehaviorSubject end
   }
 
   getProductList() {
@@ -74,5 +84,7 @@ export class ProductGridComponent implements OnInit {
       this.products = this.productFireStoreService.getProducts();
     }
   }
+
+
 
 }

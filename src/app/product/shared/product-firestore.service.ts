@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, Query } from 'angularfire2/firestore';
 import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { Product } from '../product.model';
@@ -14,12 +14,24 @@ export class ProductFirestoreService {
   productDoc: AngularFirestoreDocument<Product>;
   filteredProducts: any[];
 
+  // RxJS BehaviorSubject start
+  private messageSource = new BehaviorSubject(0); // initial 0 value, i check this value later
+  currentMessage = this.messageSource.asObservable();
+  // RxJS BehaviorSubject end
+
+
   constructor(public afs: AngularFirestore) {
 
     // const pushkey = this.afs.createId();
     this.sortProductsByNameAsc();  // Initial sorting List
 
   }
+
+  // RxJS BehaviorSubject start
+  changeMessage(message) {
+    this.messageSource.next(message);
+  }
+  // RxJS BehaviorSubject end
 
   getData() {
     this.products = this.productCollection.snapshotChanges().pipe(
@@ -205,7 +217,4 @@ export class ProductFirestoreService {
 
   }
 
-  deleteAll() {
-
-  }
 }

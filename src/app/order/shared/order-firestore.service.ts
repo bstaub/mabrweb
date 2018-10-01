@@ -192,8 +192,18 @@ export class OrderFirestoreService {
     if (this.user) {
       this.saveProducts(this.user.uid, productStore);
     }
+  }
 
-
+  // einzelner Artikel aus Warenkorb löschen
+  deleteProductFromOrder(productId: string) {
+    let productStore = this.localStorageService.getData('products');
+    console.log(productStore);
+    let productStoreNew = productStore.filter(product => product.productId != productId);
+    this.localStorageService.setData('products', productStoreNew);
+    if (this.user) {
+      // todo: remove single product form firestore
+      //this.deleteProductsPerOrder(this.user.uid, products);
+    }
   }
 
 
@@ -205,6 +215,8 @@ export class OrderFirestoreService {
     }
     this.localStorageService.destroyUserLocalStorage('products');
   }
+
+
 
   // Warenkorb Firestore löschen (vor speichern)
   clearScartStorage(products: any[]) {

@@ -19,6 +19,7 @@ import { OrderDetailComponent } from './order/order-detail/order-detail.componen
 import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login.component';
 import { CheckoutShipmentdataComponent } from './checkout/checkout-shipmentdata/checkout-shipmentdata.component';
 import { CheckoutPaymentComponent } from './checkout/checkout-payment/checkout-payment.component';
+import {UserLoginRegisterComponent} from './user/user-login-register/user-login-register.component';
 
 
 const APP_ROUTES: Routes = [
@@ -33,6 +34,7 @@ const APP_ROUTES: Routes = [
   {path: 'user', component: UserListComponent, children: USER_ROUTES, canActivate: [Auth2Guard]},
   {path: 'login', component: UserLoginComponent},
   {path: 'register', component: UserRegisterComponent},
+  {path: 'login-register', component: UserLoginRegisterComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [Auth2Guard]},
   {path: 'resetpw', component: ResetPasswordComponent},
   {path: '**', redirectTo: '/'},  // default Route, könnte auch 404 Seite sein, muss am Schluss aufgerufen werden

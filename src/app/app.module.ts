@@ -58,6 +58,7 @@ import { CheckoutPaymentComponent } from './checkout/checkout-payment/checkout-p
 import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { HeaderSearchComponent } from './header/header-search/header-search.component';
+import { UserLoginRegisterComponent } from './user/user-login-register/user-login-register.component';
 
 
 @NgModule({
@@ -97,6 +98,7 @@ import { HeaderSearchComponent } from './header/header-search/header-search.comp
     CheckoutPaymentComponent,
     CheckoutLoginComponent,
     HeaderSearchComponent,
+    UserLoginRegisterComponent,
   ],
   imports: [
     BrowserModule,

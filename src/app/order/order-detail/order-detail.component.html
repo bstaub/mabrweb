@@ -1,49 +1,46 @@
 <div class="container">
 
 
-<h1>Bestellpositionen</h1>
+  <h1>Bestellpositionen</h1>
 
 
-<div *ngFor="let product of productStore">
-  Artikel: <b>{{product.description}}</b> Anzahl: <b>{{product.qty}}</b>
-</div>
+  <div *ngFor="let product of productStore">
+    Artikel: <b>{{product.description}}</b> Anzahl: <b>{{product.qty}}</b>
+  </div>
 
-<hr/>
+  <hr/>
   <button class="btn btn-primary" (click)="onDelete()">Warenkorb Löschen</button>&nbsp;
-  <button *ngIf="user" class="btn btn-primary" (click)="onSaveScart(order?.userId)">Warenkorb Speichern</button>&nbsp;
-
-
-<hr/>
-<br>
-<br>
-<br>
-
-
-
-
-<div *ngIf="user" >
-  <h1>Allgemeine Infos</h1>
-  <div>
-    <label>Best.Nr.: </label> {{order?.key}}
-  <div>
-    <label>User: </label> {{order?.userId}}
-  </div>
-  <!--
-  <div>
-    <label>Datum: </label> {{(selectedOrder | async)?.orderDate.toDate()| date: 'dd.MM.yyyy'}}
-  </div>
-  -->
-  <div>
-    <label>Status: </label> {{order?.status}}
-  </div>
-  <div>
-    <label>Gesamtbetrag: </label> {{order?.totalValue}}
-  </div>
 
 
   <hr/>
+  <br>
+  <br>
+  <br>
+
+
+  <div *ngIf="user">
+    <h1>Allgemeine Infos</h1>
+    <div>
+      <label>Best.Nr.: </label> {{order?.key}}
+      <div>
+        <label>User: </label> {{order?.userId}}
+      </div>
+      <!--
+      <div>
+        <label>Datum: </label> {{(selectedOrder | async)?.orderDate.toDate()| date: 'dd.MM.yyyy'}}
+      </div>
+      -->
+      <div>
+        <label>Status: </label> {{order?.status}}
+      </div>
+      <div>
+        <label>Gesamtbetrag: </label> {{order?.totalValue}}
+      </div>
+
+
+      <hr/>
+    </div>
   </div>
-</div>
 
 
   <div *ngIf="!user" class="row">

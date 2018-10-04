@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../order.service';
 import { OrderFirestoreService } from '../shared/order-firestore.service';
-import { Observable } from 'rxjs';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { Order } from '../order.model';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../user/shared/auth.service';
-import { ProductPerOrder } from '../productPerOrder.model';
 import { NotificationService } from '../../shared/notification.service';
 
 
@@ -65,9 +63,6 @@ export class OrderDetailComponent implements OnInit {
       });
     }
 
-    const promise = this.orderFirestoreService.getProductsPerOrder(this.user.uid);
-
-
     this.productStore = this.localStorageService.getData('products');
 
 
@@ -96,13 +91,6 @@ export class OrderDetailComponent implements OnInit {
     this.orderFirestoreService.clearScart(this.productStore);
     this.productStore = [];
     this.router.navigate(['/bestellung']);
-  }
-
-  onSaveScart(userId: string) {
-    this.orderFirestoreService.clearScartStorage(this.productStore);
-    this.orderFirestoreService.saveProducts(userId, this.productStore);
-
-
   }
 
 

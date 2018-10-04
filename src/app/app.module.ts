@@ -51,8 +51,12 @@ import { AdminProductListComponent } from './admin/admin-product-list/admin-prod
 import { AdminProductItemComponent } from './admin/admin-product-item/admin-product-item.component';
 import { AdminProductAddCategoryComponent } from './admin/admin-product-add-category/admin-product-add-category.component';
 import { LocalStorageService } from './shared/local-storage.service';
-import { CheckoutEnterdataComponent } from './checkout/checkout-enterdata/checkout-enterdata.component';
+import { CheckoutCustomerdataComponent } from './checkout/checkout-customerdata/checkout-customerdata.component';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { CheckoutShipmentdataComponent } from './checkout/checkout-shipmentdata/checkout-shipmentdata.component';
+import { CheckoutPaymentComponent } from './checkout/checkout-payment/checkout-payment.component';
+import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login.component';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { HeaderSearchComponent } from './header/header-search/header-search.component';
 
 
@@ -88,7 +92,10 @@ import { HeaderSearchComponent } from './header/header-search/header-search.comp
     AdminProductListComponent,
     AdminProductItemComponent,
     AdminProductAddCategoryComponent,
-    CheckoutEnterdataComponent,
+    CheckoutCustomerdataComponent,
+    CheckoutShipmentdataComponent,
+    CheckoutPaymentComponent,
+    CheckoutLoginComponent,
     HeaderSearchComponent,
   ],
   imports: [
@@ -101,7 +108,8 @@ import { HeaderSearchComponent } from './header/header-search/header-search.comp
     NgbModule.forRoot(),
     Routing,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFontAwesomeModule
   ],
   providers: [AuthService,
     AdminGuard,

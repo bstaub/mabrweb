@@ -14,8 +14,11 @@ import { ResetPasswordComponent } from './user/reset-password/reset-password.com
 import { ADMIN_ROUTES } from './admin/admin.routing';
 import { AdminGuard } from './user/guards/admin.guard';
 import { AdminComponent } from './admin/admin.component';
-import { CheckoutEnterdataComponent } from './checkout/checkout-enterdata/checkout-enterdata.component';
+import { CheckoutCustomerdataComponent } from './checkout/checkout-customerdata/checkout-customerdata.component';
 import { OrderDetailComponent } from './order/order-detail/order-detail.component';
+import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login.component';
+import { CheckoutShipmentdataComponent } from './checkout/checkout-shipmentdata/checkout-shipmentdata.component';
+import { CheckoutPaymentComponent } from './checkout/checkout-payment/checkout-payment.component';
 
 
 const APP_ROUTES: Routes = [
@@ -23,7 +26,10 @@ const APP_ROUTES: Routes = [
   {path: 'admin', component: AdminComponent, children: ADMIN_ROUTES, canActivate: [AdminGuard]},
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES},
   {path: 'bestellung', component: OrderDetailComponent, children: ORDER_ROUTES},
-  {path: 'checkout', component: CheckoutEnterdataComponent, children: ORDER_ROUTES},
+  {path: 'checkout/login', component: CheckoutLoginComponent},
+  {path: 'checkout/customerdata', component: CheckoutCustomerdataComponent},
+  {path: 'checkout/shipmentdata', component: CheckoutShipmentdataComponent},
+  {path: 'checkout/payment', component: CheckoutPaymentComponent},
   {path: 'user', component: UserListComponent, children: USER_ROUTES, canActivate: [Auth2Guard]},
   {path: 'login', component: UserLoginComponent},
   {path: 'register', component: UserRegisterComponent},

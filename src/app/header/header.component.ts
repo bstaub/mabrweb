@@ -8,7 +8,7 @@ import { LocalStorageService } from '../shared/local-storage.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styles: [`
+  styles: [`    
     ul {
       margin-bottom: 0;
     }

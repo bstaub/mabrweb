@@ -59,6 +59,7 @@ import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { HeaderSearchComponent } from './header/header-search/header-search.component';
 import { UserLoginRegisterComponent } from './user/user-login-register/user-login-register.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -99,6 +100,7 @@ import { UserLoginRegisterComponent } from './user/user-login-register/user-logi
     CheckoutLoginComponent,
     HeaderSearchComponent,
     UserLoginRegisterComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

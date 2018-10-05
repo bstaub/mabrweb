@@ -40,10 +40,8 @@ import { CheckoutCustomerdataComponent } from './checkout/checkout-customerdata/
 import { CheckoutShipmentdataComponent } from './checkout/checkout-shipmentdata/checkout-shipmentdata.component';
 import { CheckoutPaymentComponent } from './checkout/checkout-payment/checkout-payment.component';
 import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login.component';
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { UserLoginRegisterComponent } from './user/user-login-register/user-login-register.component';
 import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -89,11 +87,8 @@ import { SharedModule } from './shared/shared.module';
     AngularFireAuthModule,      // cloud firestore
     AngularFirestoreModule,     // do auth login register stuff
     AngularFireStorageModule,   // do file store stuff
-    // NgbModule.forRoot(),
     ReactiveFormsModule,
-    AngularFontAwesomeModule,
-    CoreModule,
-    // SharedModule,
+    CoreModule, // Core Modul beinhalted Shared Modul
   ],
 
   bootstrap: [AppComponent]

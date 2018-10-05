@@ -5,7 +5,7 @@ import { AppRoutingModule } from '../app.routing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
-
+// todo: SortPip, Md2HtmlPipe, NotificationService?? hier auslagern
 
 @NgModule({
   declarations: [],

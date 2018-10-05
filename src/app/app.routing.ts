@@ -1,5 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home.component';
+import { HomeComponent } from './core/home/home.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 
 import { PRODUCT_ROUTES } from './product/product.routing';
@@ -20,6 +20,7 @@ import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login
 import { CheckoutShipmentdataComponent } from './checkout/checkout-shipmentdata/checkout-shipmentdata.component';
 import { CheckoutPaymentComponent } from './checkout/checkout-payment/checkout-payment.component';
 import {UserLoginRegisterComponent} from './user/user-login-register/user-login-register.component';
+import { NgModule } from '@angular/core';
 
 
 const APP_ROUTES: Routes = [
@@ -40,4 +41,12 @@ const APP_ROUTES: Routes = [
   {path: '**', redirectTo: '/'},  // default Route, könnte auch 404 Seite sein, muss am Schluss aufgerufen werden
 ];
 
-export const Routing = RouterModule.forRoot(APP_ROUTES);
+
+@NgModule({
+  imports: [RouterModule.forRoot(APP_ROUTES)],
+  exports: [RouterModule],
+  providers: [
+    // AdminGuard,
+  ]
+})
+export class AppRoutingModule { }

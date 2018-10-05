@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
-import { AuthService } from './user/shared/auth.service';
-import { UserService } from './user/shared/user.service';
-import { User } from './models/user';
+import { AuthService } from '../../user/shared/auth.service';
+import { UserService } from '../../user/shared/user.service';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-home',

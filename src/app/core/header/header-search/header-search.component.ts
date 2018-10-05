@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
 import { Subject } from 'rxjs';
+import { ProductFirestoreService } from '../../../product/shared/product-firestore.service';
 
 @Component({
   selector: 'app-header-search',

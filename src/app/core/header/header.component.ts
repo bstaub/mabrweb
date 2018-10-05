@@ -1,9 +1,9 @@
 import { Component, OnInit, AfterContentChecked, AfterContentInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AuthService } from '../user/shared/auth.service';
-import { UserService } from '../user/shared/user.service';
-import { SettingsService } from '../shared/settings.service';
-import { LocalStorageService } from '../shared/local-storage.service';
+import { AuthService } from '../../user/shared/auth.service';
+import { UserService } from '../../user/shared/user.service';
+import { SettingsService } from '../../shared/settings.service';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 @Component({
   selector: 'app-header',

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { UserService } from '../shared/user.service';
 import { StorageService } from '../../shared/storage.service';
-import { User } from '../user';
+import { User } from '../../models/user';
 
 
 @Component({

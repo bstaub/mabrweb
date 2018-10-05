@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductPerOrder } from './productPerOrder.model';
+import { ProductPerOrder } from '../models/productPerOrder.model';
 import { ProductFirestoreService } from '../product/shared/product-firestore.service';
 import { OrderFirestoreService } from './shared/order-firestore.service';
 import { UserService } from '../user/shared/user.service';

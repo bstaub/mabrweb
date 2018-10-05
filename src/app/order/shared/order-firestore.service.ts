@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { map } from 'rxjs/operators';
-import { Order } from '../order.model';
-import { ProductPerOrder } from '../productPerOrder.model';
+import { Order } from '../../models/order.model';
+import { ProductPerOrder } from '../../models/productPerOrder.model';
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { Product } from '../../product/product.model';
+import { Product } from '../../models/product.model';
 
 
 @Injectable({

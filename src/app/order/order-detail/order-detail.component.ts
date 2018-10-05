@@ -5,7 +5,7 @@ import { OrderFirestoreService } from '../shared/order-firestore.service';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { Order } from '../order.model';
+import { Order } from '../../models/order.model';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../user/shared/auth.service';
 import { NotificationService } from '../../shared/notification.service';

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../order.service';
 import { OrderFirestoreService } from '../shared/order-firestore.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Order } from '../order.model';
+import { Order } from '../../models/order.model';
 import { UserService } from '../../user/shared/user.service';
-import { ProductPerOrder } from '../productPerOrder.model';
+import { ProductPerOrder } from '../../models/productPerOrder.model';
 
 
 @Component({

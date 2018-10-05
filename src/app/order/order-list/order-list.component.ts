@@ -3,7 +3,7 @@ import { OrderService } from '../order.service';
 import { OrderFirestoreService } from '../shared/order-firestore.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../user/shared/user.service';
-import { User } from '../../user/user';
+import { User } from '../../models/user';
 
 
 @Component({

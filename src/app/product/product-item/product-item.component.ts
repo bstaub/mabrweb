@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductService } from '../shared/product.service';
-import { Product } from '../product.model';
+import { Product } from '../../models/product.model';
 import { ProductFirestoreService } from '../shared/product-firestore.service';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
-import { ProductPerOrder } from '../../order/productPerOrder.model';
+import { ProductPerOrder } from '../../models/productPerOrder.model';
 import { UserService } from '../../user/shared/user.service';
 
 @Component({

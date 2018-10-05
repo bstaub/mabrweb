@@ -5,10 +5,11 @@ import { OrderFirestoreService } from '../shared/order-firestore.service';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { Order } from '../order.model';
+import { Order } from '../../models/order.model';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../user/shared/auth.service';
 import { NotificationService } from '../../shared/notification.service';
+
 
 
 @Component({
@@ -79,7 +80,7 @@ export class OrderDetailComponent implements OnInit {
     this.orderId = this.orderFirestoreService.closeUserOrder(order);
     console.log(this.orderId);
     this.orderFirestoreService.closeProductsPerOrder(this.orderId, this.user.uid, this.productStore);
-    this.onDelete();
+    this.onDeleteScart();
 
   }
 
@@ -87,10 +88,17 @@ export class OrderDetailComponent implements OnInit {
     this.router.navigate(['/checkout']);
   }
 
-  onDelete() {
+  onDeleteScart() {
     this.orderFirestoreService.clearScart(this.productStore);
     this.productStore = [];
     this.router.navigate(['/bestellung']);
+  }
+
+  onDeletItem(productId: string){
+
+    // todo remove product from view
+    this.orderFirestoreService.deleteProductFromOrder(productId);
+
   }
 
 

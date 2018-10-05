@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { map } from 'rxjs/operators';
-import { Order } from '../order.model';
-import { ProductPerOrder } from '../productPerOrder.model';
+import { Order } from '../../models/order.model';
+import { ProductPerOrder } from '../../models/productPerOrder.model';
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { Product } from '../../product/product.model';
+import { Product } from '../../models/product.model';
 
 
 @Injectable({
@@ -192,8 +192,18 @@ export class OrderFirestoreService {
     if (this.user) {
       this.saveProducts(this.user.uid, productStore);
     }
+  }
 
-
+  // einzelner Artikel aus Warenkorb löschen
+  deleteProductFromOrder(productId: string) {
+    let productStore = this.localStorageService.getData('products');
+    console.log(productStore);
+    let productStoreNew = productStore.filter(product => product.productId != productId);
+    this.localStorageService.setData('products', productStoreNew);
+    if (this.user) {
+      // todo: remove single product form firestore
+      //this.deleteProductsPerOrder(this.user.uid, products);
+    }
   }
 
 
@@ -205,6 +215,8 @@ export class OrderFirestoreService {
     }
     this.localStorageService.destroyUserLocalStorage('products');
   }
+
+
 
   // Warenkorb Firestore löschen (vor speichern)
   clearScartStorage(products: any[]) {

@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Product } from '../product.model';
+import { Product } from '../../models/product.model';
 import { ActivatedRoute } from '@angular/router';
 import { ProductFirestoreService } from '../shared/product-firestore.service';
 import { Observable } from 'rxjs';
-import { ProductPerOrder } from '../../order/productPerOrder.model';
+import { ProductPerOrder } from '../../models/productPerOrder.model';
 import { UserService } from '../../user/shared/user.service';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 

@@ -1,5 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home.component';
+import { HomeComponent } from './core/home/home.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 
 import { PRODUCT_ROUTES } from './product/product.routing';
@@ -14,8 +14,13 @@ import { ResetPasswordComponent } from './user/reset-password/reset-password.com
 import { ADMIN_ROUTES } from './admin/admin.routing';
 import { AdminGuard } from './user/guards/admin.guard';
 import { AdminComponent } from './admin/admin.component';
-import { CheckoutEnterdataComponent } from './checkout/checkout-enterdata/checkout-enterdata.component';
+import { CheckoutCustomerdataComponent } from './checkout/checkout-customerdata/checkout-customerdata.component';
 import { OrderDetailComponent } from './order/order-detail/order-detail.component';
+import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login.component';
+import { CheckoutShipmentdataComponent } from './checkout/checkout-shipmentdata/checkout-shipmentdata.component';
+import { CheckoutPaymentComponent } from './checkout/checkout-payment/checkout-payment.component';
+import {UserLoginRegisterComponent} from './user/user-login-register/user-login-register.component';
+import { NgModule } from '@angular/core';
 
 
 const APP_ROUTES: Routes = [
@@ -23,13 +28,25 @@ const APP_ROUTES: Routes = [
   {path: 'admin', component: AdminComponent, children: ADMIN_ROUTES, canActivate: [AdminGuard]},
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES},
   {path: 'bestellung', component: OrderDetailComponent, children: ORDER_ROUTES},
-  {path: 'checkout', component: CheckoutEnterdataComponent, children: ORDER_ROUTES},
+  {path: 'checkout/login', component: CheckoutLoginComponent},
+  {path: 'checkout/customerdata', component: CheckoutCustomerdataComponent},
+  {path: 'checkout/shipmentdata', component: CheckoutShipmentdataComponent},
+  {path: 'checkout/payment', component: CheckoutPaymentComponent},
   {path: 'user', component: UserListComponent, children: USER_ROUTES, canActivate: [Auth2Guard]},
   {path: 'login', component: UserLoginComponent},
   {path: 'register', component: UserRegisterComponent},
+  {path: 'login-register', component: UserLoginRegisterComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [Auth2Guard]},
   {path: 'resetpw', component: ResetPasswordComponent},
   {path: '**', redirectTo: '/'},  // default Route, könnte auch 404 Seite sein, muss am Schluss aufgerufen werden
 ];
 
-export const Routing = RouterModule.forRoot(APP_ROUTES);
+
+@NgModule({
+  imports: [RouterModule.forRoot(APP_ROUTES)],
+  exports: [RouterModule],
+  providers: [
+    // AdminGuard,
+  ]
+})
+export class AppRoutingModule { }

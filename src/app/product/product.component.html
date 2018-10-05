@@ -1,12 +1,22 @@
-<h1>Products </h1>
+<style>
+  nav{
+    margin-left: 40px;
+    margin-bottom: 20px;
+  }
+  a{
+    display: inline-block;
+    margin-left: 5px;
+
+  }
+  .btn-primary{
+    background: dimgrey!important;
+  }
+</style>
 
 <nav>
-  <a routerLink="grid" class="btn btn-primary active" role="button" routerLinkActive="active">Produkte GRID VIEW</a>
-  <a routerLink="list" class="btn btn-primary active" role="button" routerLinkActive="active">Produkte Liste</a>
-  <a class="btn btn-primary active" role="button" (click)="getBasket()">Warenkorb anzeigen</a>
+  <a routerLink="grid" class="btn btn-primary active" role="button" routerLinkActive="active"><i class="fa fa-th" aria-hidden="true"></i></a>
+  <a routerLink="list" class="btn btn-primary active" role="button" routerLinkActive="active"><i class="fa fa-list" aria-hidden="true"></i></a>
+  <a class="btn btn-primary active" role="button" (click)="getBasket()"><i class="fa fa-shopping-basket" aria-hidden="true"></i></a>
 </nav>
 
-<ul>
-  <li *ngFor="let item of basket"> {{item.name}} - CHF {{item.price}} - {{item.itemcount}} Stk - Total CHF  {{item.itemcount * item.price}}</li>
-</ul>
 <router-outlet></router-outlet>

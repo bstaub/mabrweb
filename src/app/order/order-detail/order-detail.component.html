@@ -1,77 +1,74 @@
 <div class="container">
 
 
-  <h1>Bestellpositionen</h1>
+
+  <div class="row">
+    <div class="col-md-8 offset-2">
+      <h1>Warenkorb</h1>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Artikel</th>
+            <th>Menge</th>
+            <th>CHF</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let product of productStore">
+            <td>
+              <figure class="media">
+                <div>
+                  <img src="{{product.image}}" alt="{{product.description}}" class="img-thumbnail" width="100px">
+                </div>
+                <figcaption class="media-body">
+                  <h6 class="title text-truncate">{{product.name}}</h6>
+                </figcaption>
 
 
-  <div *ngFor="let product of productStore">
-    Artikel: <b>{{product.description}}</b> Anzahl: <b>{{product.qty}}</b>
-  </div>
+              </figure>
 
-  <hr/>
-  <button class="btn btn-primary" (click)="onDelete()">Warenkorb Löschen</button>&nbsp;
+            </td>
+            <td>{{product.qty}}</td>
+            <td>{{product.price}}</td>
+            <td>
 
-
-  <hr/>
-  <br>
-  <br>
-  <br>
-
-
-  <div *ngIf="user">
-    <h1>Allgemeine Infos</h1>
-    <div>
-      <label>Best.Nr.: </label> {{order?.key}}
-      <div>
-        <label>User: </label> {{order?.userId}}
+              <button class="btn btn-sm btn-danger" (click)="onDeletItem(product.productId)">
+                <fa name="trash"></fa>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
       </div>
-      <!--
-      <div>
-        <label>Datum: </label> {{(selectedOrder | async)?.orderDate.toDate()| date: 'dd.MM.yyyy'}}
-      </div>
-      -->
-      <div>
-        <label>Status: </label> {{order?.status}}
-      </div>
-      <div>
-        <label>Gesamtbetrag: </label> {{order?.totalValue}}
-      </div>
 
 
-      <hr/>
     </div>
   </div>
 
 
-  <div *ngIf="!user" class="row">
-    <div class="col-lg-4">
-      <form (ngSubmit)="onLoginWithOrder(f)" #f="ngForm">
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" name="email" id="email" ngModel class="form-control" required>
-        </div>
+  <div class="row">
+    <div class="col-md-8 offset-2">
+      <button class="btn btn-primary" (click)="onDeleteScart()">Warenkorb Löschen</button>&nbsp;
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" name="password" id="password" ngModel class="form-control" required>
-        </div>
-        <br>
-        <button type="submit" class="btn btn-primary">Einloggen und Warenkorb übernehmen</button>
-
-      </form>
+  <div class="row">
+    <div class="col-md-8 offset-2">
+      <button class="btn btn-primary" (click)="onEnterOrderData()">zur Kasse</button>
     </div>
   </div>
 
-  <button *ngIf="user" class="btn btn-primary" (click)="onOrder()">(Bestellung abschicken)</button>&nbsp;
-  <button *ngIf="user" class="btn btn-primary" (click)="onEnterOrderData()">Bestelldaten eingeben</button>
+
+
 
 </div>
-
-
-
-
-
 
 
 

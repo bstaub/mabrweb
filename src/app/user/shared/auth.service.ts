@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { User } from '../user';
+import { User } from '../../models/user';
 
 import { UserService } from './user.service';
 import { NotificationService } from '../../shared/notification.service';

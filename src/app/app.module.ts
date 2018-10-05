@@ -5,7 +5,7 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProductListComponent } from './product/product-list/product-list.component';
 import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 import { UserListComponent } from './user/user-list/user-list.component';
@@ -43,6 +43,7 @@ import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { UserLoginRegisterComponent } from './user/user-login-register/user-login-register.component';
 import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -88,10 +89,11 @@ import { CoreModule } from './core/core.module';
     AngularFireAuthModule,      // cloud firestore
     AngularFirestoreModule,     // do auth login register stuff
     AngularFireStorageModule,   // do file store stuff
-    NgbModule.forRoot(),
+    // NgbModule.forRoot(),
     ReactiveFormsModule,
     AngularFontAwesomeModule,
-    CoreModule
+    CoreModule,
+    // SharedModule,
   ],
 
   bootstrap: [AppComponent]

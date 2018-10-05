@@ -5,7 +5,6 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProductListComponent } from './product/product-list/product-list.component';
 import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 import { UserListComponent } from './user/user-list/user-list.component';

@@ -3,10 +3,13 @@ import { Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { map } from 'rxjs/operators';
 import { Order } from '../../models/order.model';
+import { Product } from '../../models/product.model';
 import { ProductPerOrder } from '../../models/productPerOrder.model';
+import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalStorage.model';
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { Product } from '../../models/product.model';
+
+
 
 
 @Injectable({
@@ -28,6 +31,9 @@ export class OrderFirestoreService {
   orderDoc: AngularFirestoreDocument<Order>;
   order: Order;
   user: any;
+
+  productsPerOrderLocalStorage: ProductPerOrderLocalStorage[];
+  productsPerOrderLocalStorageNew: ProductPerOrderLocalStorage[];
 
 
   constructor(public afs: AngularFirestore,
@@ -114,7 +120,7 @@ export class OrderFirestoreService {
   }
 
   // Warenkorb in Firestore speichern (userId als Key wenn Status pending )
-  saveProducts(userId: string, products: Array<any>) {
+  saveProductsInFS(userId: string, products: Array<ProductPerOrderLocalStorage>) {
 
     products.forEach((product) => {
       const productPerOrder = new ProductPerOrder();
@@ -135,11 +141,41 @@ export class OrderFirestoreService {
     });
   }
 
+  deleteProductsInFS(userId: string, productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
+    productsPerOrderLocalStorage.forEach((productPerOrderLocalStorage) => {
+
+      this.deleteProductInFS(userId, productPerOrderLocalStorage.productId);
+
+      /*
+      this.productsPerOrderDocument = this.afs.doc(`productsPerOrder/${userId}`).collection('products').doc(product.productId);
+      this.productsPerOrderDocument.delete().then(function () {
+        console.log('Document successfully deleted!');
+      }).catch(function (error) {
+        console.error('Error removing temp document: ', error);
+      });
+
+      */
+
+    });
+  }
+
+  deleteProductInFS(userId: string, productIdToDelete: string) {
+
+      this.productsPerOrderDocument = this.afs.doc(`productsPerOrder/${userId}`).collection('products').doc(productIdToDelete);
+      this.productsPerOrderDocument.delete().then(function () {
+        console.log('Document successfully deleted!');
+      }).catch(function (error) {
+        console.error('Error removing temp document: ', error);
+      });
+
+
+  }
+
 
   // Warenkorb von Firestore in LocalStorage speichern
   loadProducts(userId: string) {
 
-    this.localStorageService.destroyUserLocalStorage('products');
+    this.localStorageService.destroyLocalStorage('products');
     this.getProductsPerOrder(userId).ref.get().then((res) => {
       res.forEach(doc => {
         const newProduct = doc.data();
@@ -173,10 +209,10 @@ export class OrderFirestoreService {
   }
 
 
-  // Einstieg von Produktseite
+  // Artikel hinzufügen von Produktseite
   addProductToOrder(product: Product) {
-    const productStore = this.localStorageService.getData('products');
-    productStore.push({
+    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.productsPerOrderLocalStorage.push({
       productId: product.key,
       qty: Number(product.itemcount),
       name: product.name,
@@ -185,43 +221,42 @@ export class OrderFirestoreService {
       image: product.image
     });
 
-    this.localStorageService.setData('products', productStore);
+    this.localStorageService.setData('products',  this.productsPerOrderLocalStorage);
 
     this.user = this.userService.getCurrentUser();
 
     if (this.user) {
-      this.saveProducts(this.user.uid, productStore);
+      this.saveProductsInFS(this.user.uid,  this.productsPerOrderLocalStorage);
     }
   }
 
   // einzelner Artikel aus Warenkorb löschen
-  deleteProductFromOrder(productId: string) {
-    const productStore = this.localStorageService.getData('products');
-    console.log(productStore);
-    const productStoreNew = productStore.filter(product => product.productId !== productId);
-    this.localStorageService.setData('products', productStoreNew);
+  deleteProductFromOrder(productIdToDelete: string) {
+    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.productsPerOrderLocalStorageNew = this.productsPerOrderLocalStorage.filter(product => product.productId !== productIdToDelete);
+    this.localStorageService.destroyLocalStorage('products');
+    this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
     if (this.user) {
-      // todo: remove single product form firestore
-      // this.deleteProductsPerOrder(this.user.uid, products);
+      this.deleteProductInFS(this.user.uid, productIdToDelete);
     }
   }
 
 
   // Warenkorb löschen
-  clearScart(products: any[]) {
+  clearScart(productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
     this.user = this.userService.getCurrentUser();
     if (this.user) {
-      this.deleteProductsPerOrder(this.user.uid, products);
+      this.deleteProductsInFS(this.user.uid, productsPerOrderLocalStorage);
     }
-    this.localStorageService.destroyUserLocalStorage('products');
+    this.localStorageService.destroyLocalStorage('products');
   }
 
 
   // Warenkorb Firestore löschen (vor speichern)
-  clearScartStorage(products: any[]) {
+  clearScartStorage(productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
     this.user = this.userService.getCurrentUser();
     if (this.user) {
-      this.deleteProductsPerOrder(this.user.uid, products);
+      this.deleteProductsInFS(this.user.uid, productsPerOrderLocalStorage);
     }
   }
 
@@ -232,17 +267,7 @@ export class OrderFirestoreService {
   }
 
 
-  deleteProductsPerOrder(userId: string, products: any[]) {
-    products.forEach((product) => {
-      this.productsPerOrderDocument = this.afs.doc(`productsPerOrder/${userId}`).collection('products').doc(product.productId);
-      this.productsPerOrderDocument.delete().then(function () {
-        console.log('Document successfully deleted!');
-      }).catch(function (error) {
-        console.error('Error removing temp document: ', error);
-      });
-
-    });
-  }
+ 
 
 
 }

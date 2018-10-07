@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrderService } from '../order.service';
 import { OrderFirestoreService } from '../shared/order-firestore.service';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
 import { UserService } from '../../user/shared/user.service';
@@ -9,7 +8,6 @@ import { Order } from '../../models/order.model';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../user/shared/auth.service';
 import { NotificationService } from '../../shared/notification.service';
-
 
 
 @Component({
@@ -30,7 +28,6 @@ export class OrderDetailComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private orderService: OrderService,
     private orderFirestoreService: OrderFirestoreService,
     private productFireStoreService: ProductFirestoreService,
     private router: Router,
@@ -94,7 +91,7 @@ export class OrderDetailComponent implements OnInit {
     this.router.navigate(['/bestellung']);
   }
 
-  onDeletItem(productId: string){
+  onDeletItem(productId: string) {
 
     // todo remove product from view
     this.orderFirestoreService.deleteProductFromOrder(productId);

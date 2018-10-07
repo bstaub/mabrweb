@@ -4,7 +4,6 @@ import { UserListComponent } from './user/user-list/user-list.component';
 
 import { PRODUCT_ROUTES } from './product/product.routing';
 import { USER_ROUTES } from './user/user.routing';
-import { ORDER_ROUTES } from './order/order.routing';
 import { UserLoginComponent } from './user/user-login/user-login.component';
 import { UserRegisterComponent } from './user/user-register/user-register.component';
 import { ProductComponent } from './product/product.component';
@@ -27,7 +26,7 @@ const APP_ROUTES: Routes = [
   {path: '', component: HomeComponent},
   {path: 'admin', component: AdminComponent, children: ADMIN_ROUTES, canActivate: [AdminGuard]},
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES},
-  {path: 'bestellung', component: OrderDetailComponent, children: ORDER_ROUTES},
+  {path: 'bestellung', component: OrderDetailComponent},
   {path: 'checkout/login', component: CheckoutLoginComponent},
   {path: 'checkout/customerdata', component: CheckoutCustomerdataComponent},
   {path: 'checkout/shipmentdata', component: CheckoutShipmentdataComponent},

@@ -17,6 +17,7 @@ import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderSearchComponent } from './header/header-search/header-search.component';
 import { SharedModule } from '../shared/shared.module';
+import { HomeSliderComponent } from './home/home-slider/home-slider.component';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { SharedModule } from '../shared/shared.module';
     FooterComponent,
     HomeComponent,
     HeaderSearchComponent,
+    HomeSliderComponent,
   ],
   imports: [
     CommonModule,

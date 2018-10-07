@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrderService } from '../order.service';
 import { OrderFirestoreService } from '../shared/order-firestore.service';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
 import { UserService } from '../../user/shared/user.service';
@@ -9,7 +8,7 @@ import { Order } from '../../models/order.model';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../user/shared/auth.service';
 import { NotificationService } from '../../shared/notification.service';
-
+import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalStorage.model';
 
 
 @Component({
@@ -19,18 +18,15 @@ import { NotificationService } from '../../shared/notification.service';
 })
 export class OrderDetailComponent implements OnInit {
 
-  productStore: any[];
+  productPerOrderLocalStorage: ProductPerOrderLocalStorage[];
   orderId: string;
-  orderData: Order[];
   user: any;
   userId: string;
-  // order: Observable<any>;
   order: any;
 
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private orderService: OrderService,
     private orderFirestoreService: OrderFirestoreService,
     private productFireStoreService: ProductFirestoreService,
     private router: Router,
@@ -64,7 +60,7 @@ export class OrderDetailComponent implements OnInit {
       });
     }
 
-    this.productStore = this.localStorageService.getData('products');
+    this.productPerOrderLocalStorage = this.localStorageService.getData('products');
 
 
   }
@@ -79,24 +75,33 @@ export class OrderDetailComponent implements OnInit {
     order.userId = this.user.uid;
     this.orderId = this.orderFirestoreService.closeUserOrder(order);
     console.log(this.orderId);
-    this.orderFirestoreService.closeProductsPerOrder(this.orderId, this.user.uid, this.productStore);
+    this.orderFirestoreService.closeProductsPerOrder(this.orderId, this.user.uid, this.productPerOrderLocalStorage);
     this.onDeleteScart();
 
   }
 
   onEnterOrderData() {
-    this.router.navigate(['/checkout']);
+    if (this.user) {
+      this.router.navigate(['/checkout']);
+    } else {
+      alert('Under Construction - Bitte loggen Sie sich ein...');
+    }
   }
 
   onDeleteScart() {
-    this.orderFirestoreService.clearScart(this.productStore);
-    this.productStore = [];
+    this.orderFirestoreService.clearScart(this.productPerOrderLocalStorage);
+    this.productPerOrderLocalStorage = [];
     this.router.navigate(['/bestellung']);
   }
 
-  onDeletItem(productId: string){
+  onDeletItem(productId: string) {
 
-    // todo remove product from view
+    this.productPerOrderLocalStorage.forEach((product, index) => {
+      if (product.productId === productId) {
+        this.productPerOrderLocalStorage.splice(index, 1);
+      }
+
+    });
     this.orderFirestoreService.deleteProductFromOrder(productId);
 
   }
@@ -114,7 +119,7 @@ export class OrderDetailComponent implements OnInit {
 
 
             this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
-            this.orderFirestoreService.saveProducts(userData.user.uid, this.productStore);
+            this.orderFirestoreService.saveProductsInFS(userData.user.uid, this.productPerOrderLocalStorage);
 
 
             this.router.navigateByUrl('/bestellung');

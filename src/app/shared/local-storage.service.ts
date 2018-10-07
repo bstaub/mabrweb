@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class LocalStorageService {
 
-  constructor() { }
+  constructor() {
+  }
 
 
   // LocalStorage Functions start
@@ -19,8 +20,9 @@ export class LocalStorageService {
     return JSON.parse(localStorage.getItem(key)) || [];
   }
 
-  destroyUserLocalStorage(key: string) {
+  destroyLocalStorage(key: string) {
     localStorage.removeItem(key);
   }
+
   // LocalStorage Function end
 }

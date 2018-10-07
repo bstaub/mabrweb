@@ -10,17 +10,17 @@ export class LocalStorageService {
 
 
   // LocalStorage Functions start
-  static setData(key: string, data: Object) {
+  setData(key: string, data: Object) {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
 
-  static getData(key: string) {
+  getData(key: string) {
 
     return JSON.parse(localStorage.getItem(key)) || [];
   }
 
-  static destroyLocalStorage(key: string) {
+  destroyLocalStorage(key: string) {
     localStorage.removeItem(key);
   }
 

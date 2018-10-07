@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-checkout-enterdata',
@@ -17,6 +17,10 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
   }
 
+  onSubmit() {
+    console.log(this.CustomerAddressForm);
+  }
+
 
   private initCustomerAddressFormGroup() {
 
@@ -27,7 +31,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
       zip: new FormControl(null),
       city: new FormControl(null),
       country: new FormControl(null),
-      email: new FormControl(null),
+      mail: new FormControl(null),
       phone: new FormControl(null)
     });
   }

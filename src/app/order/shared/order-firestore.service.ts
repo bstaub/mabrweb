@@ -113,7 +113,7 @@ export class OrderFirestoreService {
     this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(order)));
   }
 
-  //Warenkorb in Firestore speichern (userId als Key wenn Status pending )
+  // Warenkorb in Firestore speichern (userId als Key wenn Status pending )
   saveProducts(userId: string, products: Array<any>) {
 
     products.forEach((product) => {
@@ -127,16 +127,16 @@ export class OrderFirestoreService {
         productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
         qty: +productPerOrder.qty
       }).then(function () {
-         console.log('Document successfully added!');
+        console.log('Document successfully added!');
       }).catch(function (error) {
-         console.error('Error adding document: ', error);
+        console.error('Error adding document: ', error);
       });
 
     });
   }
 
 
-  //Warenkorb von Firestore in LocalStorage speichern
+  // Warenkorb von Firestore in LocalStorage speichern
   loadProducts(userId: string) {
 
     this.localStorageService.destroyUserLocalStorage('products');
@@ -152,7 +152,7 @@ export class OrderFirestoreService {
               if (newProduct.productData) {
 
 
-                let productStore = this.localStorageService.getData('products');
+                const productStore = this.localStorageService.getData('products');
                 productStore.push({
                   productId: newProduct.id,
                   qty: newProduct.qty,
@@ -175,7 +175,7 @@ export class OrderFirestoreService {
 
   // Einstieg von Produktseite
   addProductToOrder(product: Product) {
-    let productStore = this.localStorageService.getData('products');
+    const productStore = this.localStorageService.getData('products');
     productStore.push({
       productId: product.key,
       qty: Number(product.itemcount),
@@ -196,13 +196,13 @@ export class OrderFirestoreService {
 
   // einzelner Artikel aus Warenkorb löschen
   deleteProductFromOrder(productId: string) {
-    let productStore = this.localStorageService.getData('products');
+    const productStore = this.localStorageService.getData('products');
     console.log(productStore);
-    let productStoreNew = productStore.filter(product => product.productId != productId);
+    const productStoreNew = productStore.filter(product => product.productId !== productId);
     this.localStorageService.setData('products', productStoreNew);
     if (this.user) {
       // todo: remove single product form firestore
-      //this.deleteProductsPerOrder(this.user.uid, products);
+      // this.deleteProductsPerOrder(this.user.uid, products);
     }
   }
 
@@ -215,7 +215,6 @@ export class OrderFirestoreService {
     }
     this.localStorageService.destroyUserLocalStorage('products');
   }
-
 
 
   // Warenkorb Firestore löschen (vor speichern)

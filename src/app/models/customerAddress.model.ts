@@ -6,7 +6,7 @@ export class CustomerAddress {
     public zip: number = null,
     public city: string = '',
     public country: string = '',
-    public email: string = '',
+    public mail: string = '',
     public phone: string = ''
   ) {}
 }

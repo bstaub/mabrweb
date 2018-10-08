@@ -10,7 +10,12 @@ import { OrderFirestoreService } from '../../order/shared/order-firestore.servic
 @Component({
   selector: 'app-detail-list',
   templateUrl: './product-detail.component.html',
-  styles: []
+  styles: [`
+        .app-detail-list {
+          display: block;
+          margin: 45px;
+        }
+  `]
 })
 export class ProductDetailComponent implements OnInit {
 

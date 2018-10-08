@@ -96,9 +96,9 @@ export class OrderDetailComponent implements OnInit {
 
   onDeletItem(productId: string) {
 
-    this.productPerOrderLocalStorage.forEach((product, index) => {
+    this.productPerOrderLocalStorage.forEach((product, index, sourceArray) => {
       if (product.productId === productId) {
-        this.productPerOrderLocalStorage.splice(index, 1);
+        sourceArray.splice(index, 1);
       }
 
     });

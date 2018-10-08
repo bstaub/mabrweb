@@ -1,0 +1,50 @@
+<p class="tip"></p>
+<div class="cont" [ngClass]="{'s--signup': status }">
+  <form id="login" class="form sign-in" (ngSubmit)="onSubmitLogin(fl)" #fl="ngForm">
+    <h2>Willkommen zurück,</h2>
+    <label>
+      <span>Email</span>
+      <input type="email" name="email" class="form-control" ngModel required />
+    </label>
+    <label>
+      <span>Passwort</span>
+      <input type="password" name="password" class="form-control" ngModel required />
+    </label>
+    <p class="forgot-pass" routerLink="/resetpw">Passwort vergessen?</p>
+    <button type="submit" class="submit">Login</button>
+    <!--<button type="button" class="fb-btn">Connect with <span>facebook</span></button>-->
+  </form>
+  <div class="sub-cont">
+    <div class="img">
+      <div class="img__text m--up">
+        <h2>Neuer Benutzer?</h2>
+        <p>Registriere Dich und kaufe supergünstige Shopartikel!</p>
+      </div>
+      <div class="img__text m--in">
+        <h2>Bereits Kunde?</h2>
+        <p>Wenn du bereits ein Konto hast, Logge Dich ein. Wir vermissen Dich!</p>
+      </div>
+      <div class="img__btn" (click)="clickToggle()">
+        <span class="m--up">Register</span>
+        <span class="m--in">Login</span>
+      </div>
+    </div>
+    <form id="register" class="form sign-up" (ngSubmit)="onSubmitRegister(fr)" #fr="ngForm">
+      <h2>Registration, fühle dich wie zu Hause,</h2>
+      <label>
+        <span>Name</span>
+        <input type="text" name="fullname" class="form-control" ngModel required />
+      </label>
+      <label>
+        <span>Email</span>
+        <input type="email" name="email" class="form-control" ngModel required />
+      </label>
+      <label>
+        <span>Passwort</span>
+        <input type="password" name="password" class="form-control" ngModel required />
+      </label>
+      <button type="submit" class="submit">Bestätigen</button>
+      <!--<button type="button" class="fb-btn">Join with <span>facebook</span></button>-->
+    </form>
+  </div>
+</div>

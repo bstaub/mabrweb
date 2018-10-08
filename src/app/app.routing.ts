@@ -18,6 +18,7 @@ import { UserLoginRegisterComponent } from './user/user-login-register/user-logi
 import { NgModule } from '@angular/core';
 import { CHECKOUT_ROUTES } from './checkout/checkout.routing';
 import { CheckoutCustomerdataComponent } from './checkout/checkout-customerdata/checkout-customerdata.component';
+import { UserLoginRegisterSlideComponent } from './user/user-login-register-slide/user-login-register-slide.component';
 
 
 const APP_ROUTES: Routes = [
@@ -30,6 +31,7 @@ const APP_ROUTES: Routes = [
   {path: 'login', component: UserLoginComponent},
   {path: 'register', component: UserRegisterComponent},
   {path: 'login-register', component: UserLoginRegisterComponent},
+  {path: 'user-login-register-slide', component: UserLoginRegisterSlideComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [Auth2Guard]},
   {path: 'resetpw', component: ResetPasswordComponent},
   {path: '**', redirectTo: '/'},  // default Route, könnte auch 404 Seite sein, muss am Schluss aufgerufen werden

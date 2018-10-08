@@ -1,28 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../shared/auth.service';
-import { NotificationService } from '../../shared/notification.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../shared/notification.service';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 
 @Component({
-  selector: 'app-user-login',
-  templateUrl: './user-login.component.html',
-  styles: []
+  selector: 'app-user-login-register-slide',
+  templateUrl: './user-login-register-slide.component.html',
+  styleUrls: ['./user-login-register-slide.component.scss']
 })
-export class UserLoginComponent implements OnInit {
+export class UserLoginRegisterSlideComponent implements OnInit {
+
+  status: boolean = false;
 
   constructor(private authService: AuthService,
               private router: Router,
               private notifier: NotificationService,
               private orderFirestoreService: OrderFirestoreService,
-              ) {
+  ) {
   }
 
   ngOnInit() {
   }
 
-  onSubmit(form: NgForm) {
+  clickToggle() {
+    this.status = !this.status;
+  }
+
+  onSubmitLogin(form: NgForm) {
+    console.log('login!');
     this.authService.loginWithUserPassword(form.value.email, form.value.password)
       .then(userData => {
 
@@ -30,7 +37,6 @@ export class UserLoginComponent implements OnInit {
           this.notifier.display('success', 'Login erfolgreich');
 
           setTimeout(() => {
-            // https://stackoverflow.com/questions/45025334/how-to-use-router-navigatebyurl-and-router-navigate-in-angular
 
             this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
             this.orderFirestoreService.loadProducts(userData.user.uid);
@@ -47,5 +53,15 @@ export class UserLoginComponent implements OnInit {
         this.notifier.display('error', err.message);
       });
   }
+
+
+  onSubmitRegister(form: NgForm) {
+    console.log('register!');
+    console.log(form.value.email);
+    console.log(form.value.password);
+    console.log(form.value.fullname);
+    this.authService.createUserInFirebaseAuthListEmailVerified(form.value.email, form.value.password, form.value.fullname);
+  }
+
 
 }

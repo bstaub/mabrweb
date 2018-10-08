@@ -23,6 +23,7 @@ import { ProductModule } from './product/product.module';
 import { AdminModule } from './admin/admin.module';
 import { OrderModule } from './order/order.module';
 import { CheckoutModule } from './checkout/checkout.module';
+import { UserLoginRegisterSlideComponent} from './user/user-login-register-slide/user-login-register-slide.component';
 
 
 @NgModule({
@@ -34,11 +35,11 @@ import { CheckoutModule } from './checkout/checkout.module';
     UserRegisterComponent,
     ProfileComponent,
     ResetPasswordComponent,
-
     UserLoginRegisterComponent,
     NotificationComponent,
     SortPipe,
     MdToHtmlPipe,
+    UserLoginRegisterSlideComponent,
   ],
   imports: [
     BrowserModule,

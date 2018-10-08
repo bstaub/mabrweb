@@ -62,7 +62,11 @@ export class OrderFirestoreService {
 
   // Anzeige der Produktdaten
   getUserOrder(userId) {
-    console.log(userId);
+
+    // todo: how to avoid this?
+    if (!userId) {
+      userId = '0';
+    }
     this.orderPerUser = this.afs.collection('orders', ref => ref.where('userId', '==', userId));
     this.orders = this.orderPerUser.snapshotChanges().pipe(
       map(actions => actions.map(a => {

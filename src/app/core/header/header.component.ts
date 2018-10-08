@@ -60,6 +60,12 @@ import { LocalStorageService } from '../../shared/local-storage.service';
       color: white;
       font-weight: bold;
     }
+    
+    .burgerMenu {
+      font-size:30px;
+      cursor:pointer;
+      margin-right: 50px;
+    }
 
 
   `]

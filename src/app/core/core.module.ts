@@ -18,6 +18,8 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderSearchComponent } from './header/header-search/header-search.component';
 import { SharedModule } from '../shared/shared.module';
 import { HomeSliderComponent } from './home/home-slider/home-slider.component';
+import { NgxSiemaModule } from 'ngx-siema';
+import { HomeSliderNgcarouselComponent } from './home/home-slider-ngcarousel/home-slider-ngcarousel.component';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -27,10 +29,12 @@ import { HomeSliderComponent } from './home/home-slider/home-slider.component';
     HomeComponent,
     HeaderSearchComponent,
     HomeSliderComponent,
+    HomeSliderNgcarouselComponent,
   ],
   imports: [
     CommonModule,
     SharedModule,
+    NgxSiemaModule.forRoot(),
     // NgbModule.forRoot(),
   ],
   exports: [

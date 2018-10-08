@@ -20,6 +20,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HomeSliderComponent } from './home/home-slider/home-slider.component';
 import { NgxSiemaModule } from 'ngx-siema';
 import { HomeSliderNgcarouselComponent } from './home/home-slider-ngcarousel/home-slider-ngcarousel.component';
+import { SliderService } from './shared/slider.service';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -56,6 +57,7 @@ import { HomeSliderNgcarouselComponent } from './home/home-slider-ngcarousel/hom
     StorageService,
     SettingsService,
     LocalStorageService,
+    SliderService,
     {provide: LocationStrategy, useClass: PathLocationStrategy}
   ],
 })

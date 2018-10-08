@@ -8,8 +8,7 @@ import { ProductPerOrder } from '../../models/productPerOrder.model';
 import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalStorage.model';
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-
-
+import { CustomerAddress } from '../../models/customerAddress.model';
 
 
 @Injectable({
@@ -30,6 +29,8 @@ export class OrderFirestoreService {
 
   orderDoc: AngularFirestoreDocument<Order>;
   order: Order;
+  productPerOrder: ProductPerOrder;
+  customerAddress: CustomerAddress;
   user: any;
 
   productsPerOrderLocalStorage: ProductPerOrderLocalStorage[];
@@ -61,6 +62,11 @@ export class OrderFirestoreService {
 
   // Anzeige der Produktdaten
   getUserOrder(userId) {
+
+    // todo: how to avoid this?
+    if (!userId) {
+      userId = '0';
+    }
     this.orderPerUser = this.afs.collection('orders', ref => ref.where('userId', '==', userId));
     this.orders = this.orderPerUser.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -89,15 +95,15 @@ export class OrderFirestoreService {
   // Zuweisung automatisch generierter Key bei Abschluss
   closeProductsPerOrder(orderId: string, userId: string, products: Array<any>) {
     products.forEach((product) => {
-      const productPerOrder = new ProductPerOrder();
-      productPerOrder.productId = product.productId;
-      productPerOrder.qty = product.qty;
-      productPerOrder.orderId = orderId;
+      this.productPerOrder = new ProductPerOrder();
+      this.productPerOrder.productId = product.productId;
+      this.productPerOrder.qty = product.qty;
+      this.productPerOrder.orderId = orderId;
 
-      this.afs.doc(`productsPerOrder_completed/${orderId}`).collection('products').doc(productPerOrder.productId).set({
+      this.afs.doc(`productsPerOrder_completed/${orderId}`).collection('products').doc(this.productPerOrder.productId).set({
         orderId: this.afs.collection('orders').doc(orderId).ref,
-        productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
-        qty: +productPerOrder.qty
+        productId: this.afs.collection('products').doc(this.productPerOrder.productId).ref,
+        qty: +this.productPerOrder.qty
       }).then(function () {
         console.log('Document successfully archieved!');
       }).catch(function (error) {
@@ -109,14 +115,19 @@ export class OrderFirestoreService {
 
 
   // Initial Order erstellen
+
   creatNewUserOrder(userId: string) {
-    const order = new Order();
-    order.shopOrderId = 'ShopID XXX-123';
-    order.orderDate = new Date();
-    order.status = 'pending';
-    order.totalValue = 0;
-    order.userId = userId;
-    this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(order)));
+
+    this.customerAddress = new CustomerAddress();
+
+    this.order = new Order();
+    this.order.shopOrderId = 'ShopID XXX-123';
+    this.order.orderDate = new Date();
+    this.order.status = 'pending';
+    this.order.totalValue = 0;
+    this.order.userId = userId;
+    this.order.customerAddress = this.customerAddress;
+    this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(this.order)));
   }
 
   // Warenkorb in Firestore speichern (userId als Key wenn Status pending )
@@ -146,27 +157,17 @@ export class OrderFirestoreService {
 
       this.deleteProductInFS(userId, productPerOrderLocalStorage.productId);
 
-      /*
-      this.productsPerOrderDocument = this.afs.doc(`productsPerOrder/${userId}`).collection('products').doc(product.productId);
-      this.productsPerOrderDocument.delete().then(function () {
-        console.log('Document successfully deleted!');
-      }).catch(function (error) {
-        console.error('Error removing temp document: ', error);
-      });
-
-      */
-
     });
   }
 
   deleteProductInFS(userId: string, productIdToDelete: string) {
 
-      this.productsPerOrderDocument = this.afs.doc(`productsPerOrder/${userId}`).collection('products').doc(productIdToDelete);
-      this.productsPerOrderDocument.delete().then(function () {
-        console.log('Document successfully deleted!');
-      }).catch(function (error) {
-        console.error('Error removing temp document: ', error);
-      });
+    this.productsPerOrderDocument = this.afs.doc(`productsPerOrder/${userId}`).collection('products').doc(productIdToDelete);
+    this.productsPerOrderDocument.delete().then(function () {
+      console.log('Document successfully deleted!');
+    }).catch(function (error) {
+      console.error('Error removing temp document: ', error);
+    });
 
 
   }
@@ -221,12 +222,12 @@ export class OrderFirestoreService {
       image: product.image
     });
 
-    this.localStorageService.setData('products',  this.productsPerOrderLocalStorage);
+    this.localStorageService.setData('products', this.productsPerOrderLocalStorage);
 
     this.user = this.userService.getCurrentUser();
 
     if (this.user) {
-      this.saveProductsInFS(this.user.uid,  this.productsPerOrderLocalStorage);
+      this.saveProductsInFS(this.user.uid, this.productsPerOrderLocalStorage);
     }
   }
 
@@ -260,14 +261,22 @@ export class OrderFirestoreService {
     }
   }
 
+  updateOrder(order: Order) {
+    console.log(order);
+    this.orderDoc = this.afs.doc(`orders/${order.key}`);
+    this.orderDoc.set(JSON.parse(JSON.stringify(order))).then(function () {
+      console.log('Document successfully updated!');
+    }).catch(function (error) {
+      console.error('Error updating document: ', error);
+    });
 
-  deleteOrder(key: string) {
-    this.orderDoc = this.afs.doc(`orders/${key}`);
-    this.orderDoc.delete();
+
   }
 
-
- 
+  deleteOrder(orderId: string) {
+    this.orderDoc = this.afs.doc(`orders/${orderId}`);
+    this.orderDoc.delete();
+  }
 
 
 }

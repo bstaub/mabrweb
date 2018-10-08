@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentChecked, AfterContentInit } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, AfterContentInit, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from '../../user/shared/auth.service';
 import { UserService } from '../../user/shared/user.service';
@@ -65,6 +65,8 @@ import { LocalStorageService } from '../../shared/local-storage.service';
   `]
 })
 export class HeaderComponent implements OnInit, AfterContentChecked {
+
+  @Output() offCanvasClicked = new EventEmitter();
 
   itemsForBasket: any;
   // isLoggedIn: boolean = false;
@@ -153,6 +155,11 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   removeItem(event) {
     // console.log(event.target.dataset.id);
     event.target.parentElement.parentElement.remove();
+  }
+
+  /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+  OpenMenuCanvas() {
+    this.offCanvasClicked.emit();
   }
 
 }

@@ -21,6 +21,7 @@ import { HomeSliderComponent } from './home/home-slider/home-slider.component';
 import { NgxSiemaModule } from 'ngx-siema';
 import { HomeSliderNgcarouselComponent } from './home/home-slider-ngcarousel/home-slider-ngcarousel.component';
 import { SliderService } from './shared/slider.service';
+import { OffCanvasComponent } from './home/off-canvas/off-canvas.component';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -31,6 +32,7 @@ import { SliderService } from './shared/slider.service';
     HeaderSearchComponent,
     HomeSliderComponent,
     HomeSliderNgcarouselComponent,
+    OffCanvasComponent,
   ],
   imports: [
     CommonModule,
@@ -43,6 +45,7 @@ import { SliderService } from './shared/slider.service';
     HeaderComponent,
     FooterComponent,
     HeaderSearchComponent,
+    OffCanvasComponent,
     SharedModule,
   ],
   providers: [AuthService,

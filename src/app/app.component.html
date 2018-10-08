@@ -1,6 +1,7 @@
-<app-header></app-header>
+<app-header (offCanvasClicked)="OffCanvasClicked()"></app-header>
 <!--<div class="container">-->
-<div class="main-content">
+<app-off-canvas (closeNavState)="CloseNavState()" [changeCanvasState]="OffCanvasClickedCheck"></app-off-canvas>
+<div id="main" class="main-content">
   <app-notification></app-notification>
   <router-outlet></router-outlet>
 </div>

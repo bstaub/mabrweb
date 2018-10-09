@@ -17,8 +17,8 @@ import { OrderDetailComponent } from './order/order-detail/order-detail.componen
 import { UserLoginRegisterComponent } from './user/user-login-register/user-login-register.component';
 import { NgModule } from '@angular/core';
 import { CHECKOUT_ROUTES } from './checkout/checkout.routing';
-import { CheckoutCustomerdataComponent } from './checkout/checkout-customerdata/checkout-customerdata.component';
 import { UserLoginRegisterSlideComponent } from './user/user-login-register-slide/user-login-register-slide.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 
 const APP_ROUTES: Routes = [
@@ -26,7 +26,7 @@ const APP_ROUTES: Routes = [
   {path: 'admin', component: AdminComponent, children: ADMIN_ROUTES, canActivate: [AdminGuard]},
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES},
   {path: 'bestellung', component: OrderDetailComponent},
-  {path: 'checkout', component: CheckoutCustomerdataComponent, children: CHECKOUT_ROUTES},
+  {path: 'checkout', component: CheckoutComponent, children: CHECKOUT_ROUTES},
   {path: 'user', component: UserListComponent, children: USER_ROUTES, canActivate: [Auth2Guard]},
   {path: 'login', component: UserLoginComponent},
   {path: 'register', component: UserRegisterComponent},

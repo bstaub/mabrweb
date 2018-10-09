@@ -4,6 +4,7 @@ import { OrderFirestoreService } from '../../order/shared/order-firestore.servic
 import { UserService } from '../../user/shared/user.service';
 import { Order } from '../../models/order.model';
 import { CustomerAddress } from '../../models/customerAddress.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout-enterdata',
@@ -23,6 +24,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
+              private router: Router,
   ) {
   }
 
@@ -44,15 +46,13 @@ export class CheckoutCustomerdataComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.CustomerAddressForm);
-    console.log(this.orderData);
     this.order = new Order();
     this.customerAddress = new CustomerAddress();
     this.customerAddress.firstname = this.CustomerAddressForm.value.firstname;
     this.order.key = this.user.uid;
     this.order.customerAddress = this.customerAddress;
-    console.log(this.order);
     this.orderFirestoreService.updateOrder(this.order);
+    this.router.navigate(['/checkout/shipmentdata']);
 
   }
 

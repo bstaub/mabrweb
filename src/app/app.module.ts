@@ -26,6 +26,7 @@ import { CheckoutModule } from './checkout/checkout.module';
 import { UserLoginRegisterSlideComponent} from './user/user-login-register-slide/user-login-register-slide.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

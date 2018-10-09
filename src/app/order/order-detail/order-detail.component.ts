@@ -106,6 +106,21 @@ export class OrderDetailComponent implements OnInit {
 
   }
 
+  onDecreaseQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
+    productPerOrderLocalStorage.qty = productPerOrderLocalStorage.qty === 1 ? 1 : productPerOrderLocalStorage.qty - 1;
+    this.orderFirestoreService.updateProductQty(productPerOrderLocalStorage);
+  }
+
+  onIncreaseQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
+    productPerOrderLocalStorage.qty += 1;
+    this.orderFirestoreService.updateProductQty(productPerOrderLocalStorage);
+  }
+
+  onChangeQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
+    productPerOrderLocalStorage.qty = Number(productPerOrderLocalStorage.qty);
+    this.orderFirestoreService.updateProductQty(productPerOrderLocalStorage);
+  }
+
 
   onLoginWithOrder(form: NgForm) {
 

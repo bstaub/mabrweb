@@ -1,3 +1,58 @@
-<p>
-  admin-product-edit works!
-</p>
+<!-- main app container -->
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h2>Produkte erfassen</h2>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label>Produkt Name</label>
+            <input type="text" formControlName="name" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+              <div *ngIf="f.name.errors.required">Produktename ist erforderlich</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Beschreibung</label>
+            <input type="text" formControlName="description" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/>
+            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+              <div *ngIf="f.description.errors.required">Eine Beschreibung ist erforderlich</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Preis</label>
+            <input type="text" formControlName="description" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && f.price.errors }"/>
+            <div *ngIf="submitted && f.price.errors" class="invalid-feedback">
+              <div *ngIf="f.price.errors.required">Eine Preiseingabe ist erforderlich</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div ngbDropdown class="d-inline-block">
+              <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Kategorie</button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button class="dropdown-item">Action - 1</button>
+                <button class="dropdown-item">Another Action</button>
+                <button class="dropdown-item">Something else is here</button>
+              </div>
+            </div>
+          </div>
+          <!--<div class="form-group">-->
+            <!--<label>Password</label>-->
+            <!--<input type="password" formControlName="password" class="form-control"-->
+                   <!--[ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>-->
+            <!--<div *ngIf="submitted && f.password.errors" class="invalid-feedback">-->
+              <!--<div *ngIf="f.password.errors.required">Password is required</div>-->
+              <!--<div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <div class="form-group">
+            <button [disabled]="loading" class="btn btn-primary">Bestätigen</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as firebase from 'firebase';
+import { ProductService } from '../../product/shared/product.service';
+import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
+import { StorageService } from '../../shared/storage.service';
+import { ProductCategoryService } from '../../product/shared/product-category.service';
+
+
+interface City {
+  name: string;
+  code: string;
+}
 
 @Component({
   selector: 'app-admin-product-edit',
@@ -7,30 +17,57 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./admin-product-edit.component.css']
 })
 export class AdminProductEditComponent implements OnInit {
-  registerForm: FormGroup;
-  submitted = false;
-  constructor(private formBuilder: FormBuilder) { }
+  cities: City[];
+  selectedCity: City;
+
+
+  selectedValues: string[] = ['val1', 'val2', 'val3'];
+
+
+  image: any;
+
+  constructor(
+    private productService: ProductService,
+    private productFirestoreService: ProductFirestoreService,
+    private storageService: StorageService,
+    private productCategory: ProductCategoryService,
+  ) {
+
+    this.cities = [
+      {name: 'New York', code: 'NY'},
+      {name: 'Rome', code: 'RM'},
+      {name: 'London', code: 'LDN'},
+      {name: 'Istanbul', code: 'IST'},
+      {name: 'Paris', code: 'PRS'}
+    ];
+
+  }
+
 
   ngOnInit() {
-    this.registerForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      price: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    });
+
   }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.registerForm.controls; }
 
-  onSubmit() {
-    this.submitted = true;
+  onFileSelection($event) {
+    this.storageService.upload($event)
+      .then((uploadSnapshot: firebase.storage.UploadTaskSnapshot) => {
 
-    // stop here if form is invalid
-    if (this.registerForm.invalid) {
-      return;
-    }
+        uploadSnapshot.ref.getDownloadURL().then((downloadURL) => {
+          this.image = downloadURL;
 
-    alert('SUCCESS!! :-)');
+          /*
+          // update Image
+          const data: Product = {
+            key: this.product.key,
+            downloadUrl: downloadURL,
+          };
+          this.productFirestoreService.setProduct(data);
+          */
+
+        });
+
+      });
   }
+
 }

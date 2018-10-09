@@ -10,5 +10,5 @@ export const CHECKOUT_ROUTES: Routes = [
   {path: 'shipmentdata', component: CheckoutShipmentdataComponent},
   {path: 'customerdata', component: CheckoutCustomerdataComponent},
   {path: 'login', component: CheckoutLoginComponent},
-  {path: 'payment', component: CheckoutPaymentComponent},
+  {path: 'paymentdata', component: CheckoutPaymentComponent},
 ];

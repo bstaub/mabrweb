@@ -1,8 +1,20 @@
 <div class="container">
 
-  <h1>Shipping Data</h1>
+  <h1>Shipmentdata</h1>
+
+  <form [formGroup]="ShipmentForm" (ngSubmit)="onSubmit()">
 
 
+
+    <div class="row">
+      <div class="col-md-8 offset-2">
+        <button type="submit" class="btn btn-primary">Zahlart wählen</button>
+      </div>
+    </div>
+
+
+
+  </form>
 
 
 </div>

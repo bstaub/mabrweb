@@ -10,15 +10,9 @@
       <li class="nav-item active">
         <a class="nav-link" [routerLink]="['produkte']" routerLinkActive="active">Products <span class="sr-only">(current)</span></a>
       </li>
-
-      <li class="nav-item">
-        <a (click)="logout()" *ngIf="isLoggedIn" class="nav-link" routerLinkActive="active">Logout</a>
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink]="['bestellung']" routerLinkActive="active">Bestellung <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a *ngIf="isLoggedIn" class="nav-link" [routerLink]="['profile']">Profile</a>
-      </li>
-
-
       <!--<li class="nav-item dropdown" ngbDropdown>-->
         <!--<a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle>User</a>-->
         <!--<div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>-->
@@ -31,7 +25,18 @@
       <!--</li>-->
     </ul>
 
+
+
     <app-header-search></app-header-search>
+
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a *ngIf="isLoggedIn" class="nav-link" [routerLink]="['profile']" routerLinkActive="active">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a (click)="logout()" *ngIf="isLoggedIn" class="nav-link" routerLinkActive="active">Logout</a>
+      </li>
+    </ul>
 
     <button style="margin-left: 7px;" [routerLink]="['user-login-register-slide']" class="btn btn-secondary btn-circle">
       <i class="fa fa-user-circle" aria-hidden="true"></i>

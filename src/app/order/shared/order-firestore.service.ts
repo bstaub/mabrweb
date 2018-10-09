@@ -35,6 +35,7 @@ export class OrderFirestoreService {
 
   productsPerOrderLocalStorage: ProductPerOrderLocalStorage[];
   productsPerOrderLocalStorageNew: ProductPerOrderLocalStorage[];
+  productsPerOrderLocalStorageUpdate: ProductPerOrderLocalStorage[];
 
 
   constructor(public afs: AngularFirestore,
@@ -132,7 +133,6 @@ export class OrderFirestoreService {
 
   // Warenkorb in Firestore speichern (userId als Key wenn Status pending )
   saveProductsInFS(userId: string, products: Array<ProductPerOrderLocalStorage>) {
-
     products.forEach((product) => {
       const productPerOrder = new ProductPerOrder();
       productPerOrder.productId = product.productId;
@@ -231,6 +231,29 @@ export class OrderFirestoreService {
     }
   }
 
+  updateProductQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
+    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.productsPerOrderLocalStorageNew = this.productsPerOrderLocalStorage.filter(product => product.productId !== productPerOrderLocalStorage.productId);
+    this.productsPerOrderLocalStorageUpdate = this.productsPerOrderLocalStorage.filter(product => product.productId === productPerOrderLocalStorage.productId);
+    this.productsPerOrderLocalStorageNew.push({
+      productId: productPerOrderLocalStorage.productId,
+      qty: Number(productPerOrderLocalStorage.qty),
+      name: productPerOrderLocalStorage.name,
+      description: productPerOrderLocalStorage.description,
+      price: productPerOrderLocalStorage.price,
+      image: productPerOrderLocalStorage.image
+    });
+
+    this.localStorageService.destroyLocalStorage('products');
+    this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
+    this.user = this.userService.getCurrentUser();
+    if (this.user) {
+      this.saveProductsInFS(this.user.uid, this.productsPerOrderLocalStorageNew);
+    }
+
+  }
+
+
   // einzelner Artikel aus Warenkorb löschen
   deleteProductFromOrder(productIdToDelete: string) {
     this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
@@ -262,7 +285,6 @@ export class OrderFirestoreService {
   }
 
   updateOrder(order: Order) {
-    console.log(order);
     this.orderDoc = this.afs.doc(`orders/${order.key}`);
     this.orderDoc.set(JSON.parse(JSON.stringify(order))).then(function () {
       console.log('Document successfully updated!');

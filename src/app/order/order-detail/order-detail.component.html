@@ -1,7 +1,6 @@
 <div class="container">
 
 
-
   <div class="row">
     <div class="col-md-8 offset-2">
       <h1>Warenkorb</h1>
@@ -31,7 +30,20 @@
               </figure>
 
             </td>
-            <td>{{product.qty}}</td>
+            <td>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button class="btn btn-outline-secondary" type="button" (click)="onDecreaseQty(product)">-</button>
+                </div>
+                <input type="text" class="form-control text-center w-25" [(ngModel)]="product.qty"
+                       (blur)="onChangeQty(product)">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="onIncreaseQty(product)">+</button>
+                </div>
+              </div>
+            </td>
+
+
             <td>{{product.price}}</td>
             <td>
 
@@ -49,7 +61,6 @@
   </div>
 
 
-
   <div class="row">
     <div class="col-md-8 offset-2">
       <button class="btn btn-primary" (click)="onDeleteScart()">Warenkorb Löschen</button>&nbsp;
@@ -64,8 +75,6 @@
       <button class="btn btn-primary" (click)="onEnterOrderData()">zur Kasse</button>
     </div>
   </div>
-
-
 
 
 </div>

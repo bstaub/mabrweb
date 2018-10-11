@@ -11,7 +11,8 @@
           <tr>
             <th>Artikel</th>
             <th>Menge</th>
-            <th>CHF</th>
+            <th class="text-right">CHF</th>
+            <th class="text-right">Total</th>
             <th></th>
           </tr>
           </thead>
@@ -44,7 +45,8 @@
             </td>
 
 
-            <td>{{product.price}}</td>
+            <td class="text-right">{{product.price  | number : '1.2-2'}}</td>
+            <td class="text-right">{{product.price * product.qty  | number : '1.2-2'}}</td>
             <td>
 
               <button class="btn btn-sm btn-danger" (click)="onDeletItem(product.productId)">
@@ -53,6 +55,15 @@
             </td>
           </tr>
           </tbody>
+          <tfoot>
+          <tr></tr>
+          <tr></tr>
+          <tr>Total</tr>
+          <tr>{{totalValue | number : '1.2-2'}}</tr>
+          <tr></tr>
+
+          </tfoot>
+
         </table>
       </div>
 

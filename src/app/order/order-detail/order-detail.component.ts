@@ -23,6 +23,7 @@ export class OrderDetailComponent implements OnInit {
   user: any;
   userId: string;
   order: any;
+  totalValue: number;
 
 
   constructor(
@@ -61,6 +62,7 @@ export class OrderDetailComponent implements OnInit {
     }
 
     this.productPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.calculateTotalSum();
 
 
   }
@@ -92,6 +94,7 @@ export class OrderDetailComponent implements OnInit {
     this.orderFirestoreService.clearScart(this.productPerOrderLocalStorage);
     this.productPerOrderLocalStorage = [];
     this.router.navigate(['/bestellung']);
+    this.calculateTotalSum();
   }
 
   onDeletItem(productId: string) {
@@ -103,22 +106,37 @@ export class OrderDetailComponent implements OnInit {
 
     });
     this.orderFirestoreService.deleteProductFromOrder(productId);
+    this.calculateTotalSum();
 
   }
 
   onDecreaseQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
     productPerOrderLocalStorage.qty = productPerOrderLocalStorage.qty === 1 ? 1 : productPerOrderLocalStorage.qty - 1;
     this.orderFirestoreService.updateProductQty(productPerOrderLocalStorage);
+    this.calculateTotalSum();
   }
 
   onIncreaseQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
     productPerOrderLocalStorage.qty += 1;
     this.orderFirestoreService.updateProductQty(productPerOrderLocalStorage);
+    this.calculateTotalSum();
   }
 
   onChangeQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
     productPerOrderLocalStorage.qty = Number(productPerOrderLocalStorage.qty);
     this.orderFirestoreService.updateProductQty(productPerOrderLocalStorage);
+    this.calculateTotalSum();
+  }
+
+  calculateTotalSum() {
+    let lineValue;
+    let totalValue = 0;
+    this.productPerOrderLocalStorage.forEach((product) => {
+      lineValue = product.qty * product.price;
+      lineValue.toFixed(2);
+      totalValue += lineValue;
+    });
+    this.totalValue = totalValue;
   }
 
 

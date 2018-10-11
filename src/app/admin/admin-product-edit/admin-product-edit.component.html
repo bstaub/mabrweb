@@ -19,9 +19,10 @@
 
 
   <h3 class="first">Single</h3>
-  <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Wähle eine Kategorie" optionLabel="name" [showClear]="true"></p-dropdown>
-  <p>Gewählte Kategorie: {{selectedCity ? selectedCity.name : 'none'}}</p>
-
+  <div *ngIf="(categories | async) as Cat">
+  <p-dropdown [options]="Cat" [(ngModel)]="selectedCategory" placeholder="Wähle eine Kategorie" optionLabel="name" [showClear]="true"></p-dropdown>
+  <p>Gewählte Kategorie: {{selectedCategory ? selectedCategory.name : 'none'}}</p>
+  </div>
 
 
   <p-checkbox name="groupname" value="val1" label="Aktion" [(ngModel)]="selectedValues"></p-checkbox><br>

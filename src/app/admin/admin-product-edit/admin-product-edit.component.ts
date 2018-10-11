@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, Component, OnChanges, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { ProductService } from '../../product/shared/product.service';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
 import { StorageService } from '../../shared/storage.service';
 import { ProductCategoryService } from '../../product/shared/product-category.service';
+import { Observable, Subscription } from 'rxjs';
+import { ProductCategory } from '../../product/product-category.model';
+import { first, tap } from 'rxjs/operators';
 
 
 interface City {
@@ -19,6 +22,11 @@ interface City {
 export class AdminProductEditComponent implements OnInit {
   cities: City[];
   selectedCity: City;
+  categories: Observable<ProductCategory[]>;
+  // categories: Promise<ProductCategory[]>;
+  categorySubscription: Subscription;
+  categoryArray = [];
+  selectedCategory: ProductCategory;
 
 
   selectedValues: string[] = ['val1', 'val2', 'val3'];
@@ -41,10 +49,55 @@ export class AdminProductEditComponent implements OnInit {
       {name: 'Paris', code: 'PRS'}
     ];
 
+    /*
+    this.categoryArray = [
+      {'name': 'Computer', 'code': 'Alles über Computer'},
+      {'name': 'Fussball', 'code': 'Hier die Beeschreibung der Kategorie'}
+    ];
+    */
+
+
+
+
   }
 
 
   ngOnInit() {
+    this.categories = this.productCategory.getCategories();
+
+    /*
+    // Observable Way
+    this.categories = this.productCategory.getCategories().pipe(
+      first(),
+      tap( val => console.log('inside: ', val))
+    );
+    this.categorySubscription = this.categories.subscribe(
+
+
+      val => val.forEach( x => {
+              this.categoryArray.push({name: x.name, code: x.description});
+          })
+    );
+
+    console.log(this.categoryArray);
+    console.log(this.cities);
+    */
+
+
+    /*
+    // Promise Way
+    this.categories = this.productCategory.getCategories().pipe(
+      first(),
+      // tap( val => console.log('inside: ', val))
+    ).toPromise();
+    this.categories.then(
+      val => val.forEach(x => {
+        this.categoryArray.push({name: x.name, code: x.description});
+      })
+    );
+    console.log(this.categoryArray);
+    console.log(this.cities);
+    */
 
   }
 

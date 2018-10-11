@@ -13,6 +13,8 @@ export class ProductCategoryService {
   categoryDoc: AngularFirestoreDocument<ProductCategory>;
 
   constructor(public afs: AngularFirestore) {
+    // this.categories = this.afs.collection('categories').valueChanges();
+
     this.productCategoryCollection = this.afs.collection('categories', ref => ref.orderBy('name', 'asc'));
 
     this.categories = this.productCategoryCollection.snapshotChanges().pipe(

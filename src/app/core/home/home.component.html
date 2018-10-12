@@ -13,12 +13,16 @@
             <li *ngFor="let item of discount">
               <div class="row">
                 <div class="col-6 col-sm-12 col-md-6">
-                  <img class="img-fluid" src="{{item.image}}">
+                  <a routerLink="/produkte/detail/{{item.key}}">
+                    <img class="img-fluid" src="{{item.image}}" alt="{{item.name}}">
+                  </a>
                 </div>
                 <div class="col-6 col-sm-12 col-md-6">
-                  <p>{{item.name}}</p>
-                  <p style="text-decoration:line-through;">{{item.price}}</p>
-                  <p>{{item.price * rabattFactorDiscount | number}}</p>
+                  <a routerLink="/produkte/detail/{{item.key}}">
+                    <p>{{item.name}}</p>
+                  </a>
+                  <p style="text-decoration:line-through;">CHF {{item.price}}</p>
+                  <p>CHF {{item.price * rabattFactorDiscount | number}}</p>
                 </div>
               </div>
             </li>
@@ -34,12 +38,16 @@
             <li *ngFor="let item of np">
               <div class="row">
                 <div class="col-6 col-sm-12 col-md-6">
-                  <img class="img-fluid" src="{{item.image}}">
+                  <a routerLink="/produkte/detail/{{item.key}}">
+                   <img class="img-fluid" src="{{item.image}}" alt="{{item.name}}">
+                  </a>
                 </div>
                 <div class="col-6 col-sm-12 col-md-6">
-                  <p>{{item.name}}</p>
-                  <p style="text-decoration:line-through;">{{item.price}}</p>
-                  <p>{{item.price * rabattFactorNew | number}}</p>
+                  <a routerLink="/produkte/detail/{{item.key}}">
+                    <p>{{item.name}}</p>
+                  </a>
+                  <p style="text-decoration:line-through;">CHF {{item.price}}</p>
+                  <p>CHF {{item.price * rabattFactorNew | number}}</p>
                 </div>
               </div>
             </li>
@@ -56,12 +64,16 @@
               <li *ngFor="let item of best">
                 <div class="row">
                   <div class="col-6 col-sm-12 col-md-6">
-                    <img class="img-fluid" src="{{item.image}}">
+                    <a routerLink="/produkte/detail/{{item.key}}">
+                     <img class="img-fluid" src="{{item.image}}" alt="{{item.name}}">
+                    </a>
                   </div>
                   <div class="col-6 col-sm-12 col-md-6">
-                    <p>{{item.name}}</p>
-                    <p style="text-decoration:line-through;">{{item.price}}</p>
-                    <p>{{item.price * rabattFactorBestRate | number}}</p>
+                    <a routerLink="/produkte/detail/{{item.key}}">
+                     <p>{{item.name}}</p>
+                    </a>
+                    <p style="text-decoration:line-through;">CHF {{item.price}}</p>
+                    <p>CHF {{item.price * rabattFactorBestRate | number}}</p>
                   </div>
                 </div>
                 <!--<div class="featured-product">-->

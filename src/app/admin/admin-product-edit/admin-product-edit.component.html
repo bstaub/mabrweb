@@ -16,6 +16,7 @@
   </div>
   <br>
 
+
   <p>Bildname</p>
   <p-fileUpload
     name="myfile[]"
@@ -28,7 +29,7 @@
   </p-fileUpload>
 
   <br>
-  <div *ngIf="(categories | async) as Cat">
+  <div *ngIf="(categories$ | async) as Cat">
   <p-dropdown [options]="Cat" [(ngModel)]="selectedCategory" name="selectedCategory" placeholder="Wähle eine Kategorie" optionLabel="name" [showClear]="true" filter="true"></p-dropdown>
   <p>Gewählte Kategorie: {{selectedCategory ? selectedCategory.name : 'none'}}</p>
   </div>
@@ -42,5 +43,5 @@
   <p-checkbox binary="true" value="bestRated" label="Beste Bewertung" [(ngModel)]="bestRated" name="bestRated"></p-checkbox><br><br>
 
 
-  <button type="submit" class="btn btn-success">Bestätigen</button>
+  <button type="submit" class="btn btn-secondary">Eingabe bestätigen</button>
 </form>

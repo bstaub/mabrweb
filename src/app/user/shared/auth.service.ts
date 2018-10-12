@@ -149,7 +149,7 @@ export class AuthService {
         this.notifier.display('success', 'Das Passwort Reset Mail wurde erfolgreich verschickt');
 
         setTimeout(() => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/user-login-register-slide']);
         }, 2000);
 
 
@@ -163,6 +163,6 @@ export class AuthService {
   // 4. Logout
   logout() {
     this.afAuth.auth.signOut()
-      .then((res) => this.router.navigate(['login']));
+      .then((res) => this.router.navigate(['/user-login-register-slide']));
   }
 }

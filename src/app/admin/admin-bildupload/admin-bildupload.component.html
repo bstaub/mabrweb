@@ -1,0 +1,16 @@
+<p>Bildname</p>
+<p-fileUpload
+  name="myfile[]"
+  chooseLabel="Bild Upload"
+  cancelLabel="Abbrechen"
+  type="file"
+  (onSelect)="onFileSelection($event)"
+  [showUploadButton]="false"
+  accept="image/*">
+</p-fileUpload>
+
+<!--<div class="form-group">-->
+<!--<label for="image">Bildupload</label>-->
+<!--<input type="file" id="image" (change)="onFileSelection($event)" placeholder="Upload a file"-->
+<!--accept=".gif, .png, .jpeg, .jpg">-->
+<!--</div>-->

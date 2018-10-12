@@ -4,6 +4,7 @@ import { AuthService } from '../../user/shared/auth.service';
 import { UserService } from '../../user/shared/user.service';
 import { SettingsService } from '../../shared/settings.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -88,7 +89,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
               private authService: AuthService,
               private userService: UserService,
               private settingsService: SettingsService,
-              private localStorageService: LocalStorageService
+              private localStorageService: LocalStorageService,
   ) {
   }
 

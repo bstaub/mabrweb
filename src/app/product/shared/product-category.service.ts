@@ -61,4 +61,8 @@ export class ProductCategoryService {
     this.categoryDoc.update(category);
   }
 
+  getPushKey() {
+    return this.afs.createId();
+  }
+
 }

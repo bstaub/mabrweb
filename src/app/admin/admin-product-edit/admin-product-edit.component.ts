@@ -5,7 +5,7 @@ import { ProductFirestoreService } from '../../product/shared/product-firestore.
 import { StorageService } from '../../shared/storage.service';
 import { ProductCategoryService } from '../../product/shared/product-category.service';
 import { Observable } from 'rxjs';
-import { ProductCategory } from '../../product/product-category.model';
+import { ProductCategory } from '../../models/product-category.model';
 import { Product } from '../../models/product.model';
 
 

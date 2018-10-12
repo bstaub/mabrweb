@@ -4,7 +4,7 @@ import { Product } from '../../models/product.model';
 import { ProductService } from '../shared/product.service';
 import { ProductFirestoreService } from '../shared/product-firestore.service';
 import { ProductCategoryService } from '../shared/product-category.service';
-import { ProductCategory } from '../product-category.model';
+import { ProductCategory } from '../../models/product-category.model';
 
 @Component({
   selector: 'app-product-grid',

@@ -1,58 +1,46 @@
-<!-- main app container -->
-<div class="jumbotron">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <h2>Produkte erfassen</h2>
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <label>Produkt Name</label>
-            <input type="text" formControlName="name" class="form-control"
-                   [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
-            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-              <div *ngIf="f.name.errors.required">Produktename ist erforderlich</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Beschreibung</label>
-            <input type="text" formControlName="description" class="form-control"
-                   [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/>
-            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-              <div *ngIf="f.description.errors.required">Eine Beschreibung ist erforderlich</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Preis</label>
-            <input type="text" formControlName="description" class="form-control"
-                   [ngClass]="{ 'is-invalid': submitted && f.price.errors }"/>
-            <div *ngIf="submitted && f.price.errors" class="invalid-feedback">
-              <div *ngIf="f.price.errors.required">Eine Preiseingabe ist erforderlich</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <div ngbDropdown class="d-inline-block">
-              <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Kategorie</button>
-              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                <button class="dropdown-item">Action - 1</button>
-                <button class="dropdown-item">Another Action</button>
-                <button class="dropdown-item">Something else is here</button>
-              </div>
-            </div>
-          </div>
-          <!--<div class="form-group">-->
-            <!--<label>Password</label>-->
-            <!--<input type="password" formControlName="password" class="form-control"-->
-                   <!--[ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>-->
-            <!--<div *ngIf="submitted && f.password.errors" class="invalid-feedback">-->
-              <!--<div *ngIf="f.password.errors.required">Password is required</div>-->
-              <!--<div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>-->
-            <!--</div>-->
-          <!--</div>-->
-          <div class="form-group">
-            <button [disabled]="loading" class="btn btn-primary">Bestätigen</button>
-          </div>
-        </form>
-      </div>
-    </div>
+
+<form (ngSubmit)="onSubmit()">
+  <input type="hidden" id="createdDate" [(ngModel)]="product.createdDate" name="createdDate">
+  <div class="ui-inputgroup">
+    <input type="text" pInputText placeholder="Name" required [(ngModel)]="product.name" name="name">
   </div>
-</div>
+  <br>
+
+  <div class="ui-inputgroup">
+    <input type="text" pInputText placeholder="Beschreibung" required [(ngModel)]="product.description" name="beschreibung">
+  </div>
+  <br>
+
+  <div class="ui-inputgroup">
+    <input type="text" pInputText placeholder="Preis" required [(ngModel)]="product.price" name="price">
+  </div>
+  <br>
+
+  <p>Bildname</p>
+  <p-fileUpload
+    name="myfile[]"
+    chooseLabel="Bild Upload"
+    cancelLabel="Abbrechen"
+    type="file"
+    (onSelect)="onFileSelection($event)"
+    [showUploadButton]="false"
+    accept="image/*">
+  </p-fileUpload>
+
+  <br>
+  <div *ngIf="(categories | async) as Cat">
+  <p-dropdown [options]="Cat" [(ngModel)]="selectedCategory" name="selectedCategory" placeholder="Wähle eine Kategorie" optionLabel="name" [showClear]="true" filter="true"></p-dropdown>
+  <p>Gewählte Kategorie: {{selectedCategory ? selectedCategory.name : 'none'}}</p>
+  </div>
+
+  <!--<p-checkbox name="groupname" value="discount" label="Aktion" [(ngModel)]="selectedValues"></p-checkbox><br>-->
+  <!--<p-checkbox name="groupname" value="newProduct" label="Neuheit" [(ngModel)]="selectedValues"></p-checkbox><br>-->
+  <!--<p-checkbox name="groupname" value="bestRated" label="Beste Bewertung" [(ngModel)]="selectedValues"></p-checkbox><br>-->
+
+  <p-checkbox binary="true" value="discount" label="Aktion" [(ngModel)]="discount" name="discount"></p-checkbox><br>
+  <p-checkbox binary="true" value="newProduct" label="Neuheit" [(ngModel)]="newProduct" name="newProduct"></p-checkbox><br>
+  <p-checkbox binary="true" value="bestRated" label="Beste Bewertung" [(ngModel)]="bestRated" name="bestRated"></p-checkbox><br><br>
+
+
+  <button type="submit" class="btn btn-success">Bestätigen</button>
+</form>

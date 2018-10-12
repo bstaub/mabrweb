@@ -47,6 +47,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
   onSubmit() {
     this.order = new Order();
+    this.order.key = this.user.uid;
     this.customerAddress = new CustomerAddress();
     this.customerAddress.firstname = this.CustomerAddressForm.value.firstname;
     this.customerAddress.lastname = this.CustomerAddressForm.value.lastname;
@@ -57,7 +58,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
     this.customerAddress.mail = this.CustomerAddressForm.value.mail;
     this.customerAddress.phone = this.CustomerAddressForm.value.phone;
 
-    this.order.key = this.user.uid;
+
     this.order.customerAddress = this.customerAddress;
     this.orderFirestoreService.updateOrder(this.order);
     this.router.navigate(['/checkout/shipmentdata']);

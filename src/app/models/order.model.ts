@@ -8,7 +8,7 @@ export class Order {
   shopOrderId = 'XXX-000';
   orderDate: any = null;
   status = 'pending';
-  totalValue = 0;
+  totalValue: number;
   shippingMethod: string;
   paymentMethod: string;
 }

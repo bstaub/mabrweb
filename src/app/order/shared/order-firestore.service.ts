@@ -308,6 +308,7 @@ export class OrderFirestoreService {
   resetUserOrder(order: Order) {
     this.orderDoc = this.afs.doc(`orders/${order.key}`);
     this.order = new Order();
+    this.order.totalValue = 0;
     this.orderDoc.update(JSON.parse(JSON.stringify(this.order))).then(function () {
     }).catch(function (error) {
       console.error('error updating document: ', error);

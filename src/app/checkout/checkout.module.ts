@@ -5,6 +5,7 @@ import { CheckoutShipmentdataComponent } from './checkout-shipmentdata/checkout-
 import { CheckoutPaymentComponent } from './checkout-payment/checkout-payment.component';
 import { CheckoutLoginComponent } from './checkout-login/checkout-login.component';
 import { CheckoutComponent } from './checkout.component';
+import { CheckoutThxComponent } from './checkout-thx/checkout-thx.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { CheckoutComponent } from './checkout.component';
     CheckoutShipmentdataComponent,
     CheckoutPaymentComponent,
     CheckoutLoginComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    CheckoutThxComponent
   ]
 })
 export class CheckoutModule {

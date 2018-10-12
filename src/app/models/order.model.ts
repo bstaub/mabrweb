@@ -8,7 +8,11 @@ export class Order {
   totalValue: number;
   userId: string;
   customerAddress: CustomerAddress;
-  // public date: string = new Date().toISOString().split('T')[0],
-  // public shippingMethod: string = '',
-  // public paymentMethod: string = ''
+  shippingMethod: string;
+  paymentdMethod: string;
+
+
+
+  // todo: constructor
+
 }

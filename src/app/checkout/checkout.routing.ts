@@ -3,6 +3,7 @@ import { CheckoutLoginComponent } from './checkout-login/checkout-login.componen
 import { CheckoutCustomerdataComponent } from './checkout-customerdata/checkout-customerdata.component';
 import { CheckoutShipmentdataComponent } from './checkout-shipmentdata/checkout-shipmentdata.component';
 import { CheckoutPaymentComponent } from './checkout-payment/checkout-payment.component';
+import { CheckoutThxComponent } from './checkout-thx/checkout-thx.component';
 
 
 export const CHECKOUT_ROUTES: Routes = [
@@ -11,4 +12,5 @@ export const CHECKOUT_ROUTES: Routes = [
   {path: 'customerdata', component: CheckoutCustomerdataComponent},
   {path: 'login', component: CheckoutLoginComponent},
   {path: 'paymentdata', component: CheckoutPaymentComponent},
+  {path: 'thx', component: CheckoutThxComponent},
 ];

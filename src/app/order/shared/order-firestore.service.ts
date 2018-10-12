@@ -129,6 +129,8 @@ export class OrderFirestoreService {
           this.order.shopOrderId = 'ShopID XXX-123';
           this.order.orderDate = new Date();
           this.order.status = 'pending';
+          this.order.shippingMethod = 'normal';
+          this.order.paymentdMethod = 'invoice';
           this.order.totalValue = 0;
           this.order.userId = userId;
           this.order.customerAddress = this.customerAddress;

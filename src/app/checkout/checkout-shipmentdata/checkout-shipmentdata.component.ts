@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from '../../user/shared/user.service';
 import { Router } from '@angular/router';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
@@ -9,7 +9,7 @@ import { Order } from '../../models/order.model';
 @Component({
   selector: 'app-checkout-shipmentdata',
   templateUrl: './checkout-shipmentdata.component.html',
-  styleUrls: ['./checkout-shipmentdata.component.css']
+  styles: [``]
 })
 export class CheckoutShipmentdataComponent implements OnInit {
   ShipmentForm: FormGroup;
@@ -20,7 +20,7 @@ export class CheckoutShipmentdataComponent implements OnInit {
 
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
-              private router: Router,
+              private router: Router
   ) {
   }
 
@@ -28,6 +28,7 @@ export class CheckoutShipmentdataComponent implements OnInit {
     setTimeout(() => {
       this.user = this.userService.getCurrentUser();
       this.getOrderData();
+
     }, 1000);
 
 
@@ -35,7 +36,13 @@ export class CheckoutShipmentdataComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.ShipmentForm.value);
+    this.order = new Order();
+    this.order.key = this.user.uid;
+    this.order.shippingMethod = this.ShipmentForm.value.shippingmethod;
+    this.orderFirestoreService.updateOrder(this.order);
     this.router.navigate(['/checkout/paymentdata']);
+
   }
 
   getOrderData() {
@@ -46,17 +53,8 @@ export class CheckoutShipmentdataComponent implements OnInit {
 
   initShipmentFormGroup() {
     this.ShipmentForm = new FormGroup({
-      firstname: new FormControl(null, Validators.required),
-      lasttname: new FormControl(null, Validators.required),
-      addresss: new FormControl(null, Validators.required),
-      zip: new FormControl(null, Validators.required),
-      city: new FormControl(null, Validators.required),
-      country: new FormControl(null, Validators.required),
-      mail: new FormControl(null, [
-        Validators.required,
-        Validators.email
-      ]),
-      phone: new FormControl(null)
+      shippingmethod: new FormControl()
+
     });
 
 

@@ -1,13 +1,32 @@
 <div class="container">
 
-  <h1>Shipmentdata</h1>
+  <h1>Shipment</h1>
 
   <form [formGroup]="ShipmentForm" (ngSubmit)="onSubmit()">
 
 
+      <label>
+        <input type="radio" value="express" name="shippingmethod" formControlName="shippingmethod"> Express Priority
+      </label>
+
+    <br>
+      <label>
+        <input type="radio" value="fedex" name="shippingmethod"  formControlName="shippingmethod">  FedEx
+      </label>
+
+    <br>
+    <label>
+      <input type="radio" value="normal" name="shippingmethod"  formControlName="shippingmethod">  Normal
+    </label>
+
+
+
+
+    <br>
+    <br>
 
     <div class="row">
-      <div class="col-md-8 offset-2">
+      <div class="offset-8">
         <button type="submit" class="btn btn-primary">Zahlart wählen</button>
       </div>
     </div>
@@ -15,6 +34,7 @@
 
 
   </form>
+
 
 
 </div>

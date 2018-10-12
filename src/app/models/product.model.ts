@@ -11,6 +11,6 @@ export class Product {
   productCategory?: string;
   discount?: boolean;
   newProduct?: boolean;
-  bestRated?: number;
+  bestRated?: boolean;
 }
 

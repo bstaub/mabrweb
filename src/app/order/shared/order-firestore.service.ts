@@ -90,14 +90,14 @@ export class OrderFirestoreService {
   }
 
   // Bestellung abschliessen
-  closeUserOrder(order: Order) {
+  completeUserOrder(order: Order) {
     const ref = this.afs.createId();
     this.orderCollection_completed.doc(ref).set(JSON.parse(JSON.stringify(order)));
     return ref;
   }
 
   // Zuweisung automatisch generierter Key bei Abschluss
-  closeProductsPerOrder(orderId: string, userId: string, products: Array<any>) {
+  completeProductsPerOrder(orderId: string, userId: string, products: Array<any>) {
     products.forEach((product) => {
       this.productPerOrder = new ProductPerOrder();
       this.productPerOrder.productId = product.productId;
@@ -108,8 +108,6 @@ export class OrderFirestoreService {
         orderId: this.afs.collection('orders').doc(orderId).ref,
         productId: this.afs.collection('products').doc(this.productPerOrder.productId).ref,
         qty: +this.productPerOrder.qty
-      }).then(function () {
-        console.log('Document successfully archieved!');
       }).catch(function (error) {
         console.error('Error archiving document: ', error);
       });
@@ -130,7 +128,7 @@ export class OrderFirestoreService {
           this.order.orderDate = new Date();
           this.order.status = 'pending';
           this.order.shippingMethod = 'normal';
-          this.order.paymentdMethod = 'invoice';
+          this.order.paymentMethod = 'invoice';
           this.order.totalValue = 0;
           this.order.userId = userId;
           this.order.customerAddress = this.customerAddress;
@@ -298,14 +296,6 @@ export class OrderFirestoreService {
   }
 
 
-  // Warenkorb Firestore löschen (vor speichern)
-  clearScartStorage(productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
-    this.user = this.userService.getCurrentUser();
-    if (this.user) {
-      this.deleteProductsInFS(this.user.uid, productsPerOrderLocalStorage);
-    }
-  }
-
   updateOrder(order: Order) {
     this.orderDoc = this.afs.doc(`orders/${order.key}`);
     this.orderDoc.update(JSON.parse(JSON.stringify(order))).then(function () {
@@ -313,13 +303,27 @@ export class OrderFirestoreService {
     }).catch(function (error) {
       console.error('error updating document: ', error);
     });
-
-
   }
+
+  resetUserOrder(order: Order) {
+    this.orderDoc = this.afs.doc(`orders/${order.key}`);
+    this.order = new Order();
+    this.orderDoc.update(JSON.parse(JSON.stringify(this.order))).then(function () {
+    }).catch(function (error) {
+      console.error('error updating document: ', error);
+    });
+  }
+
 
   deleteOrder(orderId: string) {
     this.orderDoc = this.afs.doc(`orders/${orderId}`);
     this.orderDoc.delete();
+  }
+
+  // todo:
+  generateShopOrderId(): string {
+    return 'XXX-001';
+
   }
 
 

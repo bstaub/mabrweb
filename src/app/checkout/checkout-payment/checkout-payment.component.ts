@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 import { UserService } from '../../user/shared/user.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 
 @Component({
@@ -17,11 +18,13 @@ export class CheckoutPaymentComponent implements OnInit {
   user: any;
   orderData: any;
   order: Order;
+  closingOrderId: string;
 
 
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
-              private router: Router
+              private router: Router,
+              private localStorageService: LocalStorageService,
   ) {
   }
 
@@ -40,8 +43,12 @@ export class CheckoutPaymentComponent implements OnInit {
     console.log(this.PaymentForm.value);
     this.order = new Order();
     this.order.key = this.user.uid;
+    this.order.orderDate = new Date();
+    this.order.status = 'done';
     this.order.paymentdMethod = this.PaymentForm.value.paymentmethod;
     this.orderFirestoreService.updateOrder(this.order);
+    this.closingOrderId = this.orderFirestoreService.closeUserOrder(this.order);
+    this.orderFirestoreService.closeProductsPerOrder(this.closingOrderId, this.user.uid, this.localStorageService.getData('products'));
     this.router.navigate(['/checkout/thx']);
 
   }

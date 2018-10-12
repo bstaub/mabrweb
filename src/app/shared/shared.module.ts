@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { CheckboxModule, DropdownModule, EditorModule, FileUploadModule } from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgPrimeModule } from './ng-prime.module';
 
 
 // todo: SortPip, Md2HtmlPipe, NotificationService?? hier auslagern
@@ -23,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DropdownModule,
     CheckboxModule,
     FileUploadModule,
+    NgPrimeModule,
   ],
 
   exports: [
@@ -36,6 +38,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DropdownModule,
     CheckboxModule,
     FileUploadModule,
+    NgPrimeModule,
   ]
 
 })

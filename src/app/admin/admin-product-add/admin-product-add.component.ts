@@ -16,7 +16,7 @@ import * as firebase from 'firebase';
 export class AdminProductAddComponent implements OnInit {
 
   product: Product = new Product();
-  categories: Observable<ProductCategory[]>;
+  categories$: Observable<ProductCategory[]>;
   selectedCategory: string;
   submitted = false;
   createdDate: string;
@@ -32,7 +32,7 @@ export class AdminProductAddComponent implements OnInit {
 
   ngOnInit() {
     // this.product.createdDate = this.productService.formatDate(new Date());  // this ist just for Realtime DB, for CloudFirstore use Timestamp!
-    this.categories = this.productCategory.getCategories();
+    this.categories$ = this.productCategory.getCategories();
 
   }
 

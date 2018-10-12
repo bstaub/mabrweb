@@ -28,7 +28,7 @@
   </p-fileUpload>
 
   <br>
-  <div *ngIf="(categories | async) as Cat">
+  <div *ngIf="(categories$ | async) as Cat">
   <p-dropdown [options]="Cat" [(ngModel)]="selectedCategory" name="selectedCategory" placeholder="Wähle eine Kategorie" optionLabel="name" [showClear]="true" filter="true"></p-dropdown>
   <p>Gewählte Kategorie: {{selectedCategory ? selectedCategory.name : 'none'}}</p>
   </div>

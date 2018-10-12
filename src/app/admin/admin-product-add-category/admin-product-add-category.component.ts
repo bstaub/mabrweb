@@ -9,14 +9,13 @@ import { ProductCategoryService } from '../../product/shared/product-category.se
 export class AdminProductAddCategoryComponent implements OnInit {
 
   category: string;
-
-  // productCategory: ProductCategory;
+  beschreibung: string;
 
   constructor(private productCategoryService: ProductCategoryService) {
   }
 
   ngOnInit() {
-    // this.productCategory = new ProductCategory();
+
   }
 
   onSubmit() {
@@ -29,7 +28,8 @@ export class AdminProductAddCategoryComponent implements OnInit {
           this.productCategory);
     */
 
-    this.productCategoryService.addCategory({id: '101', name: this.category, description: 'Hier die Beeschreibung der Kategorie'});
+
+    this.productCategoryService.addCategory({id: this.productCategoryService.getPushKey(), name: this.category, description: this.beschreibung });
   }
 
 }

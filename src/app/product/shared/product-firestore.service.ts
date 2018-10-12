@@ -11,6 +11,9 @@ import { Product } from '../../models/product.model';
 export class ProductFirestoreService {
   productCollection: AngularFirestoreCollection<Product>;
   products: Observable<Product[]>;
+  productsDiscount$: Observable<Product[]>;
+  productsNew$: Observable<Product[]>;
+  productsBestRated$: Observable<Product[]>;
   productDoc: AngularFirestoreDocument<Product>;
   filteredProducts: any[];
 
@@ -98,6 +101,41 @@ export class ProductFirestoreService {
   searchEntries(term) {
     this.productCollection = this.afs.collection('products', ref => ref.where('name', '==', term).limit(10));
     return this.products = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+  }
+
+  getDiscountProductsWithLimit(limit: number) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('discount', '==', true).limit(limit));
+    return this.productsDiscount$ = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+  }
+
+
+  getNewProductsWithLimit(limit: number) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('newProduct', '==', true).limit(limit));
+    return this.productsNew$ = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+  }
+
+  getBestRatedProductsWithLimit(limit: number) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('bestRated', '==', true).limit(limit));
+
+    return this.productsBestRated$ = this.productCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Product;
         const key = a.payload.doc.id;

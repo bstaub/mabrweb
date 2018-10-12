@@ -8,6 +8,7 @@ export class StorageService {
 
   ref;
   task;
+  imageobj;
 
   constructor(private afStorage: AngularFireStorage) {
 
@@ -23,7 +24,8 @@ export class StorageService {
     this.ref = this.afStorage.ref(randomId);
     // the put method creates an AngularFireUploadTask
     // and kicks off the upload
-    return this.task = this.ref.put(event.target.files[0]);
+    // return this.task = this.ref.put(event.target.files[0]);  // normal upload file selector
+    return this.task = this.ref.put(event.files[0]);  // ng prime p-fileUpload
 
   }
 

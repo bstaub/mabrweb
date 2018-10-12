@@ -155,7 +155,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
 
   getProductsFromLocalStorage() {
     this.itemsForBasket = this.localStorageService.getData('products');
-    console.log(this.itemsForBasket);
   }
 
   removeItem(event) {

@@ -49,6 +49,14 @@ export class CheckoutCustomerdataComponent implements OnInit {
     this.order = new Order();
     this.customerAddress = new CustomerAddress();
     this.customerAddress.firstname = this.CustomerAddressForm.value.firstname;
+    this.customerAddress.lastname = this.CustomerAddressForm.value.lastname;
+    this.customerAddress.address = this.CustomerAddressForm.value.address;
+    this.customerAddress.zip = this.CustomerAddressForm.value.zip;
+    this.customerAddress.city = this.CustomerAddressForm.value.city;
+    this.customerAddress.country = this.CustomerAddressForm.value.country;
+    this.customerAddress.mail = this.CustomerAddressForm.value.mail;
+    this.customerAddress.phone = this.CustomerAddressForm.value.phone;
+
     this.order.key = this.user.uid;
     this.order.customerAddress = this.customerAddress;
     this.orderFirestoreService.updateOrder(this.order);

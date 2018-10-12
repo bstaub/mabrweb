@@ -1,18 +1,14 @@
 import { CustomerAddress } from './customerAddress.model';
 
+
 export class Order {
   key: string;
-  shopOrderId: string;
-  orderDate: any;
-  status: string;
-  totalValue: number;
   userId: string;
   customerAddress: CustomerAddress;
+  shopOrderId = 'XXX-000';
+  orderDate: any = null;
+  status = 'pending';
+  totalValue = 0;
   shippingMethod: string;
-  paymentdMethod: string;
-
-
-
-  // todo: constructor
-
+  paymentMethod: string;
 }

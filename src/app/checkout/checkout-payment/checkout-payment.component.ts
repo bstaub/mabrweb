@@ -40,23 +40,33 @@ export class CheckoutPaymentComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.PaymentForm.value);
+    console.log(this.orderData);
     this.order = new Order();
     this.order.key = this.user.uid;
+    this.order.shopOrderId = this.orderFirestoreService.generateShopOrderId();
     this.order.orderDate = new Date();
     this.order.status = 'done';
-    this.order.paymentdMethod = this.PaymentForm.value.paymentmethod;
+    this.order.totalValue = this.orderData.totalValue;
+    this.order.userId = this.user.uid;
+    this.order.customerAddress = this.orderData.customerAddress;
+    this.order.shippingMethod = this.orderData.shippingMethod;
+    this.order.paymentMethod = this.PaymentForm.value.paymentmethod;
+    console.log(this.order);
     this.orderFirestoreService.updateOrder(this.order);
-    this.closingOrderId = this.orderFirestoreService.closeUserOrder(this.order);
-    this.orderFirestoreService.closeProductsPerOrder(this.closingOrderId, this.user.uid, this.localStorageService.getData('products'));
-    this.router.navigate(['/checkout/thx']);
 
+    this.closingOrderId = this.orderFirestoreService.completeUserOrder(this.order);
+    this.orderFirestoreService.completeProductsPerOrder(this.closingOrderId, this.user.uid, this.localStorageService.getData('products'));
+    this.orderFirestoreService.resetUserOrder(this.order);
+    this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
+
+
+    this.router.navigate(['/checkout/thx']);
   }
 
 
   getOrderData() {
     this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) => {
-      this.orderData = res;
+      this.orderData = res[0];
     });
   }
 

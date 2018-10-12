@@ -2,22 +2,23 @@
 
   <app-home-slider-ngcarousel></app-home-slider-ngcarousel>
 
-
   <div class="container mt-5">
     <div class="card-deck mb-3 text-center">
       <div *ngIf="(productsDiscounts$ | async) as discount" class="card mb-4 shadow-sm">
         <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Aktionen</h4>
+          <h4 class="my-0 font-weight-normal">Aktionen {{100 - (rabattFactorDiscount * 100)}} % Rabatt</h4>
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4" >
             <li *ngFor="let item of discount">
-              <div class="featured-product">
-                <div class="thumbnail">
-                  <img src="{{item.image}}">
+              <div class="row">
+                <div class="col-6 col-sm-12 col-md-6">
+                  <img class="img-fluid" src="{{item.image}}">
                 </div>
-                <div class="product">
+                <div class="col-6 col-sm-12 col-md-6">
                   <p>{{item.name}}</p>
+                  <p style="text-decoration:line-through;">{{item.price}}</p>
+                  <p>{{item.price * rabattFactorDiscount | number}}</p>
                 </div>
               </div>
             </li>
@@ -26,40 +27,51 @@
       </div>
       <div *ngIf="(productsNew$ | async) as np" class="card mb-4 shadow-sm">
         <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Neue Produkte</h4>
+          <h4 class="my-0 font-weight-normal">Neue Produkte {{100 - (rabattFactorNew * 100)}} % Rabatt</h4>
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4" >
             <li *ngFor="let item of np">
-              <div class="featured-product">
-                <div class="thumbnail">
-                  <img src="{{item.image}}">
+              <div class="row">
+                <div class="col-6 col-sm-12 col-md-6">
+                  <img class="img-fluid" src="{{item.image}}">
                 </div>
-                <div class="product">
+                <div class="col-6 col-sm-12 col-md-6">
                   <p>{{item.name}}</p>
+                  <p style="text-decoration:line-through;">{{item.price}}</p>
+                  <p>{{item.price * rabattFactorNew | number}}</p>
                 </div>
               </div>
             </li>
           </ul>
-
         </div>
       </div>
       <div *ngIf="(productsBestRated$ | async) as best" class="card mb-4 shadow-sm">
         <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Best Rated</h4>
+          <h4 class="my-0 font-weight-normal">Best Rated {{100 - (rabattFactorBestRate * 100)}} % Rabatt</h4>
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4">
             <ul class="list-unstyled mt-3 mb-4" >
               <li *ngFor="let item of best">
-                <div class="featured-product">
-                  <div class="thumbnail">
-                    <img src="{{item.image}}">
+                <div class="row">
+                  <div class="col-6 col-sm-12 col-md-6">
+                    <img class="img-fluid" src="{{item.image}}">
                   </div>
-                  <div class="product">
+                  <div class="col-6 col-sm-12 col-md-6">
                     <p>{{item.name}}</p>
+                    <p style="text-decoration:line-through;">{{item.price}}</p>
+                    <p>{{item.price * rabattFactorBestRate | number}}</p>
                   </div>
                 </div>
+                <!--<div class="featured-product">-->
+                  <!--<div class="thumbnail">-->
+                    <!--<img src="{{item.image}}">-->
+                  <!--</div>-->
+                  <!--<div class="product">-->
+                    <!--<p>{{item.name}}</p>-->
+                  <!--</div>-->
+                <!--</div>-->
               </li>
             </ul>
           </ul>

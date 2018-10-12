@@ -18,7 +18,7 @@ export class AdminProductEditComponent implements OnInit {
   product: Product = new Product();
   submitted = false;
   createdDate: string;
-  categories: Observable<ProductCategory[]>;
+  categories$: Observable<ProductCategory[]>;
   selectedCategory: ProductCategory;
   // selectedCategory: string = '';
   image: any;
@@ -36,7 +36,7 @@ export class AdminProductEditComponent implements OnInit {
 
 
   ngOnInit() {
-    this.categories = this.productCategory.getCategories();
+    this.categories$ = this.productCategory.getCategories();
   }
 
   onSubmit() {

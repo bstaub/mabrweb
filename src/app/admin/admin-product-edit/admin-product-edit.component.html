@@ -16,16 +16,8 @@
   </div>
   <br>
 
-  <p>Bildname</p>
-  <p-fileUpload
-    name="myfile[]"
-    chooseLabel="Bild Upload"
-    cancelLabel="Abbrechen"
-    type="file"
-    (onSelect)="onFileSelection($event)"
-    [showUploadButton]="false"
-    accept="image/*">
-  </p-fileUpload>
+
+  <app-admin-bildupload></app-admin-bildupload>
 
   <br>
   <div *ngIf="(categories$ | async) as Cat">
@@ -42,5 +34,5 @@
   <p-checkbox binary="true" value="bestRated" label="Beste Bewertung" [(ngModel)]="bestRated" name="bestRated"></p-checkbox><br><br>
 
 
-  <button type="submit" class="btn btn-success">Bestätigen</button>
+  <button type="submit" class="btn btn-secondary">Eingabe bestätigen</button>
 </form>

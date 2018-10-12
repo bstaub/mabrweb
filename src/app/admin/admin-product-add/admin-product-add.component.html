@@ -31,13 +31,9 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label for="image">Bildupload</label>
-          <input type="file" id="image" (change)="onFileSelection($event)" placeholder="Upload a file"
-                 accept=".gif, .png, .jpeg, .jpg">
-        </div>
+        <app-admin-bildupload></app-admin-bildupload><br>
 
-        <button type="submit" class="btn btn-success">Bestätigen</button>
+        <button type="submit" class="btn btn-secondary">Eingabe bestätigen</button>
       </form>
     </div>
 

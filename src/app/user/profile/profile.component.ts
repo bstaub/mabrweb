@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onFileSelection($event) {
-    this.storageService.upload($event)
+    this.storageService.uploadProfileBild($event)
       .then((uploadSnapshot: firebase.storage.UploadTaskSnapshot) => {
 
         uploadSnapshot.ref.getDownloadURL().then((downloadURL) => {

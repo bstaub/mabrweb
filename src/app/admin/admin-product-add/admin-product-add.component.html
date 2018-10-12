@@ -31,7 +31,16 @@
           </select>
         </div>
 
-        <app-admin-bildupload></app-admin-bildupload><br>
+        <p>Bildname</p>
+        <p-fileUpload
+          name="myfile[]"
+          chooseLabel="Bild Upload"
+          cancelLabel="Abbrechen"
+          type="file"
+          (onSelect)="onFileSelection($event)"
+          [showUploadButton]="false"
+          accept="image/*">
+        </p-fileUpload>
 
         <button type="submit" class="btn btn-secondary">Eingabe bestätigen</button>
       </form>

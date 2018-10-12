@@ -11,6 +11,9 @@ import { Product } from '../../models/product.model';
 export class ProductFirestoreService {
   productCollection: AngularFirestoreCollection<Product>;
   products: Observable<Product[]>;
+  productsDiscount$: Observable<Product[]>;
+  productsNew$: Observable<Product[]>;
+  productsBestRated$: Observable<Product[]>;
   productDoc: AngularFirestoreDocument<Product>;
   filteredProducts: any[];
 
@@ -106,20 +109,41 @@ export class ProductFirestoreService {
     );
   }
 
-  getDiscountProductsWithLimit(limitCountValue: number) {
-    this.productCollection = this.afs.collection('products', ref => ref.where('discount', '==', 'true').limit(limitCountValue));
-    this.getData();
+  getDiscountProductsWithLimit(limit: number) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('discount', '==', true).limit(limit));
+    return this.productsDiscount$ = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
   }
 
-  getNewProductsWithLimit(limitCountValue: number) {
-    this.productCollection = this.afs.collection('products', ref => ref.where('newProduct', '==', 'true').limit(limitCountValue));
-    this.getData();
+
+  getNewProductsWithLimit(limit: number) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('newProduct', '==', true).limit(limit));
+    return this.productsNew$ = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
   }
 
-  getBestRatedProductsWithLimit(limitCountValue: number) {
-    this.productCollection = this.afs.collection('products', ref => ref.where('bestRated', '==', 'true').limit(limitCountValue));
-    this.getData();
+  getBestRatedProductsWithLimit(limit: number) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('bestRated', '==', true).limit(limit));
+
+    return this.productsBestRated$ = this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
   }
+
 
   sortProductsByNameAsc() {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));

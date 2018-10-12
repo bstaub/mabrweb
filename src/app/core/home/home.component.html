@@ -7,7 +7,7 @@
     <div class="card-deck mb-3 text-center">
       <div *ngIf="(productsDiscounts$ | async) as discount" class="card mb-4 shadow-sm">
         <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Neue Produkte</h4>
+          <h4 class="my-0 font-weight-normal">Aktionen</h4>
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4" >
@@ -24,13 +24,13 @@
           </ul>
         </div>
       </div>
-      <div *ngIf="(productsNew$ | async) as news" class="card mb-4 shadow-sm">
+      <div *ngIf="(productsNew$ | async) as np" class="card mb-4 shadow-sm">
         <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Aktionen</h4>
+          <h4 class="my-0 font-weight-normal">Neue Produkte</h4>
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4" >
-            <li *ngFor="let item of news">
+            <li *ngFor="let item of np">
               <div class="featured-product">
                 <div class="thumbnail">
                   <img src="{{item.image}}">
@@ -46,7 +46,7 @@
       </div>
       <div *ngIf="(productsBestRated$ | async) as best" class="card mb-4 shadow-sm">
         <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Beste Bewertung</h4>
+          <h4 class="my-0 font-weight-normal">Best Rated</h4>
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4">

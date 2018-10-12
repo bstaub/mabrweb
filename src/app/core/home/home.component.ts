@@ -16,9 +16,9 @@ export class HomeComponent implements OnInit, AfterContentChecked {
   user: User;
   uid: string;
   currentUser: any;
-  productsDiscounts$: any;
-  productsNew$: any;
-  productsBestRated$: any;
+  productsDiscounts$: Observable<Product[]>;
+  productsNew$: Observable<Product[]>;
+  productsBestRated$:  Observable<Product[]>;
 
   constructor(private authService: AuthService,
               private userService: UserService,
@@ -27,9 +27,12 @@ export class HomeComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
+
+
     this.productsDiscounts$ = this.productService.getDiscountProductsWithLimit(3);
     this.productsNew$ = this.productService.getNewProductsWithLimit(3);
     this.productsBestRated$ = this.productService.getBestRatedProductsWithLimit(3);
+
 
     // this.authService.isAuthenticated().subscribe(auth => console.log(auth));
     // this.authService.getAuth().subscribe(auth2 => console.log(auth2));

@@ -4,10 +4,6 @@ import { OrderFirestoreService } from '../shared/order-firestore.service';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { Order } from '../../models/order.model';
-import { NgForm } from '@angular/forms';
-import { AuthService } from '../../user/shared/auth.service';
-import { NotificationService } from '../../shared/notification.service';
 import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalStorage.model';
 
 
@@ -33,8 +29,6 @@ export class OrderDetailComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private localStorageService: LocalStorageService,
-    private authService: AuthService,
-    private notifier: NotificationService
   ) {
 
 
@@ -62,25 +56,12 @@ export class OrderDetailComponent implements OnInit {
     }
 
     this.productPerOrderLocalStorage = this.localStorageService.getData('products');
-    this.calculateTotalSum();
 
 
   }
 
 
-  onOrder() {
-    const order = new Order();
-    order.shopOrderId = 'done-123-001';
-    order.orderDate = new Date();
-    order.status = 'done';
-    order.totalValue = this.order.totalValue;
-    order.userId = this.user.uid;
-    this.orderId = this.orderFirestoreService.closeUserOrder(order);
-    console.log(this.orderId);
-    this.orderFirestoreService.closeProductsPerOrder(this.orderId, this.user.uid, this.productPerOrderLocalStorage);
-    this.onDeleteScart();
 
-  }
 
   onEnterOrderData() {
     if (this.user) {
@@ -137,9 +118,12 @@ export class OrderDetailComponent implements OnInit {
       totalValue += lineValue;
     });
     this.totalValue = totalValue;
+    this.order.totalValue = totalValue;
+    this.orderFirestoreService.updateOrder(this.order);
   }
 
 
+  /*
   onLoginWithOrder(form: NgForm) {
 
     this.authService.loginWithUserPassword(form.value.email, form.value.password)
@@ -167,6 +151,7 @@ export class OrderDetailComponent implements OnInit {
 
 
   }
+  */
 
 
 }

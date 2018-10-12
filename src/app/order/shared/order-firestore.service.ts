@@ -32,6 +32,8 @@ export class OrderFirestoreService {
   productPerOrder: ProductPerOrder;
   customerAddress: CustomerAddress;
   user: any;
+  totalValue: number;
+
 
   productsPerOrderLocalStorage: ProductPerOrderLocalStorage[];
   productsPerOrderLocalStorageNew: ProductPerOrderLocalStorage[];
@@ -68,6 +70,7 @@ export class OrderFirestoreService {
     if (!userId) {
       userId = '0';
     }
+    console.log(userId);
     this.orderPerUser = this.afs.collection('orders', ref => ref.where('userId', '==', userId));
     this.orders = this.orderPerUser.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -118,26 +121,39 @@ export class OrderFirestoreService {
   // Initial Order erstellen
 
   creatNewUserOrder(userId: string) {
-
-    this.customerAddress = new CustomerAddress();
-
-    this.order = new Order();
-    this.order.shopOrderId = 'ShopID XXX-123';
-    this.order.orderDate = new Date();
-    this.order.status = 'pending';
-    this.order.totalValue = 0;
-    this.order.userId = userId;
-    this.order.customerAddress = this.customerAddress;
-    this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(this.order)));
+    this.orderCollection.doc(userId).ref.get()
+      .then((docSnapshot) => {
+        if (!docSnapshot.exists) {
+          this.customerAddress = new CustomerAddress();
+          this.order = new Order();
+          this.order.shopOrderId = 'ShopID XXX-123';
+          this.order.orderDate = new Date();
+          this.order.status = 'pending';
+          this.order.totalValue = 0;
+          this.order.userId = userId;
+          this.order.customerAddress = this.customerAddress;
+          this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(this.order)));
+        }
+      });
   }
 
   // Warenkorb in Firestore speichern (userId als Key wenn Status pending )
+
+
   saveProductsInFS(userId: string, products: Array<ProductPerOrderLocalStorage>) {
+    let lineValue = 0;
+    let totalValue = 0;
+
     products.forEach((product) => {
       const productPerOrder = new ProductPerOrder();
       productPerOrder.productId = product.productId;
       productPerOrder.qty = product.qty;
       productPerOrder.orderId = userId;
+
+      lineValue = product.qty * product.price;
+      lineValue.toFixed(2);
+      totalValue += lineValue;
+
 
       this.afs.doc(`productsPerOrder/${productPerOrder.orderId}`).collection('products').doc(productPerOrder.productId).set({
         userId: this.afs.collection('orders').doc(productPerOrder.orderId).ref,
@@ -145,18 +161,24 @@ export class OrderFirestoreService {
         qty: +productPerOrder.qty
       }).then(function () {
         console.log('Document successfully added!');
+
+
       }).catch(function (error) {
         console.error('Error adding document: ', error);
       });
 
     });
+
+    this.order = new Order();
+    this.order.key = this.user.uid;
+    this.order.totalValue = totalValue;
+    this.updateOrder(this.order);
+
   }
 
   deleteProductsInFS(userId: string, productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
     productsPerOrderLocalStorage.forEach((productPerOrderLocalStorage) => {
-
       this.deleteProductInFS(userId, productPerOrderLocalStorage.productId);
-
     });
   }
 
@@ -180,24 +202,22 @@ export class OrderFirestoreService {
     this.getProductsPerOrder(userId).ref.get().then((res) => {
       res.forEach(doc => {
         const newProduct = doc.data();
-        console.log(newProduct);
         newProduct.id = doc.id;
         if (newProduct.productId) {
           newProduct.productId.get()
             .then(ressource => {
               newProduct.productData = ressource.data();
               if (newProduct.productData) {
-
-
                 const productStore = this.localStorageService.getData('products');
                 productStore.push({
                   productId: newProduct.id,
-                  qty: newProduct.qty,
-                  description: newProduct.productData.name
+                  qty: Number(newProduct.qty),
+                  name: newProduct.productData.name,
+                  description: newProduct.productData.description,
+                  price: newProduct.productData.price,
+                  image: newProduct.productData.image
                 });
                 this.localStorageService.setData('products', productStore);
-
-
               }
             })
             .catch(err => console.error(err));
@@ -286,10 +306,10 @@ export class OrderFirestoreService {
 
   updateOrder(order: Order) {
     this.orderDoc = this.afs.doc(`orders/${order.key}`);
-    this.orderDoc.set(JSON.parse(JSON.stringify(order))).then(function () {
-      console.log('Document successfully updated!');
+    this.orderDoc.update(JSON.parse(JSON.stringify(order))).then(function () {
+      console.log('order successfully updated!');
     }).catch(function (error) {
-      console.error('Error updating document: ', error);
+      console.error('error updating document: ', error);
     });
 
 

@@ -32,6 +32,7 @@ export class UserLoginComponent implements OnInit {
           setTimeout(() => {
             // https://stackoverflow.com/questions/45025334/how-to-use-router-navigatebyurl-and-router-navigate-in-angular
 
+
             this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
             this.orderFirestoreService.loadProducts(userData.user.uid);
             this.router.navigateByUrl('');  // geht zur Homepage!

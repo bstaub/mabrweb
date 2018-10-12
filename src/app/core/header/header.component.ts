@@ -8,7 +8,7 @@ import { LocalStorageService } from '../../shared/local-storage.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styles: [`    
+  styles: [`
     ul {
       margin-bottom: 0;
     }
@@ -60,10 +60,10 @@ import { LocalStorageService } from '../../shared/local-storage.service';
       color: white;
       font-weight: bold;
     }
-    
+
     .burgerMenu {
-      font-size:30px;
-      cursor:pointer;
+      font-size: 30px;
+      cursor: pointer;
       margin-right: 50px;
     }
 
@@ -83,7 +83,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   name: string;
   uid: string;
   email: string;
-  couter: number = 0;
 
   constructor(private afAuth: AngularFireAuth,
               private authService: AuthService,
@@ -150,6 +149,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   logout() {
     this.authService.logout();
     this.isLoggedIn = false;
+    this.localStorageService.destroyLocalStorage('products');
   }
 
 

@@ -106,6 +106,20 @@ export class ProductFirestoreService {
     );
   }
 
+  getDiscountProductsWithLimit(limitCountValue: number) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('discount', '==', 'true').limit(limitCountValue));
+    this.getData();
+  }
+
+  getNewProductsWithLimit(limitCountValue: number) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('newProduct', '==', 'true').limit(limitCountValue));
+    this.getData();
+  }
+
+  getBestRatedProductsWithLimit(limitCountValue: number) {
+    this.productCollection = this.afs.collection('products', ref => ref.where('bestRated', '==', 'true').limit(limitCountValue));
+    this.getData();
+  }
 
   sortProductsByNameAsc() {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));

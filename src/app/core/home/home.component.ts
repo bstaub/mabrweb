@@ -2,22 +2,35 @@ import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { AuthService } from '../../user/shared/auth.service';
 import { UserService } from '../../user/shared/user.service';
 import { User } from '../../models/user';
+import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
+import { Observable } from 'rxjs';
+import { Product } from '../../models/product.model';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styles: []
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, AfterContentChecked {
 
   user: User;
   uid: string;
   currentUser: any;
+  productsDiscounts$: any;
+  productsNew$: any;
+  productsBestRated$: any;
 
-  constructor(private authService: AuthService, private userService: UserService) {
+  constructor(private authService: AuthService,
+              private userService: UserService,
+              private productService: ProductFirestoreService,
+  ) {
   }
 
   ngOnInit() {
+    this.productsDiscounts$ = this.productService.getDiscountProductsWithLimit(3);
+    this.productsNew$ = this.productService.getNewProductsWithLimit(3);
+    this.productsBestRated$ = this.productService.getBestRatedProductsWithLimit(3);
+
     // this.authService.isAuthenticated().subscribe(auth => console.log(auth));
     // this.authService.getAuth().subscribe(auth2 => console.log(auth2));
     // console.log(this.userService.getCurrentUser());

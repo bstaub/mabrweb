@@ -1,7 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './core/home/home.component';
-import { UserListComponent } from './user/user-list/user-list.component';
-
 import { PRODUCT_ROUTES } from './product/product.routing';
 import { USER_ROUTES } from './user/user.routing';
 import { UserLoginComponent } from './user/user-login/user-login.component';
@@ -19,6 +17,7 @@ import { NgModule } from '@angular/core';
 import { CHECKOUT_ROUTES } from './checkout/checkout.routing';
 import { UserLoginRegisterSlideComponent } from './user/user-login-register-slide/user-login-register-slide.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { UserComponent } from './user/user.component';
 
 
 const APP_ROUTES: Routes = [
@@ -27,12 +26,12 @@ const APP_ROUTES: Routes = [
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES},
   {path: 'bestellung', component: OrderDetailComponent},
   {path: 'checkout', component: CheckoutComponent, children: CHECKOUT_ROUTES},
-  {path: 'user', component: UserListComponent, children: USER_ROUTES, canActivate: [Auth2Guard]},
+  {path: 'users', component: UserComponent, children: USER_ROUTES, canActivate: [Auth2Guard]}, // Router Outlet auf UserComponent nicht vergessen!
   {path: 'login', component: UserLoginComponent},
   {path: 'register', component: UserRegisterComponent},
   {path: 'login-register', component: UserLoginRegisterComponent},
   {path: 'user-login-register-slide', component: UserLoginRegisterSlideComponent},
-  {path: 'profile', component: ProfileComponent, canActivate: [Auth2Guard]},
+  {path: 'profile', component: ProfileComponent, canActivate: [Auth2Guard], data: { title: 'Mein Profil' }},
   {path: 'resetpw', component: ResetPasswordComponent},
   {path: '**', redirectTo: '/'},  // default Route, könnte auch 404 Seite sein, muss am Schluss aufgerufen werden
 ];

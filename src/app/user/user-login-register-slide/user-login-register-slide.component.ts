@@ -29,7 +29,6 @@ export class UserLoginRegisterSlideComponent implements OnInit {
   }
 
   onSubmitLogin(form: NgForm) {
-    console.log('login!');
     this.authService.loginWithUserPassword(form.value.email, form.value.password)
       .then(userData => {
 

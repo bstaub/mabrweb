@@ -1,3 +1,15 @@
-<p>
-  user-list works!
-</p>
+<app-user-list-item *ngFor="let user of users$ | async" [user]="user"></app-user-list-item>
+
+<!--<ul>-->
+  <!--<li *ngFor="let user of users$ | async">-->
+    <!--<div class="card">-->
+      <!--<img *ngIf="user.downloadUrl" class="card-img-top" [src]="user.downloadUrl || '//:0'" [alt]="user.username" [ngStyle]="{'width.px': 100}">-->
+      <!--<div class="card-body">-->
+        <!--<h5 class="card-title">{{ user.username }}</h5>-->
+        <!--<p class="card-subtitle">{{ user.email }}</p>-->
+        <!--<p class="card-text">{{ user.uid }}</p>-->
+        <!--<a href="#" class="btn btn-secondary">Detail Seite</a>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</li>-->
+<!--</ul>-->

@@ -8,7 +8,7 @@ import { NotificationService } from '../../shared/notification.service';
 
 import * as firebase from 'firebase/app';
 import { Observable, of, Subject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 
@@ -17,7 +17,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class AuthService {
   private user: Observable<firebase.User>;
   private userDetails: firebase.User = null;
-  user$: Observable<any>;  // change to Interface User(import), and make observable with user$  (cms project)
+  user$: Observable<any>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -26,63 +26,27 @@ export class AuthService {
     private userService: UserService,
     private notifier: NotificationService
   ) {
-    // Get Current Auth User
-    /*
-    this.user = afAuth.authState;
-    this.user.subscribe(
-      (user) => {
-        if (user) {
-          this.userDetails = user;
+    this.user$ = afAuth.authState
+      .pipe(
+        switchMap((auth) => {
+        if (auth) {
+          // debugger;
+          return this.afs.doc(`users/${auth.uid}`).valueChanges()
+            .pipe(
+              map( user => {
+               return {
+                 ...user,
+                 uid: auth.uid,
+                 emailVerified: auth.emailVerified
+               };
+              }),
+              // tap( x => console.log(x))
+            );
         } else {
-          this.userDetails = null;
+          return of(null);
         }
-      }
-    );
-
-    this.user$ = afAuth.authState.pipe(map(user => {
-      if (user) {
-        // debugger;
-        return this.afs.doc(`users/${user.uid}`).valueChanges();
-      } else {
-        return of(null);  // Angular6 without Observable.of, just of with import {of}
-      }
     }));
-    */
-
   }
-
-  isAuthenticated() {
-    const state = new Subject<boolean>();
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        state.next(true);
-        // console.log('yes user: ', user);
-      } else {
-        state.next(false);
-      }
-    });
-    return state.asObservable();
-  }
-
-  getAuth() {
-    return this.afAuth.authState.pipe(map(auth => auth));
-  }
-
-  /*
-  getAuthUser() {
-    return this.userDetails;
-  }
-  */
-
-  /*
-  isLoggedIn() {
-    if (this.userDetails == null ) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-  */
 
   // 1. Register
   createUserInFirebaseAuthListEmailVerified(email, password, username) {
@@ -127,7 +91,6 @@ export class AuthService {
 
   // 2. Login
   loginWithUserPassword(email, password) {
-    console.log('vor auth.EmailAuthProvider.credential->' + email + ' / ' + password);
     const credential = firebase.auth.EmailAuthProvider.credential(email, password);
     return this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }

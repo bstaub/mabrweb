@@ -9,6 +9,7 @@ import { AdminProductItemComponent } from './admin-product-item/admin-product-it
 import { AdminProductAddCategoryComponent } from './admin-product-add-category/admin-product-add-category.component';
 import { SharedModule } from '../shared/shared.module';
 import { AdminBilduploadComponent } from './admin-bildupload/admin-bildupload.component';
+import { AdminProductAddEditComponent } from './admin-product-add-edit/admin-product-add-edit.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AdminBilduploadComponent } from './admin-bildupload/admin-bildupload.co
     AdminProductItemComponent,
     AdminProductAddCategoryComponent,
     AdminBilduploadComponent,
+    AdminProductAddEditComponent,
   ],
   imports: [
     SharedModule

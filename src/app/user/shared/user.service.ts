@@ -32,7 +32,9 @@ export class UserService {
   }
 
   getUsers() {
-    return this.users;
+    // return this.users;
+    this.usersCollection = this.afs.collection('users');
+    return this.usersCollection.valueChanges();
   }
 
   getUser(id) {

@@ -1,0 +1,11 @@
+<div *ngIf="user">
+  <div class="card ml-3 pt-3" routerLink="/users/detail/{{user.id}}">
+    <img *ngIf="user.downloadUrl" class="card-img-top ml-3" [src]="user.downloadUrl || '//:0'" [alt]="user.username" [ngStyle]="{'width.px': 100}">
+    <div class="card-body">
+      <h5 class="card-title">{{ user.username }}</h5>
+      <p class="card-subtitle">{{ user.email }}</p>
+      <p class="card-text">{{ user.id }}</p>
+      <a href="#" class="btn btn-secondary">Detail Seite</a>
+    </div>
+  </div>
+</div>

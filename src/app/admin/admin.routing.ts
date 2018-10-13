@@ -4,6 +4,7 @@ import { AdminProductEditComponent } from './admin-product-edit/admin-product-ed
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminProductListComponent } from './admin-product-list/admin-product-list.component';
 import { AdminProductAddCategoryComponent } from './admin-product-add-category/admin-product-add-category.component';
+import { AdminProductAddEditComponent } from './admin-product-add-edit/admin-product-add-edit.component';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -18,4 +19,5 @@ export const ADMIN_ROUTES: Routes = [
   {path: 'list', component: AdminProductListComponent},
   {path: 'edit', component: AdminProductEditComponent},
   {path: 'add', component: AdminProductAddComponent},
+  {path: 'crud', component: AdminProductAddEditComponent},
 ];

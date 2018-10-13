@@ -5,11 +5,17 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterGuard } from './guards/register.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 
 export const USER_ROUTES: Routes = [
-  {path: 'list', component: UserListComponent},
-  {path: 'detail', component: UserDetailComponent},
+  {
+    path: '',
+    redirectTo: 'list',
+    pathMatch: 'full'
+  },
+  {path: 'detail/:id', component: UserDetailComponent},
+  {path: 'list', component: UserListComponent, canActivate: [AdminGuard]},
   {path: 'login', component: UserLoginComponent},
   {path: 'register', component: UserRegisterComponent, canActivate: [RegisterGuard]},
   {path: 'profile', component: ProfileComponent},

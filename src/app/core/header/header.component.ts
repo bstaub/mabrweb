@@ -71,7 +71,7 @@ import { Router } from '@angular/router';
 
   `]
 })
-export class HeaderComponent implements OnInit, AfterContentChecked {
+export class HeaderComponent implements OnInit {
 
   @Output() offCanvasClicked = new EventEmitter();
 
@@ -94,57 +94,22 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
-    /*
-    this.afAuth.auth.onAuthStateChanged(userData => {
-      // we are logged in
-      console.log('ngOnInit000', userData);
-
-      // debugger;
-      if (userData && userData.emailVerified) {
-        // debugger;
-
-        const user = this.userService.getProfileFromLocalStorage();
-        // debugger;
-        this.name = user.username;
-        this.email = user.email;
-        this.uid = user.id;
-
-        console.log(user);
-        console.log(this.uid);
-
-        this.isLoggedIn = true;
-      } else {
-        this.isLoggedIn = false;
+    this.authService.user$.subscribe(
+      auth => {
+        if (auth && auth.emailVerified) {
+          this.isLoggedIn = true;
+          this.loggedInUser = auth.email;
+        } else {
+          this.isLoggedIn = false;
+        }
       }
-    });
-    */
-
-    this.authService.getAuth().subscribe(auth => {
-      if (auth && auth.emailVerified) {
-        const user = this.userService.getProfileFromLocalStorage();
-        this.name = user.username;
-        this.email = user.email;
-        this.uid = user.id;
-
-
-        this.isLoggedIn = true;
-        this.loggedInUser = auth.email;
-      } else {
-        this.isLoggedIn = false;
-      }
-    });
+    );
     this.showRegister = this.settingsService.getSettings().allowRegistration;
     this.showAdmin = this.settingsService.getSettings().allowAdministration;
 
 
     // delete only works on ngInit
     this.getProductsFromLocalStorage();
-  }
-
-  ngAfterContentChecked() {
-    // refresh only works on ngAfterXXX
-    // this.getProductsFromLocalStorage();
-
   }
 
   logout() {

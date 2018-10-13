@@ -4,9 +4,10 @@
 
   <div class="container mt-5">
     <div class="card-deck mb-3 text-center">
-      <div *ngIf="(productsDiscounts$ | async) as discount" class="card mb-4 shadow-sm">
+      <div *ngIf="(productsDiscounts$ | async | arraySort: 'price') as discount" class="card mb-4 shadow-sm">
         <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Aktionen {{100 - (rabattFactorDiscount * 100)}} % Rabatt</h4>
+          <!--<h4 class="my-0 font-weight-normal">Aktionen ({{100 - (rabattFactorDiscount * 100)}} % Rabatt)</h4>-->
+          <h4 class="my-0 font-weight-normal">Aktionen</h4>
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4" >
@@ -29,9 +30,9 @@
           </ul>
         </div>
       </div>
-      <div *ngIf="(productsNew$ | async) as np" class="card mb-4 shadow-sm">
+      <div *ngIf="(productsNew$ | async | arraySortDesc: 'createdDate') as np" class="card mb-4 shadow-sm">
         <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Neue Produkte {{100 - (rabattFactorNew * 100)}} % Rabatt</h4>
+          <h4 class="my-0 font-weight-normal">Neue Produkte</h4>
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4" >
@@ -54,9 +55,9 @@
           </ul>
         </div>
       </div>
-      <div *ngIf="(productsBestRated$ | async) as best" class="card mb-4 shadow-sm">
+      <div *ngIf="(productsBestRated$ | async | arraySortDesc: 'bestRatedNumber') as best" class="card mb-4 shadow-sm">
         <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Best Rated {{100 - (rabattFactorBestRate * 100)}} % Rabatt</h4>
+          <h4 class="my-0 font-weight-normal">Best Rated</h4>
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4">

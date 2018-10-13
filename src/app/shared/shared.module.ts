@@ -7,12 +7,17 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { CheckboxModule, DropdownModule, EditorModule, FileUploadModule } from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgPrimeModule } from './ng-prime.module';
+import { ArraySortPipe } from './pipe/array-sort.pipe';
+import { ArraySortDescPipe } from './pipe/array-sort-desc.pipe';
 
 
 // todo: SortPip, Md2HtmlPipe, NotificationService?? hier auslagern
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ArraySortPipe,
+    ArraySortDescPipe,
+  ],
 
   imports: [
     CommonModule,
@@ -39,6 +44,8 @@ import { NgPrimeModule } from './ng-prime.module';
     CheckboxModule,
     FileUploadModule,
     NgPrimeModule,
+    ArraySortPipe,
+    ArraySortDescPipe,
   ]
 
 })

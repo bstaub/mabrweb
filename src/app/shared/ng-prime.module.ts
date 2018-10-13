@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CheckboxModule, DropdownModule, FileUploadModule } from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RatingModule } from 'primeng/rating';
 
 
 @NgModule({
@@ -11,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DropdownModule,
     CheckboxModule,
     FileUploadModule,
+    RatingModule,
   ],
 
   exports: [
@@ -18,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DropdownModule,
     CheckboxModule,
     FileUploadModule,
+    RatingModule,
   ]
 
 })

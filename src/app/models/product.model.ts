@@ -12,5 +12,7 @@ export class Product {
   discount?: boolean;
   newProduct?: boolean;
   bestRated?: boolean;
+  discountFactor?: number;
+  bestRatedNumber?: number;
 }
 

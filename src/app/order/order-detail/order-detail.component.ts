@@ -67,7 +67,7 @@ export class OrderDetailComponent implements OnInit {
     if (this.user) {
       this.router.navigate(['/checkout']);
     } else {
-      alert('Under Construction - Bitte loggen Sie sich ein...');
+      this.router.navigate(['/checkout/login']);
     }
   }
 
@@ -123,35 +123,6 @@ export class OrderDetailComponent implements OnInit {
   }
 
 
-  /*
-  onLoginWithOrder(form: NgForm) {
-
-    this.authService.loginWithUserPassword(form.value.email, form.value.password)
-      .then(userData => {
-
-        if (userData && userData.user.emailVerified) {
-          this.notifier.display('success', 'Login erfolgreich');
-
-          setTimeout(() => {
-
-
-            this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
-            this.orderFirestoreService.saveProductsInFS(userData.user.uid, this.productPerOrderLocalStorage);
-
-
-            this.router.navigateByUrl('/bestellung');
-
-          }, 2000);
-        }
-
-      })
-      .catch(err => {
-        console.log('error bs: ' + err);
-      });
-
-
-  }
-  */
 
 
 }

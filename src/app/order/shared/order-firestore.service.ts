@@ -16,13 +16,14 @@ import { CustomerAddress } from '../../models/customerAddress.model';
 })
 export class OrderFirestoreService {
 
-  orders: Observable<Order[]>;
+  userOrder: Observable<Order[]>;
   products: Observable<any[]>;
 
   orderPerUser: AngularFirestoreCollection<Order>;
   orderCollection: AngularFirestoreCollection<Order>;
+  orderCollectionAnonymus: AngularFirestoreCollection<Order>;
   orderCollection_completed: AngularFirestoreCollection<Order>;
-
+  orderCollection_completedAnonymus: AngularFirestoreCollection<Order>;
 
   productsOrderCollection: AngularFirestoreCollection<any>;
   productsPerOrderDocument: AngularFirestoreDocument<any>;
@@ -33,6 +34,7 @@ export class OrderFirestoreService {
   customerAddress: CustomerAddress;
   user: any;
   totalValue: number;
+  orderId: string;
 
 
   productsPerOrderLocalStorage: ProductPerOrderLocalStorage[];
@@ -45,12 +47,14 @@ export class OrderFirestoreService {
               private localStorageService: LocalStorageService) {
 
     this.orderCollection = this.afs.collection('orders');
+    this.orderCollectionAnonymus = this.afs.collection('orders_anonymus');
     this.orderCollection_completed = this.afs.collection('orders_completed');
+    this.orderCollection_completedAnonymus = this.afs.collection('orders_completed_anonymus');
 
 
     this.user = this.userService.getCurrentUser();
 
-    this.orders = this.orderCollection.snapshotChanges().pipe(
+    this.userOrder = this.orderCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Order;
         const key = a.payload.doc.id;
@@ -63,84 +67,90 @@ export class OrderFirestoreService {
   }
 
 
-  // Anzeige der Produktdaten
+  // Anzeige der Bestelldaten (OK)
   getUserOrder(userId) {
 
-    // todo: how to avoid this?
-    if (!userId) {
-      userId = '0';
+    this.user = this.userService.getCurrentUser();
+
+    if (this.user) {
+      this.orderPerUser = this.afs.collection('orders', ref => ref.where('userId', '==', userId));
+    } else {
+      this.orderPerUser = this.afs.collection('orders_anonymus', ref => ref.where('userId', '==', userId));
     }
-    console.log(userId);
-    this.orderPerUser = this.afs.collection('orders', ref => ref.where('userId', '==', userId));
-    this.orders = this.orderPerUser.snapshotChanges().pipe(
+    this.userOrder = this.orderPerUser.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Order;
         const key = a.payload.doc.id;
         return {key, ...data};
       }))
     );
-    return this.orders;
+    return this.userOrder;
+
   }
 
 
-  // Produkte per Order holen
+  // Produkte per Order holen  (OK)
   getProductsPerOrder(oderKey) {
-    this.productsOrderCollection = this.afs.doc(`productsPerOrder/${oderKey}`).collection('products');
+    this.user = this.userService.getCurrentUser();
+
+    if (this.user) {
+      this.productsOrderCollection = this.afs.doc(`productsPerOrder/${oderKey}`).collection('products');
+    } else {
+      this.productsOrderCollection = this.afs.doc(`productsPerOrder_anonymus/${oderKey}`).collection('products');
+    }
+
     return this.productsOrderCollection;
   }
 
-  // Bestellung abschliessen
-  completeUserOrder(order: Order) {
-    const ref = this.afs.createId();
-    this.orderCollection_completed.doc(ref).set(JSON.parse(JSON.stringify(order)));
-    return ref;
-  }
-
-  // Zuweisung automatisch generierter Key bei Abschluss
-  completeProductsPerOrder(orderId: string, userId: string, products: Array<any>) {
-    products.forEach((product) => {
-      this.productPerOrder = new ProductPerOrder();
-      this.productPerOrder.productId = product.productId;
-      this.productPerOrder.qty = product.qty;
-      this.productPerOrder.orderId = orderId;
-
-      this.afs.doc(`productsPerOrder_completed/${orderId}`).collection('products').doc(this.productPerOrder.productId).set({
-        orderId: this.afs.collection('orders').doc(orderId).ref,
-        productId: this.afs.collection('products').doc(this.productPerOrder.productId).ref,
-        qty: +this.productPerOrder.qty
-      }).catch(function (error) {
-        console.error('Error archiving document: ', error);
-      });
-
-    });
-  }
-
-
-  // Initial Order erstellen
 
   creatNewUserOrder(userId: string) {
     this.orderCollection.doc(userId).ref.get()
       .then((docSnapshot) => {
         if (!docSnapshot.exists) {
-          this.customerAddress = new CustomerAddress();
-          this.order = new Order();
-          this.order.shopOrderId = 'ShopID XXX-123';
-          this.order.orderDate = new Date();
-          this.order.status = 'pending';
-          this.order.shippingMethod = 'normal';
-          this.order.paymentMethod = 'invoice';
-          this.order.totalValue = 0;
+          this.order = this.createEmptyOrder();
           this.order.userId = userId;
-          this.order.customerAddress = this.customerAddress;
           this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(this.order)));
         }
       });
   }
 
-  // Warenkorb in Firestore speichern (userId als Key wenn Status pending )
+
+  createNewUserOrderAnonymus() {
+    const anonymusOrderId = this.afs.createId();
+    this.localStorageService.setData('anonymusOrderId', {orderId: anonymusOrderId});
+    this.order = this.createEmptyOrder();
+    this.order.userId = 'anonymus';
+    this.orderCollectionAnonymus.doc(anonymusOrderId).set(JSON.parse(JSON.stringify(this.order)));
+    return anonymusOrderId;
+  }
+
+  userOrderAnonymusExist() {
+    return !this.localStorageService.getData('anonymusOrderId');
+  }
+
+  createEmptyOrder() {
+    this.customerAddress = new CustomerAddress();
+    this.order = new Order();
+    this.order.shopOrderId = 'ShopID XXX-123';
+    this.order.orderDate = new Date();
+    this.order.status = 'pending';
+    this.order.shippingMethod = 'normal';
+    this.order.paymentMethod = 'invoice';
+    this.order.totalValue = 0;
+    this.order.customerAddress = this.customerAddress;
+    return this.order;
+  }
 
 
-  saveProductsInFS(userId: string, products: Array<ProductPerOrderLocalStorage>) {
+  // Warenkorb in Firestore speichern (OK)
+  saveProductsInFS(orderId: string, products: Array<ProductPerOrderLocalStorage>) {
+    this.user = this.userService.getCurrentUser();
+    if (this.user) {
+      this.productsOrderCollection = this.afs.doc(`productsPerOrder/${orderId}`).collection('products');
+    } else {
+      this.productsOrderCollection = this.afs.doc(`productsPerOrder_anonymus/${orderId}`).collection('products');
+    }
+
     let lineValue = 0;
     let totalValue = 0;
 
@@ -148,21 +158,17 @@ export class OrderFirestoreService {
       const productPerOrder = new ProductPerOrder();
       productPerOrder.productId = product.productId;
       productPerOrder.qty = product.qty;
-      productPerOrder.orderId = userId;
+      productPerOrder.orderId = orderId;
 
       lineValue = product.qty * product.price;
       lineValue.toFixed(2);
       totalValue += lineValue;
 
 
-      this.afs.doc(`productsPerOrder/${productPerOrder.orderId}`).collection('products').doc(productPerOrder.productId).set({
+      this.productsOrderCollection.doc(productPerOrder.productId).set({
         userId: this.afs.collection('orders').doc(productPerOrder.orderId).ref,
         productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
         qty: +productPerOrder.qty
-      }).then(function () {
-        console.log('Document successfully added!');
-
-
       }).catch(function (error) {
         console.error('Error adding document: ', error);
       });
@@ -170,10 +176,9 @@ export class OrderFirestoreService {
     });
 
     this.order = new Order();
-    this.order.key = this.user.uid;
+    this.order.key = orderId;
     this.order.totalValue = totalValue;
     this.updateOrder(this.order);
-
   }
 
   deleteProductsInFS(userId: string, productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
@@ -183,11 +188,15 @@ export class OrderFirestoreService {
   }
 
   deleteProductInFS(userId: string, productIdToDelete: string) {
+    this.user = this.userService.getCurrentUser();
+    if (this.user) {
+      this.productsPerOrderDocument = this.afs.doc(`productsPerOrder/${userId}`).collection('products').doc(productIdToDelete);
+    } else {
+      this.productsPerOrderDocument = this.afs.doc(`productsPerOrder_anonymus/${userId}`).collection('products').doc(productIdToDelete);
+    }
 
-    this.productsPerOrderDocument = this.afs.doc(`productsPerOrder/${userId}`).collection('products').doc(productIdToDelete);
-    this.productsPerOrderDocument.delete().then(function () {
-      console.log('Document successfully deleted!');
-    }).catch(function (error) {
+    this.productsPerOrderDocument.delete()
+      .catch(function (error) {
       console.error('Error removing temp document: ', error);
     });
 
@@ -230,7 +239,7 @@ export class OrderFirestoreService {
   }
 
 
-  // Artikel hinzufügen von Produktseite
+  // Artikel hinzufügen von Produktseite (OK)
   addProductToOrder(product: Product) {
     this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
     this.productsPerOrderLocalStorage.push({
@@ -246,9 +255,13 @@ export class OrderFirestoreService {
 
     this.user = this.userService.getCurrentUser();
 
-    if (this.user) {
-      this.saveProductsInFS(this.user.uid, this.productsPerOrderLocalStorage);
+    if (!this.user) {
+      if (!this.userOrderAnonymusExist()) {
+        this.orderId = this.createNewUserOrderAnonymus();
+      }
     }
+
+    this.saveProductsInFS(this.orderId, this.productsPerOrderLocalStorage);
   }
 
   updateProductQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
@@ -266,43 +279,40 @@ export class OrderFirestoreService {
 
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
-    this.user = this.userService.getCurrentUser();
-    if (this.user) {
-      this.saveProductsInFS(this.user.uid, this.productsPerOrderLocalStorageNew);
-    }
+    this.saveProductsInFS(this.user.uid, this.productsPerOrderLocalStorageNew);
 
   }
 
 
-  // einzelner Artikel aus Warenkorb löschen
   deleteProductFromOrder(productIdToDelete: string) {
     this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
     this.productsPerOrderLocalStorageNew = this.productsPerOrderLocalStorage.filter(product => product.productId !== productIdToDelete);
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
-    if (this.user) {
-      this.deleteProductInFS(this.user.uid, productIdToDelete);
-    }
+    this.deleteProductInFS(this.user.uid, productIdToDelete);
+
   }
 
 
-  // Warenkorb löschen
   clearScart(productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
-    this.user = this.userService.getCurrentUser();
-    if (this.user) {
-      this.deleteProductsInFS(this.user.uid, productsPerOrderLocalStorage);
-    }
+    this.deleteProductsInFS(this.user.uid, productsPerOrderLocalStorage);
     this.localStorageService.destroyLocalStorage('products');
   }
 
 
   updateOrder(order: Order) {
-    this.orderDoc = this.afs.doc(`orders/${order.key}`);
-    this.orderDoc.update(JSON.parse(JSON.stringify(order))).then(function () {
-      console.log('order successfully updated!');
-    }).catch(function (error) {
-      console.error('error updating document: ', error);
-    });
+    this.user = this.userService.getCurrentUser();
+
+    if (this.user) {
+      this.orderDoc = this.afs.doc(`orders/${order.key}`);
+    } else {
+      this.orderDoc = this.afs.doc(`orders_anonymus/${order.key}`);
+    }
+
+    this.orderDoc.update(JSON.parse(JSON.stringify(order)))
+      .catch(function (error) {
+        console.error('error updating document: ', error);
+      });
   }
 
   resetUserOrder(order: Order) {
@@ -316,9 +326,30 @@ export class OrderFirestoreService {
   }
 
 
-  deleteOrder(orderId: string) {
-    this.orderDoc = this.afs.doc(`orders/${orderId}`);
-    this.orderDoc.delete();
+  // Bestellung abschliessen
+  completeUserOrder(order: Order) {
+    const ref = this.afs.createId();
+    this.orderCollection_completed.doc(ref).set(JSON.parse(JSON.stringify(order)));
+    return ref;
+  }
+
+  // Zuweisung automatisch generierter Key bei Abschluss
+  completeProductsPerOrder(orderId: string, userId: string, products: Array<any>) {
+    products.forEach((product) => {
+      this.productPerOrder = new ProductPerOrder();
+      this.productPerOrder.productId = product.productId;
+      this.productPerOrder.qty = product.qty;
+      this.productPerOrder.orderId = orderId;
+
+      this.afs.doc(`productsPerOrder_completed/${orderId}`).collection('products').doc(this.productPerOrder.productId).set({
+        orderId: this.afs.collection('orders').doc(orderId).ref,
+        productId: this.afs.collection('products').doc(this.productPerOrder.productId).ref,
+        qty: +this.productPerOrder.qty
+      }).catch(function (error) {
+        console.error('Error archiving document: ', error);
+      });
+
+    });
   }
 
   // todo:
@@ -326,6 +357,5 @@ export class OrderFirestoreService {
     return 'XXX-001';
 
   }
-
 
 }

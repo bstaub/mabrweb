@@ -43,7 +43,7 @@ export class CheckoutPaymentComponent implements OnInit {
   onSubmit() {
     console.log(this.orderData);
     this.order = new Order();
-    this.order.key = this.user.uid;
+    this.order.key = this.orderId;
     this.order.shopOrderId = this.orderFirestoreService.generateShopOrderId();
     this.order.orderDate = new Date();
     this.order.status = 'done';
@@ -71,7 +71,7 @@ export class CheckoutPaymentComponent implements OnInit {
     } else {
       this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
     }
-    this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) => {
+    this.orderFirestoreService.getUserOrder(this.orderId).subscribe((res) => {
       this.orderData = res;
     });
   }

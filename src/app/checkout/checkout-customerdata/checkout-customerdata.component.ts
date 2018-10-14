@@ -48,7 +48,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
     } else {
       this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
     }
-    this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) => {
+    this.orderFirestoreService.getUserOrder(this.orderId).subscribe((res) => {
       this.orderData = res;
     });
   }
@@ -64,8 +64,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
     this.customerAddress.city = this.CustomerAddressForm.value.city;
     this.customerAddress.country = this.CustomerAddressForm.value.country;
     this.customerAddress.phone = this.CustomerAddressForm.value.phone;
-
-
+    this.customerAddress.mail = this.CustomerAddressForm.value.mail;
     this.order.customerAddress = this.customerAddress;
     this.orderFirestoreService.updateOrder(this.order);
     this.router.navigate(['/checkout/shipmentdata']);

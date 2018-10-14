@@ -39,13 +39,11 @@ export class CheckoutShipmentdataComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.ShipmentForm.value);
     this.order = new Order();
-    this.order.key = this.user.uid;
+    this.order.key = this.orderId;
     this.order.shippingMethod = this.ShipmentForm.value.shippingmethod;
     this.orderFirestoreService.updateOrder(this.order);
     this.router.navigate(['/checkout/paymentdata']);
-
   }
 
   getOrderData() {
@@ -54,7 +52,7 @@ export class CheckoutShipmentdataComponent implements OnInit {
     } else {
       this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
     }
-    this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) => {
+    this.orderFirestoreService.getUserOrder(this.orderId).subscribe((res) => {
       this.orderData = res;
     });
   }

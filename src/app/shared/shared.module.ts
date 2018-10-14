@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgPrimeModule } from './ng-prime.module';
 import { ArraySortPipe } from './pipe/array-sort.pipe';
 import { ArraySortDescPipe } from './pipe/array-sort-desc.pipe';
+import { BackButtonDirective } from './directive/back-button.directive';
+import { PageTitleComponent } from '../core/page-title/page-title.component';
 
 
 // todo: SortPip, Md2HtmlPipe, NotificationService?? hier auslagern
@@ -17,6 +19,8 @@ import { ArraySortDescPipe } from './pipe/array-sort-desc.pipe';
   declarations: [
     ArraySortPipe,
     ArraySortDescPipe,
+    BackButtonDirective,
+    PageTitleComponent,
   ],
 
   imports: [
@@ -46,6 +50,8 @@ import { ArraySortDescPipe } from './pipe/array-sort-desc.pipe';
     NgPrimeModule,
     ArraySortPipe,
     ArraySortDescPipe,
+    BackButtonDirective,
+    PageTitleComponent,
   ]
 
 })

@@ -37,8 +37,8 @@ export class UserService {
     return this.usersCollection.valueChanges();
   }
 
-  getUser(id) {
-    this.userDoc = this.afs.doc(`users/${id}`);
+  getUser(id: string) {
+    this.userDoc = this.afs.doc<User>(`users/${id}`);
     return this.userDoc.valueChanges();
   }
 

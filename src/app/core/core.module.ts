@@ -22,6 +22,7 @@ import { NgxSiemaModule } from 'ngx-siema';
 import { HomeSliderNgcarouselComponent } from './home/home-slider-ngcarousel/home-slider-ngcarousel.component';
 import { SliderService } from './shared/slider.service';
 import { OffCanvasComponent } from './home/off-canvas/off-canvas.component';
+import { PageTitleComponent } from './page-title/page-title.component';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({

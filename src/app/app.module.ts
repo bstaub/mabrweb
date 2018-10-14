@@ -26,7 +26,6 @@ import { UserModule } from './user/user.module';
     NotificationComponent,
     SortPipe,
     MdToHtmlPipe,
-
   ],
   imports: [
     BrowserModule,

@@ -70,11 +70,9 @@ export class OrderFirestoreService {
   }
 
 
-  // Anzeige der Bestelldaten (OK)
+  // Referenz auf Bestelldaten
   getUserOrder(userId) {
-
     this.user = this.userService.getCurrentUser();
-
     if (this.user) {
       this.orderPerUser = this.afs.collection('orders').doc(userId);
     } else {
@@ -91,10 +89,9 @@ export class OrderFirestoreService {
   }
 
 
-  // Produkte per Order holen  (OK)
+  // Produkte per Order holen
   getProductsPerOrder(oderKey) {
     this.user = this.userService.getCurrentUser();
-
     if (this.user) {
       this.productsOrderCollection = this.afs.doc(`productsPerOrder/${oderKey}`).collection('products');
     } else {
@@ -146,7 +143,6 @@ export class OrderFirestoreService {
 
   // Warenkorb in Firestore speichern (OK)
   saveProductsInFS(orderId: string, products: Array<ProductPerOrderLocalStorage>) {
-    console.log(orderId);
     this.user = this.userService.getCurrentUser();
     if (this.user) {
       this.productsOrderCollection = this.afs.doc(`productsPerOrder/${orderId}`).collection('products');
@@ -205,8 +201,6 @@ export class OrderFirestoreService {
       .catch(function (error) {
         console.error('Error removing temp document: ', error);
       });
-
-
   }
 
 
@@ -259,7 +253,6 @@ export class OrderFirestoreService {
 
     this.localStorageService.setData('products', this.productsPerOrderLocalStorage);
 
-    this.user = this.userService.getCurrentUser();
 
     this.user = this.userService.getCurrentUser();
     if (this.user) {
@@ -275,13 +268,6 @@ export class OrderFirestoreService {
   }
 
   updateProductQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
-    this.user = this.userService.getCurrentUser();
-    if (this.user) {
-      this.orderId = this.user.uid;
-    } else {
-      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
-    }
-
     this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
     this.productsPerOrderLocalStorageNew = this.productsPerOrderLocalStorage.filter(product => product.productId !== productPerOrderLocalStorage.productId);
     this.productsPerOrderLocalStorageUpdate = this.productsPerOrderLocalStorage.filter(product => product.productId === productPerOrderLocalStorage.productId);
@@ -296,35 +282,23 @@ export class OrderFirestoreService {
 
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
-    this.saveProductsInFS(this.orderId, this.productsPerOrderLocalStorageNew);
+    this.saveProductsInFS(this.getOrderId(), this.productsPerOrderLocalStorageNew);
 
   }
 
 
   deleteProductFromOrder(productIdToDelete: string) {
-    this.user = this.userService.getCurrentUser();
-    if (this.user) {
-      this.orderId = this.user.uid;
-    } else {
-      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
-    }
     this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
     this.productsPerOrderLocalStorageNew = this.productsPerOrderLocalStorage.filter(product => product.productId !== productIdToDelete);
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
-    this.deleteProductInFS(this.orderId , productIdToDelete);
+    this.deleteProductInFS(this.getOrderId(), productIdToDelete);
 
   }
 
 
   clearScart(productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
-    this.user = this.userService.getCurrentUser();
-    if (this.user) {
-      this.orderId = this.user.uid;
-    } else {
-      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
-    }
-    this.deleteProductsInFS(this.orderId , productsPerOrderLocalStorage);
+    this.deleteProductsInFS(this.getOrderId(), productsPerOrderLocalStorage);
     this.localStorageService.destroyLocalStorage('products');
   }
 
@@ -394,6 +368,15 @@ export class OrderFirestoreService {
   generateShopOrderId(): string {
     return 'XXX-001';
 
+  }
+
+  getOrderId() {
+    this.user = this.userService.getCurrentUser();
+    if (this.user) {
+      return this.user.uid;
+    } else {
+      return this.localStorageService.getData('anonymusOrderId').orderId;
+    }
   }
 
 }

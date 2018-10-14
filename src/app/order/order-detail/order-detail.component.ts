@@ -50,17 +50,17 @@ export class OrderDetailComponent implements OnInit {
   getProducts() {
 
     if (this.user) {
-      this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) => {
-        this.order = res[0];
-      });
+      this.orderId = this.user.uid;
+    } else {
+      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
     }
 
+    this.orderFirestoreService.getUserOrder(this.orderId).subscribe((res) => {
+      this.order = res;
+    });
     this.productPerOrderLocalStorage = this.localStorageService.getData('products');
 
-
   }
-
-
 
 
   onEnterOrderData() {
@@ -84,7 +84,6 @@ export class OrderDetailComponent implements OnInit {
       if (product.productId === productId) {
         sourceArray.splice(index, 1);
       }
-
     });
     this.orderFirestoreService.deleteProductFromOrder(productId);
     this.calculateTotalSum();

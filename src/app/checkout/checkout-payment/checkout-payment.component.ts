@@ -17,6 +17,7 @@ export class CheckoutPaymentComponent implements OnInit {
   PaymentForm: FormGroup;
   user: any;
   orderData: any;
+  orderId: string;
   order: Order;
   closingOrderId: string;
 
@@ -65,8 +66,13 @@ export class CheckoutPaymentComponent implements OnInit {
 
 
   getOrderData() {
+    if (this.user) {
+      this.orderId = this.user.uid;
+    } else {
+      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
+    }
     this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) => {
-      this.orderData = res[0];
+      this.orderData = res;
     });
   }
 

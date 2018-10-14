@@ -4,6 +4,7 @@ import { UserService } from '../../user/shared/user.service';
 import { Router } from '@angular/router';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 import { Order } from '../../models/order.model';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 
 @Component({
@@ -15,12 +16,14 @@ export class CheckoutShipmentdataComponent implements OnInit {
   ShipmentForm: FormGroup;
   user: any;
   orderData: any;
+  orderId: string;
   order: Order;
 
 
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
-              private router: Router
+              private router: Router,
+              private localStorageService: LocalStorageService,
   ) {
   }
 
@@ -46,6 +49,11 @@ export class CheckoutShipmentdataComponent implements OnInit {
   }
 
   getOrderData() {
+    if (this.user) {
+      this.orderId = this.user.uid;
+    } else {
+      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
+    }
     this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) => {
       this.orderData = res;
     });

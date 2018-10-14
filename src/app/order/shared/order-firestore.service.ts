@@ -17,11 +17,14 @@ import { CustomerAddress } from '../../models/customerAddress.model';
 export class OrderFirestoreService {
 
   userOrder: Observable<Order[]>;
+  userOrderDoc: Observable<Order>;
   products: Observable<any[]>;
 
-  orderPerUser: AngularFirestoreCollection<Order>;
+  orderPerUser: AngularFirestoreDocument<Order>;
   orderCollection: AngularFirestoreCollection<Order>;
   orderCollectionAnonymus: AngularFirestoreCollection<Order>;
+  orderCollectionVar: AngularFirestoreCollection<Order>;
+
   orderCollection_completed: AngularFirestoreCollection<Order>;
   orderCollection_completedAnonymus: AngularFirestoreCollection<Order>;
 
@@ -73,18 +76,17 @@ export class OrderFirestoreService {
     this.user = this.userService.getCurrentUser();
 
     if (this.user) {
-      this.orderPerUser = this.afs.collection('orders', ref => ref.where('userId', '==', userId));
+      this.orderPerUser = this.afs.collection('orders').doc(userId);
     } else {
-      this.orderPerUser = this.afs.collection('orders_anonymus', ref => ref.where('userId', '==', userId));
+      this.orderPerUser = this.afs.collection('orders_anonymus').doc(userId);
     }
-    this.userOrder = this.orderPerUser.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Order;
-        const key = a.payload.doc.id;
+    this.userOrderDoc = this.orderPerUser.snapshotChanges().pipe(
+      map(res => {
+        const data = res.payload.data() as Order;
+        const key = res.payload.id;
         return {key, ...data};
-      }))
-    );
-    return this.userOrder;
+      }));
+    return this.userOrderDoc;
 
   }
 
@@ -125,7 +127,7 @@ export class OrderFirestoreService {
   }
 
   userOrderAnonymusExist() {
-    return !this.localStorageService.getData('anonymusOrderId');
+    return this.localStorageService.getData('anonymusOrderId').orderId;
   }
 
   createEmptyOrder() {
@@ -144,11 +146,14 @@ export class OrderFirestoreService {
 
   // Warenkorb in Firestore speichern (OK)
   saveProductsInFS(orderId: string, products: Array<ProductPerOrderLocalStorage>) {
+    console.log(orderId);
     this.user = this.userService.getCurrentUser();
     if (this.user) {
       this.productsOrderCollection = this.afs.doc(`productsPerOrder/${orderId}`).collection('products');
+      this.orderCollectionVar = this.orderCollection;
     } else {
       this.productsOrderCollection = this.afs.doc(`productsPerOrder_anonymus/${orderId}`).collection('products');
+      this.orderCollectionVar = this.orderCollectionAnonymus;
     }
 
     let lineValue = 0;
@@ -166,7 +171,7 @@ export class OrderFirestoreService {
 
 
       this.productsOrderCollection.doc(productPerOrder.productId).set({
-        userId: this.afs.collection('orders').doc(productPerOrder.orderId).ref,
+        // userId: this.orderCollectionVar.doc(productPerOrder.orderId).ref,
         productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
         qty: +productPerOrder.qty
       }).catch(function (error) {
@@ -179,6 +184,7 @@ export class OrderFirestoreService {
     this.order.key = orderId;
     this.order.totalValue = totalValue;
     this.updateOrder(this.order);
+
   }
 
   deleteProductsInFS(userId: string, productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
@@ -197,8 +203,8 @@ export class OrderFirestoreService {
 
     this.productsPerOrderDocument.delete()
       .catch(function (error) {
-      console.error('Error removing temp document: ', error);
-    });
+        console.error('Error removing temp document: ', error);
+      });
 
 
   }
@@ -255,16 +261,27 @@ export class OrderFirestoreService {
 
     this.user = this.userService.getCurrentUser();
 
-    if (!this.user) {
+    this.user = this.userService.getCurrentUser();
+    if (this.user) {
+      this.orderId = this.user.uid;
+    } else {
       if (!this.userOrderAnonymusExist()) {
-        this.orderId = this.createNewUserOrderAnonymus();
+        console.log('ordercreated');
+        this.createNewUserOrderAnonymus();
       }
+      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
     }
-
     this.saveProductsInFS(this.orderId, this.productsPerOrderLocalStorage);
   }
 
   updateProductQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
+    this.user = this.userService.getCurrentUser();
+    if (this.user) {
+      this.orderId = this.user.uid;
+    } else {
+      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
+    }
+
     this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
     this.productsPerOrderLocalStorageNew = this.productsPerOrderLocalStorage.filter(product => product.productId !== productPerOrderLocalStorage.productId);
     this.productsPerOrderLocalStorageUpdate = this.productsPerOrderLocalStorage.filter(product => product.productId === productPerOrderLocalStorage.productId);
@@ -279,17 +296,23 @@ export class OrderFirestoreService {
 
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
-    this.saveProductsInFS(this.user.uid, this.productsPerOrderLocalStorageNew);
+    this.saveProductsInFS(this.orderId, this.productsPerOrderLocalStorageNew);
 
   }
 
 
   deleteProductFromOrder(productIdToDelete: string) {
+    this.user = this.userService.getCurrentUser();
+    if (this.user) {
+      this.orderId = this.user.uid;
+    } else {
+      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
+    }
     this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
     this.productsPerOrderLocalStorageNew = this.productsPerOrderLocalStorage.filter(product => product.productId !== productIdToDelete);
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
-    this.deleteProductInFS(this.user.uid, productIdToDelete);
+    this.deleteProductInFS(this.orderId , productIdToDelete);
 
   }
 

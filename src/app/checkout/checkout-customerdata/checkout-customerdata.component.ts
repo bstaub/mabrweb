@@ -5,6 +5,7 @@ import { UserService } from '../../user/shared/user.service';
 import { Order } from '../../models/order.model';
 import { CustomerAddress } from '../../models/customerAddress.model';
 import { Router } from '@angular/router';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 @Component({
   selector: 'app-checkout-enterdata',
@@ -19,12 +20,14 @@ export class CheckoutCustomerdataComponent implements OnInit {
   CustomerAddressForm: FormGroup;
   user: any;
   orderData: any;
+  orderId: string;
   order: Order;
   customerAddress: CustomerAddress;
 
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
               private router: Router,
+              private localStorageService: LocalStorageService,
   ) {
   }
 
@@ -40,6 +43,11 @@ export class CheckoutCustomerdataComponent implements OnInit {
   }
 
   getOrderData() {
+    if (this.user) {
+      this.orderId = this.user.uid;
+    } else {
+      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
+    }
     this.orderFirestoreService.getUserOrder(this.user.uid).subscribe((res) => {
       this.orderData = res;
     });
@@ -47,7 +55,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
   onSubmit() {
     this.order = new Order();
-    this.order.key = this.user.uid;
+    this.order.key = this.orderId;
     this.customerAddress = new CustomerAddress();
     this.customerAddress.firstname = this.CustomerAddressForm.value.firstname;
     this.customerAddress.lastname = this.CustomerAddressForm.value.lastname;
@@ -55,7 +63,6 @@ export class CheckoutCustomerdataComponent implements OnInit {
     this.customerAddress.zip = this.CustomerAddressForm.value.zip;
     this.customerAddress.city = this.CustomerAddressForm.value.city;
     this.customerAddress.country = this.CustomerAddressForm.value.country;
-    this.customerAddress.mail = this.CustomerAddressForm.value.mail;
     this.customerAddress.phone = this.CustomerAddressForm.value.phone;
 
 

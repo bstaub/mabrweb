@@ -5,7 +5,7 @@ import { UserService } from '../../user/shared/user.service';
 import { Order } from '../../models/order.model';
 import { CustomerAddress } from '../../models/customerAddress.model';
 import { Router } from '@angular/router';
-import { LocalStorageService } from '../../shared/local-storage.service';
+
 
 @Component({
   selector: 'app-checkout-enterdata',
@@ -27,7 +27,6 @@ export class CheckoutCustomerdataComponent implements OnInit {
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
               private router: Router,
-              private localStorageService: LocalStorageService,
   ) {
   }
 
@@ -43,19 +42,14 @@ export class CheckoutCustomerdataComponent implements OnInit {
   }
 
   getOrderData() {
-    if (this.user) {
-      this.orderId = this.user.uid;
-    } else {
-      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
-    }
-    this.orderFirestoreService.getUserOrder(this.orderId).subscribe((res) => {
+    this.orderFirestoreService.getUserOrder(this.orderFirestoreService.getOrderId()).subscribe((res) => {
       this.orderData = res;
     });
   }
 
   onSubmit() {
     this.order = new Order();
-    this.order.key = this.orderId;
+    this.order.key = this.orderFirestoreService.getOrderId();
     this.customerAddress = new CustomerAddress();
     this.customerAddress.firstname = this.CustomerAddressForm.value.firstname;
     this.customerAddress.lastname = this.CustomerAddressForm.value.lastname;

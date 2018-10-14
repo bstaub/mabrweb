@@ -41,9 +41,8 @@ export class CheckoutPaymentComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.orderData);
     this.order = new Order();
-    this.order.key = this.orderId;
+    this.order.key = this.orderFirestoreService.getOrderId();
     this.order.shopOrderId = this.orderFirestoreService.generateShopOrderId();
     this.order.orderDate = new Date();
     this.order.status = 'done';
@@ -52,7 +51,6 @@ export class CheckoutPaymentComponent implements OnInit {
     this.order.customerAddress = this.orderData.customerAddress;
     this.order.shippingMethod = this.orderData.shippingMethod;
     this.order.paymentMethod = this.PaymentForm.value.paymentmethod;
-    console.log(this.order);
     this.orderFirestoreService.updateOrder(this.order);
 
     this.closingOrderId = this.orderFirestoreService.completeUserOrder(this.order);
@@ -73,12 +71,7 @@ export class CheckoutPaymentComponent implements OnInit {
 
 
   getOrderData() {
-    if (this.user) {
-      this.orderId = this.user.uid;
-    } else {
-      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
-    }
-    this.orderFirestoreService.getUserOrder(this.orderId).subscribe((res) => {
+    this.orderFirestoreService.getUserOrder(this.orderFirestoreService.getOrderId()).subscribe((res) => {
       this.orderData = res;
     });
   }

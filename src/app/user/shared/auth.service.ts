@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { User } from '../../models/user';
-
 import { UserService } from './user.service';
 import { NotificationService } from '../../shared/notification.service';
-
 import * as firebase from 'firebase/app';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -15,8 +12,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable()
 export class AuthService {
-  private user: Observable<firebase.User>;
-  private userDetails: firebase.User = null;
+  // private user: Observable<firebase.User>;
   user$: Observable<any>;
 
   constructor(
@@ -76,7 +72,7 @@ export class AuthService {
           },
           registrationDate: new Date(),
         };
-        this.userService.setUserToLocalStorage(user);
+        // this.userService.setUserToLocalStorage(user);
         this.userService.setUser(user)
           .then(() => {
             this.afAuth.auth.signOut();  // erst wenn der Benutzer erfasst wird aus Firebase ausloggen!
@@ -108,7 +104,6 @@ export class AuthService {
     this.afAuth.auth.sendPasswordResetEmail(email, actionCodeSettings)
       .then(data => {
         console.log('Passwort Reset Mail send Successful');
-        console.log(data);
         this.notifier.display('success', 'Das Passwort Reset Mail wurde erfolgreich verschickt');
 
         setTimeout(() => {

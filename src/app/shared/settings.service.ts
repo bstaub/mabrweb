@@ -8,6 +8,8 @@ export class SettingsService {
   settings: Settings = {
     allowRegistration: true,
     allowAdministration: true,
+    orderRegister: false,
+    orderLogin: false,
   }
   constructor() {
     if (localStorage.getItem('settings') != null) {

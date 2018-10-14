@@ -318,7 +318,13 @@ export class OrderFirestoreService {
 
 
   clearScart(productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
-    this.deleteProductsInFS(this.user.uid, productsPerOrderLocalStorage);
+    this.user = this.userService.getCurrentUser();
+    if (this.user) {
+      this.orderId = this.user.uid;
+    } else {
+      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
+    }
+    this.deleteProductsInFS(this.orderId , productsPerOrderLocalStorage);
     this.localStorageService.destroyLocalStorage('products');
   }
 
@@ -348,6 +354,15 @@ export class OrderFirestoreService {
     });
   }
 
+  deleteOrderAnonymus(order: Order) {
+    this.orderDoc = this.afs.doc(`orders_anonymus/${order.key}`);
+    this.orderDoc.delete()
+      .catch(function (error) {
+        console.error('Error removing anonymus order: ', error);
+      });
+
+  }
+
 
   // Bestellung abschliessen
   completeUserOrder(order: Order) {
@@ -357,7 +372,7 @@ export class OrderFirestoreService {
   }
 
   // Zuweisung automatisch generierter Key bei Abschluss
-  completeProductsPerOrder(orderId: string, userId: string, products: Array<any>) {
+  completeProductsPerOrder(orderId: string, products: Array<any>) {
     products.forEach((product) => {
       this.productPerOrder = new ProductPerOrder();
       this.productPerOrder.productId = product.productId;

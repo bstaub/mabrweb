@@ -56,9 +56,16 @@ export class CheckoutPaymentComponent implements OnInit {
     this.orderFirestoreService.updateOrder(this.order);
 
     this.closingOrderId = this.orderFirestoreService.completeUserOrder(this.order);
-    this.orderFirestoreService.completeProductsPerOrder(this.closingOrderId, this.user.uid, this.localStorageService.getData('products'));
-    this.orderFirestoreService.resetUserOrder(this.order);
-    this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
+    this.orderFirestoreService.completeProductsPerOrder(this.closingOrderId, this.localStorageService.getData('products'));
+
+    if (this.user) {
+      this.orderFirestoreService.resetUserOrder(this.order);
+      this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
+    } else {
+      this.orderFirestoreService.deleteOrderAnonymus(this.order);
+      this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
+      this.localStorageService.destroyLocalStorage('anonymusOrderId');
+    }
 
 
     this.router.navigate(['/checkout/thx']);

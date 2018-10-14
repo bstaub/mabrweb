@@ -67,7 +67,7 @@ export class OrderDetailComponent implements OnInit {
     if (this.user) {
       this.router.navigate(['/checkout']);
     } else {
-      alert('Under Construction - Bitte loggen Sie sich ein...');
+      this.router.navigate(['/checkout/login']);
     }
   }
 

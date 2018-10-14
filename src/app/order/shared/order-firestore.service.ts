@@ -64,13 +64,10 @@ export class OrderFirestoreService {
         return {key, ...data};
       }))
     );
-
-
     this.user = this.userService.getCurrentUser();
   }
 
 
-  // Referenz auf Bestelldaten
   getUserOrder(userId) {
     this.user = this.userService.getCurrentUser();
     if (this.user) {
@@ -85,11 +82,9 @@ export class OrderFirestoreService {
         return {key, ...data};
       }));
     return this.userOrderDoc;
-
   }
 
 
-  // Produkte per Order holen
   getProductsPerOrder(oderKey) {
     this.user = this.userService.getCurrentUser();
     if (this.user) {
@@ -97,7 +92,6 @@ export class OrderFirestoreService {
     } else {
       this.productsOrderCollection = this.afs.doc(`productsPerOrder_anonymus/${oderKey}`).collection('products');
     }
-
     return this.productsOrderCollection;
   }
 
@@ -112,7 +106,6 @@ export class OrderFirestoreService {
         }
       });
   }
-
 
   createNewUserOrderAnonymus() {
     const anonymusOrderId = this.afs.createId();
@@ -141,7 +134,6 @@ export class OrderFirestoreService {
   }
 
 
-  // Warenkorb in Firestore speichern (OK)
   saveProductsInFS(orderId: string, products: Array<ProductPerOrderLocalStorage>) {
     this.user = this.userService.getCurrentUser();
     if (this.user) {
@@ -165,7 +157,6 @@ export class OrderFirestoreService {
       lineValue.toFixed(2);
       totalValue += lineValue;
 
-
       this.productsOrderCollection.doc(productPerOrder.productId).set({
         // userId: this.orderCollectionVar.doc(productPerOrder.orderId).ref,
         productId: this.afs.collection('products').doc(productPerOrder.productId).ref,
@@ -180,7 +171,6 @@ export class OrderFirestoreService {
     this.order.key = orderId;
     this.order.totalValue = totalValue;
     this.updateOrder(this.order);
-
   }
 
   deleteProductsInFS(userId: string, productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
@@ -196,7 +186,6 @@ export class OrderFirestoreService {
     } else {
       this.productsPerOrderDocument = this.afs.doc(`productsPerOrder_anonymus/${userId}`).collection('products').doc(productIdToDelete);
     }
-
     this.productsPerOrderDocument.delete()
       .catch(function (error) {
         console.error('Error removing temp document: ', error);
@@ -204,9 +193,7 @@ export class OrderFirestoreService {
   }
 
 
-  // Warenkorb von Firestore in LocalStorage speichern
   loadProducts(userId: string) {
-
     this.localStorageService.destroyLocalStorage('products');
     this.getProductsPerOrder(userId).ref.get().then((res) => {
       res.forEach(doc => {
@@ -234,25 +221,18 @@ export class OrderFirestoreService {
       });
     })
       .catch(err => console.error(err));
-
-
   }
 
 
-  // Artikel hinzufügen von Produktseite (OK)
   addProductToOrder(product: Product) {
-    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
-    this.productsPerOrderLocalStorage.push({
-      productId: product.key,
-      qty: Number(product.itemcount),
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      image: product.image
-    });
-
-    this.localStorageService.setData('products', this.productsPerOrderLocalStorage);
-
+    if (this.productExistInScart(product)) {
+      this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+      this.productsPerOrderLocalStorageUpdate = this.productsPerOrderLocalStorage.filter(productExist => productExist.productId === product.key);
+      this.productsPerOrderLocalStorageUpdate[0].qty += Number(product.itemcount);
+      this.updateProductQty(this.productsPerOrderLocalStorageUpdate[0]);
+    } else {
+      this.pushProductToLocalStorage(product);
+    }
 
     this.user = this.userService.getCurrentUser();
     if (this.user) {
@@ -265,6 +245,25 @@ export class OrderFirestoreService {
       this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
     }
     this.saveProductsInFS(this.orderId, this.productsPerOrderLocalStorage);
+  }
+
+  pushProductToLocalStorage(product: Product) {
+    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.productsPerOrderLocalStorage.push({
+      productId: product.key,
+      qty: Number(product.itemcount),
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      image: product.image
+    });
+    this.localStorageService.setData('products', this.productsPerOrderLocalStorage);
+  }
+
+  productExistInScart(product: Product) {
+    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.productsPerOrderLocalStorageNew = this.productsPerOrderLocalStorage.filter(productExist => productExist.productId === product.key);
+    return !!this.productsPerOrderLocalStorageNew[0];
   }
 
   updateProductQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
@@ -283,9 +282,7 @@ export class OrderFirestoreService {
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
     this.saveProductsInFS(this.getOrderId(), this.productsPerOrderLocalStorageNew);
-
   }
-
 
   deleteProductFromOrder(productIdToDelete: string) {
     this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
@@ -293,9 +290,7 @@ export class OrderFirestoreService {
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
     this.deleteProductInFS(this.getOrderId(), productIdToDelete);
-
   }
-
 
   clearScart(productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
     this.deleteProductsInFS(this.getOrderId(), productsPerOrderLocalStorage);
@@ -334,18 +329,14 @@ export class OrderFirestoreService {
       .catch(function (error) {
         console.error('Error removing anonymus order: ', error);
       });
-
   }
 
-
-  // Bestellung abschliessen
   completeUserOrder(order: Order) {
     const ref = this.afs.createId();
     this.orderCollection_completed.doc(ref).set(JSON.parse(JSON.stringify(order)));
     return ref;
   }
 
-  // Zuweisung automatisch generierter Key bei Abschluss
   completeProductsPerOrder(orderId: string, products: Array<any>) {
     products.forEach((product) => {
       this.productPerOrder = new ProductPerOrder();
@@ -360,7 +351,6 @@ export class OrderFirestoreService {
       }).catch(function (error) {
         console.error('Error archiving document: ', error);
       });
-
     });
   }
 

@@ -78,7 +78,22 @@ export class CheckoutPaymentComponent implements OnInit {
 
   initPaymentFormGroup() {
     this.PaymentForm = new FormGroup({
-      paymentmethod: new FormControl()
+      paymentMethod: new FormControl()
+
+    });
+
+    setTimeout(() => {
+
+      if (this.orderData) {
+        this.setOrderData();
+      }
+    }, 1300);
+
+  }
+
+  setOrderData() {
+    this.PaymentForm.patchValue({
+      paymentMethod: this.orderData.paymentMethod
 
     });
 

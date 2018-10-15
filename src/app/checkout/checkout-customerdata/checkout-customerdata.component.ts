@@ -66,11 +66,11 @@ export class CheckoutCustomerdataComponent implements OnInit {
   }
 
 
-  private initCustomerAddressFormGroup() {
+  initCustomerAddressFormGroup() {
 
     this.CustomerAddressForm = new FormGroup({
       firstname: new FormControl(null, Validators.required),
-      lasttname: new FormControl(null, Validators.required),
+      lastname: new FormControl(null, Validators.required),
       addresss: new FormControl(null, Validators.required),
       zip: new FormControl(null, Validators.required),
       city: new FormControl(null, Validators.required),
@@ -81,5 +81,27 @@ export class CheckoutCustomerdataComponent implements OnInit {
       ]),
       phone: new FormControl(null)
     });
+
+    setTimeout(() => {
+
+      if (this.orderData) {
+        this.setOrderData();
+      }
+    }, 1300);
+
   }
+
+  setOrderData() {
+    this.CustomerAddressForm.patchValue({
+      firstname: this.orderData.customerAddress.firstname,
+      lastname: this.orderData.customerAddress.lastname,
+      addresss: this.orderData.customerAddress.addresss,
+      zip: this.orderData.customerAddress.zip,
+      city: this.orderData.customerAddress.city,
+      country: this.orderData.customerAddress.country
+    });
+
+  }
+
+
 }

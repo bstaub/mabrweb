@@ -34,7 +34,6 @@ export class OrderDetailComponent implements OnInit {
 
   }
 
-
   ngOnInit() {
 
     setTimeout(() => {
@@ -43,12 +42,9 @@ export class OrderDetailComponent implements OnInit {
       this.getProducts();
     }, 1000);
 
-
   }
 
-
   getProducts() {
-
     if (this.user) {
       this.orderId = this.user.uid;
     } else {
@@ -59,7 +55,6 @@ export class OrderDetailComponent implements OnInit {
       this.order = res;
     });
     this.productPerOrderLocalStorage = this.localStorageService.getData('products');
-
   }
 
 
@@ -79,7 +74,6 @@ export class OrderDetailComponent implements OnInit {
   }
 
   onDeletItem(productId: string) {
-
     this.productPerOrderLocalStorage.forEach((product, index, sourceArray) => {
       if (product.productId === productId) {
         sourceArray.splice(index, 1);
@@ -87,7 +81,6 @@ export class OrderDetailComponent implements OnInit {
     });
     this.orderFirestoreService.deleteProductFromOrder(productId);
     this.calculateTotalSum();
-
   }
 
   onDecreaseQty(productPerOrderLocalStorage: ProductPerOrderLocalStorage) {
@@ -120,8 +113,4 @@ export class OrderDetailComponent implements OnInit {
     this.order.totalValue = totalValue;
     this.orderFirestoreService.updateOrder(this.order);
   }
-
-
-
-
 }

@@ -40,7 +40,7 @@ export class CheckoutShipmentdataComponent implements OnInit {
   onSubmit() {
     this.order = new Order();
     this.order.key = this.orderFirestoreService.getOrderId();
-    this.order.shippingMethod = this.ShipmentForm.value.shippingmethod;
+    this.order.shippingMethod = this.ShipmentForm.value.shippingMethod;
     this.orderFirestoreService.updateOrder(this.order);
     this.router.navigate(['/checkout/paymentdata']);
   }
@@ -53,10 +53,25 @@ export class CheckoutShipmentdataComponent implements OnInit {
 
   initShipmentFormGroup() {
     this.ShipmentForm = new FormGroup({
-      shippingmethod: new FormControl()
+      shippingMethod: new FormControl()
 
     });
 
+    setTimeout(() => {
+
+      if (this.orderData) {
+        this.setOrderData();
+      }
+    }, 1300);
+
+
+  }
+
+  setOrderData() {
+    this.ShipmentForm.patchValue({
+      shippingMethod: this.orderData.shippingMethod
+
+    });
 
   }
 

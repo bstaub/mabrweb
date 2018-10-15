@@ -17,9 +17,9 @@
     <div class="row">
       <div class="col-md-8 offset-2">
         <div class="form-group">
-          <label for="lasttname">Last Name</label>
-          <input class="form-control" type="text" id="lasttname" name="lasttname" formControlName="lasttname">
-          <div class="form-control-feedback" *ngIf="(!CustomerAddressForm.get('lasttname').valid) && (CustomerAddressForm.get('lasttname').touched)">Please enter your lasttname!</div>
+          <label for="lastname">Last Name</label>
+          <input class="form-control" type="text" id="lastname" name="lastname" formControlName="lastname">
+          <div class="form-control-feedback" *ngIf="(!CustomerAddressForm.get('lastname').valid) && (CustomerAddressForm.get('lastname').touched)">Please enter your lasttname!</div>
 
         </div>
       </div>
@@ -28,8 +28,8 @@
     <div class="row">
       <div class="col-md-8 offset-2">
         <div class="form-group">
-          <label for="addresss">Address</label>
-          <input class="form-control" type="text" id="addresss" name="addresss" formControlName="addresss">
+          <label for="address">Address</label>
+          <input class="form-control" type="text" id="address" name="address" formControlName="address">
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div *ngIf="!user"  class="row">
       <div class="col-md-8 offset-2">
         <div class="form-group">
           <label for="mail">Mail</label>

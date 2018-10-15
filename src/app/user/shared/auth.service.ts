@@ -25,23 +25,23 @@ export class AuthService {
     this.user$ = afAuth.authState
       .pipe(
         switchMap((auth) => {
-        if (auth) {
-          // debugger;
-          return this.afs.doc(`users/${auth.uid}`).valueChanges()
-            .pipe(
-              map( user => {
-               return {
-                 ...user,
-                 uid: auth.uid,
-                 emailVerified: auth.emailVerified
-               };
-              }),
-              // tap( x => console.log(x))
-            );
-        } else {
-          return of(null);
-        }
-    }));
+          if (auth) {
+            // debugger;
+            return this.afs.doc(`users/${auth.uid}`).valueChanges()
+              .pipe(
+                map( user => {
+                  return {
+                    ...user,
+                    uid: auth.uid,
+                    emailVerified: auth.emailVerified
+                  };
+                }),
+                // tap( x => console.log(x))
+              );
+          } else {
+            return of(null);
+          }
+        }));
   }
 
   // 1. Register
@@ -49,7 +49,48 @@ export class AuthService {
     console.log('vor createUserInFirebaseAuthList->' + email + ' / ' + password);
 
     const actionCodeSettings = {
-      url: 'http://localhost:4200/login',
+      url: 'http://localhost:4200/user-login-register-slide?orderstep=1&login=1',
+      handleCodeInApp: true
+    };
+
+    this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then(userData => {
+        console.log(userData);
+        userData.user.sendEmailVerification(actionCodeSettings);
+
+        const message = `Eine Verification EMail wurde an ${email} geschickt. Bitte prüfen Sie Ihr Posteingang und bestätigen Sie die Registrationsprüfung.`;
+        this.notifier.display('success', message);
+
+        const user: User = {
+          id: userData.user.uid,
+          username: username,
+          email: email,
+          anonymous: userData.user.isAnonymous,
+          roles: {
+            authuser: true,
+            admin: false
+          },
+          registrationDate: new Date(),
+        };
+        // this.userService.setUserToLocalStorage(user);
+        this.userService.setUser(user)
+          .then(() => {
+            this.afAuth.auth.signOut();  // erst wenn der Benutzer erfasst wird aus Firebase ausloggen!
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(error => {
+        console.log(error);
+        this.notifier.display('error', error.message);
+      });
+  }
+
+  // 1. Register for Order
+  createUserInFirebaseAuthListEmailVerifiedOrder(email, password, username) {
+    console.log('vor createUserInFirebaseAuthList Order->' + email + ' / ' + password);
+
+    const actionCodeSettings = {
+      url: 'http://localhost:4200/user-login-register-slide?orderstep=1&login=1',
       handleCodeInApp: true
     };
 

@@ -22,7 +22,6 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
               private activeRoute: ActivatedRoute,
               private notifier: NotificationService,
               private orderFirestoreService: OrderFirestoreService,
-              private settingsService: SettingsService,
   ) {
   }
 
@@ -34,15 +33,6 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
     if (this.queryParams.register === '1') {
       this.clickToggle();
     }
-    if (this.queryParams.orderstep === '1' && this.queryParams.register === '1') {
-      this.settingsService.changeSettings({orderRegister: true});
-    } else if (this.queryParams.orderstep === '1' && this.queryParams.login === '1') {
-      this.settingsService.changeSettings({orderLogin: true});
-    } else {
-      this.settingsService.changeSettings({orderRegister: false});
-      this.settingsService.changeSettings({orderLogin: false});
-    }
-
   }
 
   ngOnChanges() {
@@ -71,9 +61,9 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
             this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
             this.orderFirestoreService.loadProducts(userData.user.uid);
 
-            if (this.settingsService.getSettings().orderLogin) {
+            if (this.queryParams.orderstep === '1' && this.queryParams.login === '1') {
               // this.settingsService.changeSettings({orderLogin: false});
-              this.router.navigateByUrl('checkout/login');
+              this.router.navigateByUrl('checkout/customerdata');
             } else {
               this.router.navigateByUrl('');  // Default Login geht zur Homepage!
             }
@@ -94,7 +84,12 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
 
 
   onSubmitRegister(form: NgForm) {
+    if (this.queryParams.orderstep === '1' && this.queryParams.register === '1') {
+      this.authService.createUserInFirebaseAuthListEmailVerifiedOrder(form.value.email, form.value.password, form.value.fullname);
+    } else {
       this.authService.createUserInFirebaseAuthListEmailVerified(form.value.email, form.value.password, form.value.fullname);
+    }
+
   }
 
 

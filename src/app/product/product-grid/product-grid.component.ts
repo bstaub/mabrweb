@@ -20,6 +20,11 @@ export class ProductGridComponent implements OnInit {
   selectedProduct: string; // just for show Product Category in Template
   selectedSort: string;
 
+  // einfach Produkte nachladen start
+  limit = 5;
+  next = 5;
+  // einfach Produkte nachladen end
+
   constructor(private productService: ProductService,
               private productFireStoreService: ProductFirestoreService,
               private productCategory: ProductCategoryService,

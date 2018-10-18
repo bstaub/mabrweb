@@ -1,20 +1,97 @@
-<div class="container">
-  <h1>Demo-Shop Homepage (prove of concept)</h1>
-  <ul>
-    <h2>Working</h2>
-    <li>products crud, grid (BS)</li>
-    <li>auth-guard security (BS)</li>
-    <li>order (MP)</li>
+<div class="container-fluid">
 
-    <h2>Done</h2>
-    <li>registration process (BS)</li>
-    <li>crud cloud firestore and realtime (MP)</li>
-    <li>dummy fixture script (MP)</li>
+  <app-home-slider-ngcarousel></app-home-slider-ngcarousel>
 
-    <h2>Testing</h2>
-    <li>HTML Filter / Pipes (BS)</li>
-  </ul>
+  <div class="container mt-5">
+    <div class="card-deck mb-3 text-center">
+      <div *ngIf="(productsDiscounts$ | async | arraySort: 'price') as discount" class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <!--<h4 class="my-0 font-weight-normal">Aktionen ({{100 - (rabattFactorDiscount * 100)}} % Rabatt)</h4>-->
+          <h4 class="my-0 font-weight-normal">Aktionen</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4" >
+            <li *ngFor="let item of discount">
+              <div class="row">
+                <div class="col-6 col-sm-12 col-md-6">
+                  <a routerLink="/produkte/detail/{{item.key}}">
+                    <img class="img-fluid" src="{{item.image}}" alt="{{item.name}}">
+                  </a>
+                </div>
+                <div class="col-6 col-sm-12 col-md-6">
+                  <a routerLink="/produkte/detail/{{item.key}}">
+                    <p>{{item.name}}</p>
+                  </a>
+                  <p style="text-decoration:line-through;">CHF {{item.price}}</p>
+                  <p>CHF {{item.price * rabattFactorDiscount | number}}</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div *ngIf="(productsNew$ | async | arraySortDesc: 'createdDate') as np" class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">Neue Produkte</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4" >
+            <li *ngFor="let item of np">
+              <div class="row">
+                <div class="col-6 col-sm-12 col-md-6">
+                  <a routerLink="/produkte/detail/{{item.key}}">
+                   <img class="img-fluid" src="{{item.image}}" alt="{{item.name}}">
+                  </a>
+                </div>
+                <div class="col-6 col-sm-12 col-md-6">
+                  <a routerLink="/produkte/detail/{{item.key}}">
+                    <p>{{item.name}}</p>
+                  </a>
+                  <p style="text-decoration:line-through;">CHF {{item.price}}</p>
+                  <p>CHF {{item.price * rabattFactorNew | number}}</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div *ngIf="(productsBestRated$ | async | arraySortDesc: 'bestRatedNumber') as best" class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">Best Rated</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <ul class="list-unstyled mt-3 mb-4" >
+              <li *ngFor="let item of best">
+                <div class="row">
+                  <div class="col-6 col-sm-12 col-md-6">
+                    <a routerLink="/produkte/detail/{{item.key}}">
+                     <img class="img-fluid" src="{{item.image}}" alt="{{item.name}}">
+                    </a>
+                  </div>
+                  <div class="col-6 col-sm-12 col-md-6">
+                    <a routerLink="/produkte/detail/{{item.key}}">
+                     <p>{{item.name}}</p>
+                    </a>
+                    <p style="text-decoration:line-through;">CHF {{item.price}}</p>
+                    <p>CHF {{item.price * rabattFactorBestRate | number}}</p>
+                  </div>
+                </div>
+                <!--<div class="featured-product">-->
+                  <!--<div class="thumbnail">-->
+                    <!--<img src="{{item.image}}">-->
+                  <!--</div>-->
+                  <!--<div class="product">-->
+                    <!--<p>{{item.name}}</p>-->
+                  <!--</div>-->
+                <!--</div>-->
+              </li>
+            </ul>
+          </ul>
+        </div>
+      </div>
+    </div>
 
+  </div>
 
 </div>
-

@@ -17,6 +17,12 @@ import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderSearchComponent } from './header/header-search/header-search.component';
 import { SharedModule } from '../shared/shared.module';
+import { HomeSliderComponent } from './home/home-slider/home-slider.component';
+import { NgxSiemaModule } from 'ngx-siema';
+import { HomeSliderNgcarouselComponent } from './home/home-slider-ngcarousel/home-slider-ngcarousel.component';
+import { SliderService } from './shared/slider.service';
+import { OffCanvasComponent } from './home/off-canvas/off-canvas.component';
+import { PageTitleComponent } from './page-title/page-title.component';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -25,10 +31,14 @@ import { SharedModule } from '../shared/shared.module';
     FooterComponent,
     HomeComponent,
     HeaderSearchComponent,
+    HomeSliderComponent,
+    HomeSliderNgcarouselComponent,
+    OffCanvasComponent,
   ],
   imports: [
     CommonModule,
     SharedModule,
+    NgxSiemaModule.forRoot(),
     // NgbModule.forRoot(),
   ],
   exports: [
@@ -36,6 +46,7 @@ import { SharedModule } from '../shared/shared.module';
     HeaderComponent,
     FooterComponent,
     HeaderSearchComponent,
+    OffCanvasComponent,
     SharedModule,
   ],
   providers: [AuthService,
@@ -50,6 +61,7 @@ import { SharedModule } from '../shared/shared.module';
     StorageService,
     SettingsService,
     LocalStorageService,
+    SliderService,
     {provide: LocationStrategy, useClass: PathLocationStrategy}
   ],
 })

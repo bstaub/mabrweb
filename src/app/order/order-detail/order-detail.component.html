@@ -1,5 +1,5 @@
+<app-page-title title="Bestellung" [children]="[{title: 'Bestellung'}]"></app-page-title>
 <div class="container">
-
 
 
   <div class="row">
@@ -12,7 +12,8 @@
           <tr>
             <th>Artikel</th>
             <th>Menge</th>
-            <th>CHF</th>
+            <th class="text-right">CHF</th>
+            <th class="text-right">Total</th>
             <th></th>
           </tr>
           </thead>
@@ -31,8 +32,22 @@
               </figure>
 
             </td>
-            <td>{{product.qty}}</td>
-            <td>{{product.price}}</td>
+            <td>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button class="btn btn-outline-secondary" type="button" (click)="onDecreaseQty(product)">-</button>
+                </div>
+                <input type="text" class="form-control text-center w-25" [(ngModel)]="product.qty"
+                       (blur)="onChangeQty(product)">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="onIncreaseQty(product)">+</button>
+                </div>
+              </div>
+            </td>
+
+
+            <td class="text-right">{{product.price  | number : '1.2-2'}}</td>
+            <td class="text-right">{{product.price * product.qty  | number : '1.2-2'}}</td>
             <td>
 
               <button class="btn btn-sm btn-danger" (click)="onDeletItem(product.productId)">
@@ -41,13 +56,25 @@
             </td>
           </tr>
           </tbody>
+          <tfoot>
+
+          <tr>
+            <td></td>
+            <td></td>
+            <td>Total</td>
+            <td class="text-right">{{order?.totalValue | number : '1.2-2'}}</td>
+            <td></td>
+          </tr>
+
+
+          </tfoot>
+
         </table>
       </div>
 
 
     </div>
   </div>
-
 
 
   <div class="row">
@@ -64,8 +91,6 @@
       <button class="btn btn-primary" (click)="onEnterOrderData()">zur Kasse</button>
     </div>
   </div>
-
-
 
 
 </div>

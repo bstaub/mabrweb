@@ -16,6 +16,22 @@
       <label>Preis: </label> {{product.price}}
     </div>
     <div>
+      <label>Discount: </label> {{product.discount}}
+    </div>
+    <div>
+      <label>discountFactor: </label> {{product?.discountFactor}}
+    </div>
+    <div>
+      <label>NewProduct: </label> {{product.newProduct}}
+    </div>
+    <div>
+      <label>Bestrated: </label> {{product.bestRated}}
+    </div>
+    <p-rating [(ngModel)]="product.bestRatedNumber"></p-rating>
+    <div>
+      <label>bestRatedNumber: </label> {{product?.bestRatedNumber}}
+    </div>
+    <div>
       <label>Status: </label> {{product.active}}
     </div>
 
@@ -28,7 +44,7 @@
     <span class="button is-small btn-danger" (click)='deleteProduct()'>Löschen</span>
 
     <div>
-      <input type="text" name="anzahl" style="width: 50px;height: 36px;border-radius: 5px;" [(ngModel)]="product.itemcount" name="itemcount"><button class="btn btn-outline-success mt-3 mb-3" style="display: inline-block;" (click)='addToBasket(product)'>in den Warenkorb</button>
+      <button class="btn btn-outline-success mt-3 mb-3" style="display: inline-block;" (click)='editProduct(product)'>Editieren</button>
     </div>
 
   </div>

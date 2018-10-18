@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { Observable } from 'rxjs';
-import { ProductCategory } from '../../product/product-category.model';
+import { ProductCategory } from '../../models/product-category.model';
 import { ProductService } from '../../product/shared/product.service';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
 import { StorageService } from '../../shared/storage.service';
@@ -16,7 +16,7 @@ import * as firebase from 'firebase';
 export class AdminProductAddComponent implements OnInit {
 
   product: Product = new Product();
-  categories: Observable<ProductCategory[]>;
+  categories$: Observable<ProductCategory[]>;
   selectedCategory: string;
   submitted = false;
   createdDate: string;
@@ -32,7 +32,7 @@ export class AdminProductAddComponent implements OnInit {
 
   ngOnInit() {
     // this.product.createdDate = this.productService.formatDate(new Date());  // this ist just for Realtime DB, for CloudFirstore use Timestamp!
-    this.categories = this.productCategory.getCategories();
+    this.categories$ = this.productCategory.getCategories();
 
   }
 

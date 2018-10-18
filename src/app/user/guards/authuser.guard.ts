@@ -19,7 +19,8 @@ export class AuthuserGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-    return this.userService.getUser(firebase.auth().currentUser.uid).pipe(
+    // return this.userService.getUser(firebase.auth().currentUser.uid).pipe(
+    return this.authService.user$.pipe(
       take(1),
       map(user => user.roles.authuser ? true : false),
       tap(isAuthuser => {

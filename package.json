@@ -30,8 +30,12 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
     "marked": "^0.5.1",
+    "ngx-siema": "^2.0.1",
     "popper.js": "^1.14.4",
+    "primeicons": "^1.0.0-beta.10",
+    "primeng": "^6.1.4",
     "rxjs": "~6.2.0",
+    "rxjs-compat": "^6.3.3",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

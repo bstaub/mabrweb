@@ -1,3 +1,40 @@
-<p>
-  checkout-shipmentdata works!
-</p>
+<div class="container">
+
+  <h1>Shipment</h1>
+
+  <form [formGroup]="ShipmentForm" (ngSubmit)="onSubmit()">
+
+
+      <label>
+        <input type="radio" value="express" name="shippingMethod" formControlName="shippingMethod"> Express Priority
+      </label>
+
+    <br>
+      <label>
+        <input type="radio" value="fedex" name="shippingMethod"  formControlName="shippingMethod">  FedEx
+      </label>
+
+    <br>
+    <label>
+      <input type="radio" value="normal" name="shippingMethod"  formControlName="shippingMethod">  Normal
+    </label>
+
+
+
+
+    <br>
+    <br>
+
+    <div class="row">
+      <div class="offset-8">
+        <button type="submit" class="btn btn-primary">Zahlart wählen</button>
+      </div>
+    </div>
+
+
+
+  </form>
+
+
+
+</div>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ProductCategory } from '../product-category.model';
+import { ProductCategory } from '../../models/product-category.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,8 @@ export class ProductCategoryService {
   categoryDoc: AngularFirestoreDocument<ProductCategory>;
 
   constructor(public afs: AngularFirestore) {
+    // this.categories = this.afs.collection('categories').valueChanges();
+
     this.productCategoryCollection = this.afs.collection('categories', ref => ref.orderBy('name', 'asc'));
 
     this.categories = this.productCategoryCollection.snapshotChanges().pipe(
@@ -57,6 +59,10 @@ export class ProductCategoryService {
   updateProduct(categoryKey, category: ProductCategory) {
     this.categoryDoc = this.afs.doc(`categories/${categoryKey}`);
     this.categoryDoc.update(category);
+  }
+
+  getPushKey() {
+    return this.afs.createId();
   }
 
 }

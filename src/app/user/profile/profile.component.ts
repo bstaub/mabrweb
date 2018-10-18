@@ -18,7 +18,6 @@ export class ProfileComponent implements OnInit {
   uid: string;
   imageUrl: string;
   currentUser: any;
-  localStorageUser: any;
   user: User;
 
 
@@ -29,7 +28,6 @@ export class ProfileComponent implements OnInit {
   }
 
   getUser() {
-    // this.localStorageUser = this.userService.getProfileFromLocalStorage();
     return this.userService.getUser(this.uid)
       .subscribe(data => {
         this.user = data;
@@ -37,7 +35,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onFileSelection($event) {
-    this.storageService.upload($event)
+    this.storageService.uploadProfileBild($event)
       .then((uploadSnapshot: firebase.storage.UploadTaskSnapshot) => {
 
         uploadSnapshot.ref.getDownloadURL().then((downloadURL) => {

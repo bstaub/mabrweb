@@ -1,14 +1,15 @@
-import { Component, OnInit, AfterContentChecked, AfterContentInit } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, AfterContentInit, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from '../../user/shared/auth.service';
 import { UserService } from '../../user/shared/user.service';
 import { SettingsService } from '../../shared/settings.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styles: [`    
+  styles: [`
     ul {
       margin-bottom: 0;
     }
@@ -61,10 +62,18 @@ import { LocalStorageService } from '../../shared/local-storage.service';
       font-weight: bold;
     }
 
+    .burgerMenu {
+      font-size: 30px;
+      cursor: pointer;
+      margin-right: 50px;
+    }
+
 
   `]
 })
-export class HeaderComponent implements OnInit, AfterContentChecked {
+export class HeaderComponent implements OnInit {
+
+  @Output() offCanvasClicked = new EventEmitter();
 
   itemsForBasket: any;
   // isLoggedIn: boolean = false;
@@ -75,56 +84,26 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   name: string;
   uid: string;
   email: string;
-  couter: number = 0;
 
   constructor(private afAuth: AngularFireAuth,
               private authService: AuthService,
               private userService: UserService,
               private settingsService: SettingsService,
-              private localStorageService: LocalStorageService
+              private localStorageService: LocalStorageService,
   ) {
   }
 
   ngOnInit() {
-    /*
-    this.afAuth.auth.onAuthStateChanged(userData => {
-      // we are logged in
-      console.log('ngOnInit000', userData);
-
-      // debugger;
-      if (userData && userData.emailVerified) {
-        // debugger;
-
-        const user = this.userService.getProfileFromLocalStorage();
-        // debugger;
-        this.name = user.username;
-        this.email = user.email;
-        this.uid = user.id;
-
-        console.log(user);
-        console.log(this.uid);
-
-        this.isLoggedIn = true;
-      } else {
-        this.isLoggedIn = false;
+    this.authService.user$.subscribe(
+      auth => {
+        if (auth && auth.emailVerified) {
+          this.isLoggedIn = true;
+          this.loggedInUser = auth.email;
+        } else {
+          this.isLoggedIn = false;
+        }
       }
-    });
-    */
-
-    this.authService.getAuth().subscribe(auth => {
-      if (auth && auth.emailVerified) {
-        const user = this.userService.getProfileFromLocalStorage();
-        this.name = user.username;
-        this.email = user.email;
-        this.uid = user.id;
-
-
-        this.isLoggedIn = true;
-        this.loggedInUser = auth.email;
-      } else {
-        this.isLoggedIn = false;
-      }
-    });
+    );
     this.showRegister = this.settingsService.getSettings().allowRegistration;
     this.showAdmin = this.settingsService.getSettings().allowAdministration;
 
@@ -133,26 +112,25 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
     this.getProductsFromLocalStorage();
   }
 
-  ngAfterContentChecked() {
-    // refresh only works on ngAfterXXX
-    // this.getProductsFromLocalStorage();
-
-  }
-
   logout() {
     this.authService.logout();
     this.isLoggedIn = false;
+    this.localStorageService.destroyLocalStorage('products');
   }
 
 
   getProductsFromLocalStorage() {
     this.itemsForBasket = this.localStorageService.getData('products');
-    console.log(this.itemsForBasket);
   }
 
   removeItem(event) {
     // console.log(event.target.dataset.id);
     event.target.parentElement.parentElement.remove();
+  }
+
+  /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+  OpenMenuCanvas() {
+    this.offCanvasClicked.emit();
   }
 
 }

@@ -32,13 +32,21 @@ export class AdminProductItemComponent implements OnInit {
     this.productService.deleteProduct(this.product.key);
   }
 
-  addToBasket(product) {
-    this.productPerOrder = {
-      productId: product.key,
-      qty: product.itemcount
-    };
-    this.orderFirestoreService.addProductToOrder(this.productPerOrder);
-    alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
+  editProduct() {
+
   }
+
+  updateProduct() {
+
+  }
+
+  // addToBasket(product) {
+  //   this.productPerOrder = {
+  //     productId: product.key,
+  //     qty: product.itemcount
+  //   };
+  //   this.orderFirestoreService.addProductToOrder(this.productPerOrder);
+  //   alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
+  // }
 
 }

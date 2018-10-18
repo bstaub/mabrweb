@@ -32,37 +32,25 @@ export class UserService {
   }
 
   getUsers() {
-    return this.users;
+    // return this.users;
+    this.usersCollection = this.afs.collection('users');
+    return this.usersCollection.valueChanges();
   }
 
-  getUser(id) {
-    this.userDoc = this.afs.doc(`users/${id}`);
+  getUser(id: string) {
+    this.userDoc = this.afs.doc<User>(`users/${id}`);
     return this.userDoc.valueChanges();
   }
 
   getCurrentUser() {
     // https://firebase.google.com/docs/auth/web/manage-users
-
     // return firebase.auth().currentUser;
-
     const user = firebase.auth().currentUser;
     if (user) {  // User signed in
       return user;
     } else { // no user is signed in
       return 0;
     }
-
-    /*
-    const user = firebase.auth().currentUser;
-    if (user) {  // User signed in
-      this.userService.getUser(firebase.auth().currentUser.uid).subscribe( currentUser => {
-        console.log('cur: ', currentUser);
-        return currentUser;
-      });
-    } else { // no user is signed in
-      return 0;
-    }
-    */
 
   }
 
@@ -111,29 +99,5 @@ export class UserService {
     return userRef.set(data, {merge: true});
   }
   */
-
-  /*
-  // Test, geht irgendwie noch nicht sauber!
-  loginStatus(): any {
-    // return 123;
-    return this.authenticated ? true : 0;
-  }
-  */
-
-
-  // LocalStorage Functions start
-  setUserToLocalStorage(userFromDatabase) {
-    localStorage.setItem('user', JSON.stringify(userFromDatabase));
-  }
-
-  getProfileFromLocalStorage() {
-    return JSON.parse(localStorage.getItem('user')) || [];
-  }
-
-  destroyUserLocalStorage() {
-    localStorage.removeItem('user');
-  }
-
-  // LocalStorage Function end
 
 }

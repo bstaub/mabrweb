@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CheckoutLoginComponent } from './checkout-login.component';
+import { OffCanvasComponent } from './off-canvas.component';
 
-describe('CheckoutLoginComponent', () => {
-  let component: CheckoutLoginComponent;
-  let fixture: ComponentFixture<CheckoutLoginComponent>;
+describe('OffCanvasComponent', () => {
+  let component: OffCanvasComponent;
+  let fixture: ComponentFixture<OffCanvasComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckoutLoginComponent ]
+      declarations: [ OffCanvasComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CheckoutLoginComponent);
+    fixture = TestBed.createComponent(OffCanvasComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

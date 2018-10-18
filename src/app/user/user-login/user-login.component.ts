@@ -15,7 +15,8 @@ export class UserLoginComponent implements OnInit {
   constructor(private authService: AuthService,
               private router: Router,
               private notifier: NotificationService,
-              private orderFirestoreService: OrderFirestoreService,) {
+              private orderFirestoreService: OrderFirestoreService,
+              ) {
   }
 
   ngOnInit() {
@@ -30,6 +31,7 @@ export class UserLoginComponent implements OnInit {
 
           setTimeout(() => {
             // https://stackoverflow.com/questions/45025334/how-to-use-router-navigatebyurl-and-router-navigate-in-angular
+
 
             this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
             this.orderFirestoreService.loadProducts(userData.user.uid);

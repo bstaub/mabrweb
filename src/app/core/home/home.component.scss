@@ -1,0 +1,17 @@
+.featured-product {
+  display: flex;
+  width:200px;
+
+  .thumbnail {
+    img{
+      width: 50%;
+      border: 1px solid black;
+    }
+  }
+
+  .product {
+    width: 50%;
+  }
+
+}
+

@@ -5,37 +5,24 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { UserListComponent } from './user/user-list/user-list.component';
-import { UserLoginComponent } from './user/user-login/user-login.component';
-import { UserDetailComponent } from './user/user-detail/user-detail.component';
-import { UserRegisterComponent } from './user/user-register/user-register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { NotificationComponent } from './notification/notification.component';
 import { AngularFireStorageModule } from 'angularfire2/storage';
-import { ProfileComponent } from './user/profile/profile.component';
-import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
-import { SortPipe } from './product/shared/pipe/sort.pipe';
-import { MdToHtmlPipe } from './product/shared/pipe/md-to-html.pipe';
-import { UserLoginRegisterComponent } from './user/user-login-register/user-login-register.component';
+import { SortPipe } from './shared/pipe/sort.pipe';
+import { MdToHtmlPipe } from './shared/pipe/md-to-html.pipe';
 import { CoreModule } from './core/core.module';
 import { ProductModule } from './product/product.module';
 import { AdminModule } from './admin/admin.module';
 import { OrderModule } from './order/order.module';
 import { CheckoutModule } from './checkout/checkout.module';
+import { UserModule } from './user/user.module';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserListComponent,
-    UserLoginComponent,
-    UserDetailComponent,
-    UserRegisterComponent,
-    ProfileComponent,
-    ResetPasswordComponent,
-
-    UserLoginRegisterComponent,
     NotificationComponent,
     SortPipe,
     MdToHtmlPipe,
@@ -52,7 +39,8 @@ import { CheckoutModule } from './checkout/checkout.module';
     ProductModule,
     AdminModule,
     OrderModule,
-    CheckoutModule
+    CheckoutModule,
+    UserModule,
   ],
 
   bootstrap: [AppComponent]

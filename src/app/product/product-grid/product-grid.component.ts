@@ -4,7 +4,7 @@ import { Product } from '../../models/product.model';
 import { ProductService } from '../shared/product.service';
 import { ProductFirestoreService } from '../shared/product-firestore.service';
 import { ProductCategoryService } from '../shared/product-category.service';
-import { ProductCategory } from '../product-category.model';
+import { ProductCategory } from '../../models/product-category.model';
 
 @Component({
   selector: 'app-product-grid',
@@ -19,6 +19,11 @@ export class ProductGridComponent implements OnInit {
 
   selectedProduct: string; // just for show Product Category in Template
   selectedSort: string;
+
+  // einfach Produkte nachladen start
+  limit = 5;
+  next = 5;
+  // einfach Produkte nachladen end
 
   constructor(private productService: ProductService,
               private productFireStoreService: ProductFirestoreService,

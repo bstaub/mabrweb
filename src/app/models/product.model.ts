@@ -9,5 +9,10 @@ export class Product {
   itemcount?: number;
   image?: string;
   productCategory?: string;
+  discount?: boolean;
+  newProduct?: boolean;
+  bestRated?: boolean;
+  discountFactor?: number;
+  bestRatedNumber?: number;
 }
 

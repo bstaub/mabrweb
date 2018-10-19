@@ -60,7 +60,7 @@ export class CheckoutPaymentComponent implements OnInit {
       this.orderFirestoreService.resetUserOrder(this.order);
       this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
     } else {
-      this.orderFirestoreService.deleteOrderAnonymus(this.order);
+      this.orderFirestoreService.deleteOrderAnonymus(this.order.key);
       this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
       this.localStorageService.destroyLocalStorage('anonymusOrderId');
     }

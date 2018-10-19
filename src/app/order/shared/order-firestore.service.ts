@@ -148,7 +148,6 @@ export class OrderFirestoreService {
     return this.order;
   }
 
-
   saveProductsInFS(orderId: string, products: Array<ProductPerOrderLocalStorage>) {
     this.user = this.userService.getCurrentUser();
     if (this.user) {
@@ -352,12 +351,33 @@ export class OrderFirestoreService {
     });
   }
 
-  deleteOrderAnonymus(order: Order) {
-    this.orderDoc = this.afs.doc(`orders_anonymus/${order.key}`);
+  deleteOrderAnonymusComplete(orderId) {
+    this.deleteOrderAnonymus(orderId);
+    this.deleteProductsInFSAnonymus(orderId);
+
+  }
+
+  deleteOrderAnonymus(orderId: string) {
+    this.orderDoc = this.afs.doc(`orders_anonymus/${orderId}`);
     this.orderDoc.delete()
       .catch(function (error) {
         console.error('Error removing anonymus order: ', error);
       });
+  }
+
+  deleteProductsInFSAnonymus(userId: string) {
+    this.afs.doc(`productsPerOrder_anonymus/${userId}`).collection('products').snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Order;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))).subscribe(res => {
+      res.forEach(product => {
+        this.afs.doc(`productsPerOrder_anonymus/${userId}`).collection('products').doc(product.key).delete();
+      });
+    });
+
+
   }
 
   completeUserOrder(order: Order) {
@@ -398,4 +418,7 @@ export class OrderFirestoreService {
     }
   }
 
+  getAnonymusOrderId() {
+    return this.localStorageService.getData('anonymusOrderId').orderId;
+  }
 }

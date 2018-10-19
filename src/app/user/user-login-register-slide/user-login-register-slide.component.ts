@@ -61,6 +61,7 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
 
 
             this.orderFirestoreService.loadOrderAfterLogin(userData.user.uid);
+            this.orderFirestoreService.deleteOrderAnonymusComplete(this.orderFirestoreService.getAnonymusOrderId());
             this.localStorageService.destroyLocalStorage('anonymusOrderId');
 
             if (this.queryParams.orderstep === '1' && this.queryParams.login === '1') {

@@ -11,6 +11,7 @@ import { LocalStorageService } from '../../shared/local-storage.service';
 import { CustomerAddress } from '../../models/customerAddress.model';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -70,6 +71,12 @@ export class OrderFirestoreService {
 
 
   getUserOrder(userId) {
+
+    // todo
+    if (!userId) {
+      userId = '0';
+    }
+
     this.user = this.userService.getCurrentUser();
     if (this.user) {
       this.orderPerUser = this.afs.collection('orders').doc(userId);

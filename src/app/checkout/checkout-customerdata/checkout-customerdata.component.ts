@@ -18,7 +18,6 @@ import { Router } from '@angular/router';
 })
 export class CheckoutCustomerdataComponent implements OnInit {
   CustomerAddressForm: FormGroup;
-  CustomerShippingAddressForm: FormGroup;
   user: any;
   orderData: any;
   orderId: string;
@@ -78,6 +77,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
     this.customerShippingAddress.phone = this.CustomerAddressForm.value.customerShippingAddress.phone_s;
     this.customerShippingAddress.mail = this.CustomerAddressForm.value.customerShippingAddress.mail_s;
     this.order.customerShippingAddress = this.customerShippingAddress;
+    this.order.shipqingEqualsBillingAddress = this.shipqingEqualsBillingAddress;
 
     this.orderFirestoreService.updateOrder(this.order);
     this.router.navigate(['/checkout/shipmentdata']);

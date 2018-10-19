@@ -5,16 +5,18 @@ import { ProductFirestoreService } from '../../product/shared/product-firestore.
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 
 @Component({
-  selector: 'app-admin-product-item',
-  templateUrl: './admin-product-item.component.html',
-  styleUrls: ['./admin-product-item.component.css']
+  selector: 'app-admin-product-item-edit',
+  templateUrl: './admin-product-item-edit.component.html',
+  styleUrls: ['./admin-product-item-edit.component.scss']
 })
-export class AdminProductItemComponent implements OnInit {
+export class AdminProductItemEditComponent implements OnInit {
 
   @Input() product: Product;
   @Input() count: number;
 
   productPerOrder: ProductPerOrder;
+  editState: boolean = false;
+  productToEdit: Product;
 
   constructor(private productService: ProductFirestoreService,
               private orderFirestoreService: OrderFirestoreService,
@@ -32,12 +34,13 @@ export class AdminProductItemComponent implements OnInit {
     this.productService.deleteProduct(this.product.key);
   }
 
-  editProduct() {
-
+  editProduct(event, product) {
+    this.editState = true;
+    this.productToEdit = product;
   }
 
-  updateProduct() {
-
+  updateProduct(product: Product) {
+    this.productService.updateProduct(product.key, product);
   }
 
   // addToBasket(product) {

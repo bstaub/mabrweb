@@ -18,7 +18,6 @@ import { Router } from '@angular/router';
 })
 export class CheckoutCustomerdataComponent implements OnInit {
   CustomerAddressForm: FormGroup;
-  CustomerShippingAddressForm: FormGroup;
   user: any;
   orderData: any;
   orderId: string;
@@ -52,9 +51,6 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
   onSubmit() {
 
-    console.log(this.CustomerAddressForm.value.customerShippingAddress.firstname_s);
-    console.log(this.CustomerAddressForm.value);
-
     this.order = new Order();
     this.order.key = this.orderFirestoreService.getOrderId();
     this.customerBillingAddress = new CustomerAddress();
@@ -68,15 +64,22 @@ export class CheckoutCustomerdataComponent implements OnInit {
     this.customerBillingAddress.mail = this.CustomerAddressForm.value.customerBillingAddress.mail_b;
     this.order.customerBillingAddress = this.customerBillingAddress;
 
-    this.customerShippingAddress = new CustomerAddress();
-    this.customerShippingAddress.firstname = this.CustomerAddressForm.value.customerShippingAddress.firstname_s;
-    this.customerShippingAddress.lastname = this.CustomerAddressForm.value.customerShippingAddress.lastname_s;
-    this.customerShippingAddress.address = this.CustomerAddressForm.value.customerShippingAddress.address_s;
-    this.customerShippingAddress.zip = this.CustomerAddressForm.value.customerShippingAddress.zip_s;
-    this.customerShippingAddress.city = this.CustomerAddressForm.value.customerShippingAddress.city_s;
-    this.customerBillingAddress.country = this.CustomerAddressForm.value.customerShippingAddress.country_s;
-    this.customerShippingAddress.phone = this.CustomerAddressForm.value.customerShippingAddress.phone_s;
-    this.customerShippingAddress.mail = this.CustomerAddressForm.value.customerShippingAddress.mail_s;
+    this.order.shipqingEqualsBillingAddress = this.shipqingEqualsBillingAddress;
+
+    if (!this.shipqingEqualsBillingAddress) {
+      this.customerShippingAddress = new CustomerAddress();
+      this.customerShippingAddress.firstname = this.CustomerAddressForm.value.customerShippingAddress.firstname_s;
+      this.customerShippingAddress.lastname = this.CustomerAddressForm.value.customerShippingAddress.lastname_s;
+      this.customerShippingAddress.address = this.CustomerAddressForm.value.customerShippingAddress.address_s;
+      this.customerShippingAddress.zip = this.CustomerAddressForm.value.customerShippingAddress.zip_s;
+      this.customerShippingAddress.city = this.CustomerAddressForm.value.customerShippingAddress.city_s;
+      this.customerBillingAddress.country = this.CustomerAddressForm.value.customerShippingAddress.country_s;
+      this.customerShippingAddress.phone = this.CustomerAddressForm.value.customerShippingAddress.phone_s;
+      this.customerShippingAddress.mail = this.CustomerAddressForm.value.customerShippingAddress.mail_s;
+    } else {
+      this.customerShippingAddress = this.customerBillingAddress;
+    }
+
     this.order.customerShippingAddress = this.customerShippingAddress;
 
     this.orderFirestoreService.updateOrder(this.order);
@@ -102,7 +105,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
         phone_b: new FormControl(null)
       }),
 
-
+      shipqingEqualsBillingAddress: new FormControl(this.shipqingEqualsBillingAddress),
       customerShippingAddress: new FormGroup({
         firstname_s: new FormControl(null),
         lastname_s: new FormControl(null),
@@ -130,6 +133,9 @@ export class CheckoutCustomerdataComponent implements OnInit {
   }
 
   setOrderData() {
+
+    this.shipqingEqualsBillingAddress = this.orderData.shipqingEqualsBillingAddress;
+
     this.CustomerAddressForm.patchValue({
       customerBillingAddress: {
         firstname_b: this.orderData.customerBillingAddress.firstname,
@@ -139,7 +145,17 @@ export class CheckoutCustomerdataComponent implements OnInit {
         city_b: this.orderData.customerBillingAddress.city,
         country_b: this.orderData.customerBillingAddress.country,
         phone_b: this.orderData.customerBillingAddress.phone
-      }
+      },
+
+      customerShippingAddress: {
+        firstname_s: this.orderData.customerShippingAddress.firstname,
+        lastname_s: this.orderData.customerShippingAddress.lastname,
+        address_s: this.orderData.customerShippingAddress.address,
+        zip_s: this.orderData.customerShippingAddress.zip,
+        city_s: this.orderData.customerShippingAddress.city,
+        country_s: this.orderData.customerShippingAddress.country,
+        phone_s: this.orderData.customerShippingAddress.phone
+      },
     });
 
   }

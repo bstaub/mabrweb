@@ -7,7 +7,7 @@ import { OrderFirestoreService } from '../../order/shared/order-firestore.servic
 @Component({
   selector: 'app-admin-product-item',
   templateUrl: './admin-product-item.component.html',
-  styleUrls: ['./admin-product-item.component.css']
+  styleUrls: ['./admin-product-item.component.scss']
 })
 export class AdminProductItemComponent implements OnInit {
 
@@ -39,8 +39,8 @@ export class AdminProductItemComponent implements OnInit {
     this.productToEdit = product;
   }
 
-  updateProduct() {
-
+  updateProduct(product: Product) {
+    this.productService.updateProduct(product.key, product);
   }
 
   // addToBasket(product) {

@@ -3,7 +3,7 @@ export class Product {
   name?: string;
   description?: string;
   price?: number;
-  picture?: string;
+  // picture?: string;
   createdDate?: string;
   active?: boolean;
   itemcount?: number;

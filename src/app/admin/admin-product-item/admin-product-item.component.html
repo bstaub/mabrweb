@@ -1,52 +1,108 @@
+<div *ngIf="editState && productToEdit.key === product.key">
+  <form (ngSubmit)="updateProduct(product)">
+
+      <div *ngIf="product" class="media">
+      <img src="{{product.image || '//:0'}}" class="img-fluid" alt="Dummy Images" class="align-self-start mr-3" style="width:200px">
+
+            <div class="media-body">
+
+                <div>
+                  <label>Name: </label> <input type="text" [(ngModel)]="product.name" name="product">
+                </div>
+                <div>
+                  <label>Beschreibung: </label> <input type="text" [(ngModel)]="product.description" name="description">
+                </div>
+                <div>
+                  <label>Preis: </label> <input type="number" [(ngModel)]="product.price" name="price">
+                </div>
+                <div>
+                  <label>Discount: </label> <p-checkbox binary="true" value="discount" label="Aktion" [(ngModel)]="product.discount" name="discount"></p-checkbox>
+                </div>
+                <div>
+                  <label>discountFactor: </label> <input type="number" [(ngModel)]="product.discountFactor" name="discountFactor">
+                </div>
+                <div>
+                  <label>NewProduct: </label> <p-checkbox binary="true" value="newProduct" label="NewProdukt" [(ngModel)]="product.newProduct" name="newProduct"></p-checkbox>
+                </div>
+                <div>
+                  <label>Bestrated: </label> <p-checkbox binary="true" value="bestRated" label="bestRated" [(ngModel)]="product.bestRated" name="bestRated"></p-checkbox>
+                </div>
+                <p-rating [(ngModel)]="product.bestRatedNumber"></p-rating>
+                <div>
+                  <label>bestRatedNumber: </label> <input type="number" [(ngModel)]="product.bestRatedNumber" name="bestRatedNumber">
+                </div>
+                <div>
+                  <label>Status: </label> {{product.active}}
+                </div>
+
+                <span class="button is-small btn-primary" *ngIf='product.active' (click)='updateActive(false)'>inaktiv</span>
+
+                <span class="button is-small btn-primary" *ngIf='!product.active' (click)='updateActive(true)'>aktiv</span>
+
+                <span class="button is-small btn-secondary" (click)='updateProduct($event, product)'>Editieren</span>
+
+                <span class="button is-small btn-danger" (click)='deleteProduct()'>Löschen</span>
+
+                <div>
+                  <button class="btn btn-outline-success mt-3 mb-3" style="display: inline-block;" (click)='editProduct($event, product)'>Editieren</button>
+                </div>
+
+            </div>
+
+      </div>
+
+  </form>
+</div>
+
+
+
+
 <div *ngIf="product" class="media">
+<img src="{{product.image || '//:0'}}" class="img-fluid" alt="Dummy Images" class="align-self-start mr-3" style="width:200px">
 
+      <div class="media-body">
+          <div>
+            <label>Name: </label> {{product.name}}
+          </div>
+          <div>
+            <label>Beschreibung: </label> {{product.description}}
+          </div>
+          <div>
+            <label>Preis: </label> {{product.price}}
+          </div>
+          <div>
+            <label>Discount: </label> {{product.discount}}
+          </div>
+          <div>
+            <label>discountFactor: </label> {{product?.discountFactor}}
+          </div>
+          <div>
+            <label>NewProduct: </label> {{product.newProduct}}
+          </div>
+          <div>
+            <label>Bestrated: </label> {{product.bestRated}}
+          </div>
+          <p-rating [(ngModel)]="product.bestRatedNumber"></p-rating>
+          <div>
+            <label>bestRatedNumber: </label> {{product?.bestRatedNumber}}
+          </div>
+          <div>
+            <label>Status: </label> {{product.active}}
+          </div>
 
-  <img src="{{product.image || '//:0'}}" class="img-fluid" alt="Dummy Images" class="align-self-start mr-3" style="width:200px">
+          <span class="button is-small btn-primary" *ngIf='product.active' (click)='updateActive(false)'>inaktiv</span>
 
+          <span class="button is-small btn-primary" *ngIf='!product.active' (click)='updateActive(true)'>aktiv</span>
 
-  <div class="media-body">
+          <span class="button is-small btn-secondary" (click)='updateProduct($event, product)'>Editieren</span>
 
-    <div>
-      <label>Name: </label> {{product.name}}
-    </div>
-    <div>
-      <label>Beschreibung: </label> {{product.description}}
-    </div>
-    <div>
-      <label>Preis: </label> {{product.price}}
-    </div>
-    <div>
-      <label>Discount: </label> {{product.discount}}
-    </div>
-    <div>
-      <label>discountFactor: </label> {{product?.discountFactor}}
-    </div>
-    <div>
-      <label>NewProduct: </label> {{product.newProduct}}
-    </div>
-    <div>
-      <label>Bestrated: </label> {{product.bestRated}}
-    </div>
-    <p-rating [(ngModel)]="product.bestRatedNumber"></p-rating>
-    <div>
-      <label>bestRatedNumber: </label> {{product?.bestRatedNumber}}
-    </div>
-    <div>
-      <label>Status: </label> {{product.active}}
-    </div>
+          <span class="button is-small btn-danger" (click)='deleteProduct()'>Löschen</span>
 
-    <span class="button is-small btn-primary" *ngIf='product.active' (click)='updateActive(false)'>inaktiv</span>
-
-    <span class="button is-small btn-primary" *ngIf='!product.active' (click)='updateActive(true)'>aktiv</span>
-
-    <span class="button is-small btn-secondary" (click)='updateProduct($event, product)'>Editieren</span>
-
-    <span class="button is-small btn-danger" (click)='deleteProduct()'>Löschen</span>
-
-    <div>
-      <button class="btn btn-outline-success mt-3 mb-3" style="display: inline-block;" (click)='editProduct(product)'>Editieren</button>
-    </div>
-
-  </div>
+          <div>
+            <button class="btn btn-outline-success mt-3 mb-3" style="display: inline-block;" (click)='editProduct($event, product)'>Editieren</button>
+          </div>
+      </div>
 
 </div>
+
+

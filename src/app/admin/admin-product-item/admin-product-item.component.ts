@@ -15,6 +15,8 @@ export class AdminProductItemComponent implements OnInit {
   @Input() count: number;
 
   productPerOrder: ProductPerOrder;
+  editState: boolean = false;
+  productToEdit: Product;
 
   constructor(private productService: ProductFirestoreService,
               private orderFirestoreService: OrderFirestoreService,
@@ -32,8 +34,9 @@ export class AdminProductItemComponent implements OnInit {
     this.productService.deleteProduct(this.product.key);
   }
 
-  editProduct() {
-
+  editProduct(event, product) {
+    this.editState = true;
+    this.productToEdit = product;
   }
 
   updateProduct() {

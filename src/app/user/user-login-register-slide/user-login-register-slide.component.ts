@@ -6,6 +6,7 @@ import { NotificationService } from '../../shared/notification.service';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 import { QueryParamsHandling } from '@angular/router/src/config';
 import { SettingsService } from '../../shared/settings.service';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 @Component({
   selector: 'app-user-login-register-slide',
@@ -22,6 +23,7 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
               private activeRoute: ActivatedRoute,
               private notifier: NotificationService,
               private orderFirestoreService: OrderFirestoreService,
+              private localStorageService: LocalStorageService,
   ) {
   }
 
@@ -44,7 +46,6 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
   }
 
 
-
   clickToggle() {
     this.status = !this.status;
   }
@@ -58,12 +59,14 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
 
           setTimeout(() => {
 
-            this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
-            this.orderFirestoreService.loadProducts(userData.user.uid);
+
+            this.orderFirestoreService.loadOrderAfterLogin(userData.user.uid);
+            this.localStorageService.destroyLocalStorage('anonymusOrderId');
 
             if (this.queryParams.orderstep === '1' && this.queryParams.login === '1') {
               // this.settingsService.changeSettings({orderLogin: false});
               this.router.navigateByUrl('checkout/customerdata');
+              // this.router.navigateByUrl('bestellung');
             } else {
               this.router.navigateByUrl('');  // Default Login geht zur Homepage!
             }

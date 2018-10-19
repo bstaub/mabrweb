@@ -47,7 +47,8 @@ export class OrderFirestoreService {
 
   constructor(public afs: AngularFirestore,
               private userService: UserService,
-              private localStorageService: LocalStorageService) {
+              private localStorageService: LocalStorageService,
+  ) {
 
     this.orderCollection = this.afs.collection('orders');
     this.orderCollectionAnonymus = this.afs.collection('orders_anonymus');
@@ -96,15 +97,22 @@ export class OrderFirestoreService {
   }
 
 
-  creatNewUserOrder(userId: string) {
+  loadOrderAfterLogin(userId: string) {
     this.orderCollection.doc(userId).ref.get()
       .then((docSnapshot) => {
         if (!docSnapshot.exists) {
-          this.order = this.createEmptyOrder();
-          this.order.userId = userId;
-          this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(this.order)));
+          this.creatNewUserOrder(userId);
+          this.saveProductsInFS(userId, this.localStorageService.getData('products'));
+        } else {
+          this.loadProductsToLocalStorage(userId);
         }
       });
+  }
+
+  creatNewUserOrder(userId: string) {
+    this.order = this.createEmptyOrder();
+    this.order.userId = userId;
+    this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(this.order)));
   }
 
   createNewUserOrderAnonymus() {
@@ -135,6 +143,7 @@ export class OrderFirestoreService {
 
 
   saveProductsInFS(orderId: string, products: Array<ProductPerOrderLocalStorage>) {
+
     this.user = this.userService.getCurrentUser();
     if (this.user) {
       this.productsOrderCollection = this.afs.doc(`productsPerOrder/${orderId}`).collection('products');
@@ -144,18 +153,12 @@ export class OrderFirestoreService {
       this.orderCollectionVar = this.orderCollectionAnonymus;
     }
 
-    let lineValue = 0;
-    let totalValue = 0;
 
     products.forEach((product) => {
       const productPerOrder = new ProductPerOrder();
       productPerOrder.productId = product.productId;
       productPerOrder.qty = product.qty;
       productPerOrder.orderId = orderId;
-
-      lineValue = product.qty * product.price;
-      lineValue.toFixed(2);
-      totalValue += lineValue;
 
       this.productsOrderCollection.doc(productPerOrder.productId).set({
         // userId: this.orderCollectionVar.doc(productPerOrder.orderId).ref,
@@ -167,8 +170,22 @@ export class OrderFirestoreService {
 
     });
 
+    this.calcOrderTotalValue();
+  }
+
+  calcOrderTotalValue() {
+    let lineValue = 0;
+    let totalValue = 0;
+    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.productsPerOrderLocalStorage.forEach((product) => {
+      lineValue = product.qty * product.price;
+      lineValue.toFixed(2);
+      totalValue += lineValue;
+    });
+    this.totalValue = totalValue;
+
     this.order = new Order();
-    this.order.key = orderId;
+    this.order.key = this.getOrderId();
     this.order.totalValue = totalValue;
     this.updateOrder(this.order);
   }
@@ -193,29 +210,32 @@ export class OrderFirestoreService {
   }
 
 
-  loadProducts(userId: string) {
-    this.localStorageService.destroyLocalStorage('products');
-    this.getProductsPerOrder(userId).ref.get().then((res) => {
-      res.forEach(doc => {
-        const newProduct = doc.data();
-        newProduct.id = doc.id;
-        if (newProduct.productId) {
-          newProduct.productId.get()
-            .then(ressource => {
-              newProduct.productData = ressource.data();
-              if (newProduct.productData) {
-                const productStore = this.localStorageService.getData('products');
-                productStore.push({
-                  productId: newProduct.id,
-                  qty: Number(newProduct.qty),
-                  name: newProduct.productData.name,
-                  description: newProduct.productData.description,
-                  price: newProduct.productData.price,
-                  image: newProduct.productData.image
-                });
-                this.localStorageService.setData('products', productStore);
-              }
-            })
+  loadProductsToLocalStorage(orderId: string) {
+    this.getProductsPerOrder(orderId).ref.get()
+      .then((res) => {
+        res.forEach(doc => {
+          const newProduct = doc.data();
+          newProduct.id = doc.id;
+          if (newProduct.productId) {
+            newProduct.productId.get()
+              .then(ressource => {
+                newProduct.productData = ressource.data();
+                if (newProduct.productData) {
+                  this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+                  this.productsPerOrderLocalStorage .push({
+                    productId: newProduct.id,
+                    qty: Number(newProduct.qty),
+                    name: newProduct.productData.name,
+                    description: newProduct.productData.description,
+                    price: newProduct.productData.price,
+                    image: newProduct.productData.image
+                  });
+                  this.localStorageService.setData('products', this.productsPerOrderLocalStorage );
+                  this.saveProductsInFS(orderId, this.productsPerOrderLocalStorage);
+                  this.calcOrderTotalValue();
+                }
+              })
+
             .catch(err => console.error(err));
         }
       });
@@ -239,7 +259,6 @@ export class OrderFirestoreService {
       this.orderId = this.user.uid;
     } else {
       if (!this.userOrderAnonymusExist()) {
-        console.log('ordercreated');
         this.createNewUserOrderAnonymus();
       }
       this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;

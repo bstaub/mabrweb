@@ -27,38 +27,43 @@
   </div>
 </nav>
 
-<section class="products" *ngIf="products" >
+<section class="products" *ngIf="products">
 
   <ng-container *ngIf="filteredProducts">
-        <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
-             *ngFor="let product of filteredProducts | slice:0:limit; let i = index">
-          <div class="product-image">
-            <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
-          </div>
-          <div class="product-info">
-            <h5>{{product.name}}</h5>
-            <h6>CHF {{product.price}}.--</h6>
-          </div>
-        </a>
+    <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
+       *ngFor="let product of filteredProducts | slice:0:limit; let i = index">
+      <div class="product-image">
+        <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
+      </div>
+      <div class="product-info">
+        <h5>{{product.name}}</h5>
+        <p *ngIf="product.discountFactor !== 1" style="text-decoration:line-through;">CHF {{product.price}}</p>
+        <h6>CHF {{product.price * product.discountFactor | number : '1.2-2'}}</h6>
+      </div>
+    </a>
   </ng-container>
 
   <ng-container *ngIf="!filteredProducts">
-        <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
-             *ngFor="let product of products | async | slice:0:limit; let i = index">
-          <div class="product-image">
-            <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
-          </div>
-          <div class="product-info">
-            <h5>{{product.name}}</h5>
-            <h6>CHF {{product.price}}.--</h6>
-          </div>
-        </a>
+    <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
+       *ngFor="let product of products | async | slice:0:limit; let i = index">
+      <div class="product-image">
+        <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
+      </div>
+      <div class="product-info">
+        <h5>{{product.name}}</h5>
+        <p *ngIf="product.discountFactor !== 1" style="text-decoration:line-through;">CHF {{product.price}}</p>
+        <!-- https://stackoverflow.com/questions/35513413/angular-how-to-display-number-always-with-2-decimal-places-in-input -->
+        <h6>CHF {{product.price * product.discountFactor | number : '1.2-2'}}</h6>
+      </div>
+    </a>
   </ng-container>
 
 </section>
 
 <div class="fullSize">
-  <button style="margin-left: 40px; margin-top: 30px;" class="btn btn-secondary" (click)="limit=limit+next">Weitere laden</button>
+  <button style="margin-left: 40px; margin-top: 30px;" class="btn btn-secondary" (click)="limit=limit+next">Weitere
+    laden
+  </button>
 </div>
 
 

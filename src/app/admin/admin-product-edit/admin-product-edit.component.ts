@@ -12,7 +12,7 @@ import { Product } from '../../models/product.model';
 @Component({
   selector: 'app-admin-product-edit',
   templateUrl: './admin-product-edit.component.html',
-  styleUrls: ['./admin-product-edit.component.css']
+  styleUrls: ['./admin-product-edit.component.scss']
 })
 export class AdminProductEditComponent implements OnInit {
   product: Product = new Product();
@@ -25,6 +25,8 @@ export class AdminProductEditComponent implements OnInit {
   discount: boolean = false;
   newProduct: boolean = false;
   bestRated: boolean = false;
+
+  discountFactor: number = 1; // Default kein Rabattt, 0.8 wären 20% Rabatt
   // selectedValues: string[] = [];  // ['discount', 'newProduct', 'bestRated'];
 
   constructor(
@@ -48,6 +50,8 @@ export class AdminProductEditComponent implements OnInit {
       this.image = 'https://firebasestorage.googleapis.com/v0/b/mabrweb-e6503.appspot.com/o/mvi9oepg?alt=media&token=69801fdc-bbb0-4e19-84e3-e87b5615ca0b';
     }
 
+
+
     const productObj = Object.assign({
         key: this.productFirestoreService.getPushKey(),
         image: this.image,
@@ -57,6 +61,8 @@ export class AdminProductEditComponent implements OnInit {
         discount: this.discount,
         newProduct: this.newProduct,
         bestRated: this.bestRated,
+        discountFactor : this.discountFactor,
+        // discountFactor : parseInt(this.discountFactor, 10),
       },
       this.product);
 

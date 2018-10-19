@@ -7,14 +7,20 @@
     <div class="media-body">
 
         <div>
-          <label>Name: </label> {{product.name}}
+          <label>Name: </label>
+          <p>{{product.name}}</p>
         </div>
         <div>
-          <label>Beschreibung: </label> {{product.description}}
+          <label>Beschreibung: </label>
+          <p>{{product.description}}</p>
+
         </div>
         <div>
-          <label>Preis: </label> {{product.price}}
+          <label>Preis: </label>
+          <p *ngIf="product.discountFactor !== 1" style="text-decoration:line-through;">CHF {{product.price}}</p>
+          <p>CHF {{product.price * product.discountFactor | number : '1.2-2'}}</p>
         </div>
+
 
         <div>
           <input type="text" name="anzahl" style="width: 50px;height: 36px;border-radius: 5px;" [(ngModel)]="product.itemcount" name="itemcount"><button class="btn btn-outline-success mt-3 mb-3" style="display: inline-block;" (click)='addToBasket(product)'>in den Warenkorb</button>

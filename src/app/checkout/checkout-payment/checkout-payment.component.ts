@@ -50,7 +50,7 @@ export class CheckoutPaymentComponent implements OnInit {
     this.order.userId = this.user.uid;
     this.order.customerAddress = this.orderData.customerAddress;
     this.order.shippingMethod = this.orderData.shippingMethod;
-    this.order.paymentMethod = this.PaymentForm.value.paymentmethod;
+    this.order.paymentMethod = this.PaymentForm.value.paymentMethod;
     this.orderFirestoreService.updateOrder(this.order);
 
     this.closingOrderId = this.orderFirestoreService.completeUserOrder(this.order);

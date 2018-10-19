@@ -65,7 +65,7 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
 
             if (this.queryParams.orderstep === '1' && this.queryParams.login === '1') {
               // this.settingsService.changeSettings({orderLogin: false});
-              this.router.navigateByUrl('checkout/bestellung');
+              this.router.navigateByUrl('bestellung');
               // this.router.navigateByUrl('checkout/customerdata');
               // this.router.navigateByUrl('bestellung');
             } else {

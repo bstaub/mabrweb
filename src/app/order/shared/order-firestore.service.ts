@@ -11,7 +11,6 @@ import { LocalStorageService } from '../../shared/local-storage.service';
 import { CustomerAddress } from '../../models/customerAddress.model';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -35,6 +34,7 @@ export class OrderFirestoreService {
   orderDoc: AngularFirestoreDocument<Order>;
   order: Order;
   productPerOrder: ProductPerOrder;
+  product: Product;
   customerAddress: CustomerAddress;
   user: any;
   totalValue: number;
@@ -150,7 +150,6 @@ export class OrderFirestoreService {
 
 
   saveProductsInFS(orderId: string, products: Array<ProductPerOrderLocalStorage>) {
-
     this.user = this.userService.getCurrentUser();
     if (this.user) {
       this.productsOrderCollection = this.afs.doc(`productsPerOrder/${orderId}`).collection('products');
@@ -159,7 +158,6 @@ export class OrderFirestoreService {
       this.productsOrderCollection = this.afs.doc(`productsPerOrder_anonymus/${orderId}`).collection('products');
       this.orderCollectionVar = this.orderCollectionAnonymus;
     }
-
 
     products.forEach((product) => {
       const productPerOrder = new ProductPerOrder();
@@ -216,7 +214,6 @@ export class OrderFirestoreService {
       });
   }
 
-
   loadProductsToLocalStorage(orderId: string) {
     this.getProductsPerOrder(orderId).ref.get()
       .then((res) => {
@@ -229,27 +226,35 @@ export class OrderFirestoreService {
                 newProduct.productData = ressource.data();
                 if (newProduct.productData) {
                   this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
-                  this.productsPerOrderLocalStorage .push({
-                    productId: newProduct.id,
-                    qty: Number(newProduct.qty),
-                    name: newProduct.productData.name,
-                    description: newProduct.productData.description,
-                    price: newProduct.productData.price,
-                    image: newProduct.productData.image
-                  });
-                  this.localStorageService.setData('products', this.productsPerOrderLocalStorage );
+
+                  this.product = new Product();
+                  this.product.key = newProduct.id;
+                  this.product.name = newProduct.productData.name;
+                  this.product.description = newProduct.productData.description;
+                  this.product.price = newProduct.productData.price;
+                  this.product.itemcount = Number(newProduct.qty);
+                  this.product.image = newProduct.productData.image;
+                  this.product.discount = newProduct.productData.discount;
+
+                  if (this.productExistInScart(this.product)) {
+                    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+                    this.productsPerOrderLocalStorageUpdate = this.productsPerOrderLocalStorage.filter(productExist => productExist.productId === this.product.key);
+                    this.productsPerOrderLocalStorageUpdate[0].qty += Number(this.product.itemcount);
+                    this.updateProductQty(this.productsPerOrderLocalStorageUpdate[0]);
+                  } else {
+                    this.pushProductToLocalStorage(this.product);
+                  }
+                  this.localStorageService.setData('products', this.productsPerOrderLocalStorage);
                   this.saveProductsInFS(orderId, this.productsPerOrderLocalStorage);
                   this.calcOrderTotalValue();
                 }
               })
-
-            .catch(err => console.error(err));
-        }
-      });
-    })
+              .catch(err => console.error(err));
+          }
+        });
+      })
       .catch(err => console.error(err));
   }
-
 
   addProductToOrder(product: Product) {
     if (this.productExistInScart(product)) {
@@ -260,7 +265,6 @@ export class OrderFirestoreService {
     } else {
       this.pushProductToLocalStorage(product);
     }
-
     this.user = this.userService.getCurrentUser();
     if (this.user) {
       this.orderId = this.user.uid;
@@ -322,7 +326,6 @@ export class OrderFirestoreService {
     this.deleteProductsInFS(this.getOrderId(), productsPerOrderLocalStorage);
     this.localStorageService.destroyLocalStorage('products');
   }
-
 
   updateOrder(order: Order) {
     this.user = this.userService.getCurrentUser();

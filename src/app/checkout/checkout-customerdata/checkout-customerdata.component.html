@@ -181,7 +181,7 @@
 
     <div class="row">
       <div class="col-md-8 offset-2">
-        <button type="submit" class="btn btn-primary">Weiter zur Versandart</button>
+        <button [disabled]="!CustomerAddressForm.valid" type="submit" class="btn btn-primary">Weiter zur Versandart</button>
       </div>
     </div>
 

@@ -50,6 +50,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
   }
 
   onSubmit() {
+    // console.log(this.CustomerAddressForm);
 
     this.order = new Order();
     this.order.key = this.orderFirestoreService.getOrderId();
@@ -66,21 +67,18 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
     this.order.shipqingEqualsBillingAddress = this.shipqingEqualsBillingAddress;
 
-    if (!this.shipqingEqualsBillingAddress) {
-      this.customerShippingAddress = new CustomerAddress();
-      this.customerShippingAddress.firstname = this.CustomerAddressForm.value.customerShippingAddress.firstname_s;
-      this.customerShippingAddress.lastname = this.CustomerAddressForm.value.customerShippingAddress.lastname_s;
-      this.customerShippingAddress.address = this.CustomerAddressForm.value.customerShippingAddress.address_s;
-      this.customerShippingAddress.zip = this.CustomerAddressForm.value.customerShippingAddress.zip_s;
-      this.customerShippingAddress.city = this.CustomerAddressForm.value.customerShippingAddress.city_s;
-      this.customerBillingAddress.country = this.CustomerAddressForm.value.customerShippingAddress.country_s;
-      this.customerShippingAddress.phone = this.CustomerAddressForm.value.customerShippingAddress.phone_s;
-      this.customerShippingAddress.mail = this.CustomerAddressForm.value.customerShippingAddress.mail_s;
-    } else {
-      this.customerShippingAddress = this.customerBillingAddress;
-    }
+    this.customerShippingAddress = new CustomerAddress();
+    this.customerShippingAddress.firstname = this.CustomerAddressForm.value.customerShippingAddress.firstname_s;
+    this.customerShippingAddress.lastname = this.CustomerAddressForm.value.customerShippingAddress.lastname_s;
+    this.customerShippingAddress.address = this.CustomerAddressForm.value.customerShippingAddress.address_s;
+    this.customerShippingAddress.zip = this.CustomerAddressForm.value.customerShippingAddress.zip_s;
+    this.customerShippingAddress.city = this.CustomerAddressForm.value.customerShippingAddress.city_s;
+    this.customerBillingAddress.country = this.CustomerAddressForm.value.customerShippingAddress.country_s;
+    this.customerShippingAddress.phone = this.CustomerAddressForm.value.customerShippingAddress.phone_s;
+    this.customerShippingAddress.mail = this.CustomerAddressForm.value.customerShippingAddress.mail_s;
 
     this.order.customerShippingAddress = this.customerShippingAddress;
+    this.order.shipqingEqualsBillingAddress = this.shipqingEqualsBillingAddress;
 
     this.orderFirestoreService.updateOrder(this.order);
     this.router.navigate(['/checkout/shipmentdata']);
@@ -99,7 +97,6 @@ export class CheckoutCustomerdataComponent implements OnInit {
         city_b: new FormControl(null, Validators.required),
         country_b: new FormControl(null, Validators.required),
         mail_b: new FormControl(null, [
-          Validators.required,
           Validators.email
         ]),
         phone_b: new FormControl(null)

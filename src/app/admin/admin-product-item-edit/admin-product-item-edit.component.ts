@@ -5,11 +5,11 @@ import { ProductFirestoreService } from '../../product/shared/product-firestore.
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 
 @Component({
-  selector: 'app-admin-product-item',
-  templateUrl: './admin-product-item.component.html',
-  styleUrls: ['./admin-product-item.component.scss']
+  selector: 'app-admin-product-item-edit',
+  templateUrl: './admin-product-item-edit.component.html',
+  styleUrls: ['./admin-product-item-edit.component.scss']
 })
-export class AdminProductItemComponent implements OnInit {
+export class AdminProductItemEditComponent implements OnInit {
 
   @Input() product: Product;
   @Input() count: number;

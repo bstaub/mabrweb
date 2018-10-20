@@ -26,8 +26,7 @@
                   accept="image/*">
                 </p-fileUpload>
                 <div *ngIf="(categories$ | async) as Cat">
-                <p-dropdown [options]="Cat" [(ngModel)]="selectedCategory" name="selectedCategory" placeholder="{{product.productCategory}}" optionLabel="name" [showClear]="true" filter="true"></p-dropdown>
-                <!--<p>Gewählte Kategorie: {{selectedCategory ? selectedCategory.name : 'none'}}</p>-->
+                <p-dropdown [options]="Cat" [(ngModel)]="selectedCategory" name="productCategory" placeholder="{{product.productCategory}}" optionLabel="name" [showClear]="true" filter="true"></p-dropdown>
                 </div>
                 <div>
                   <label>Discount: </label> <p-checkbox binary="true" value="discount" label="Aktion" [(ngModel)]="product.discount" name="discount"></p-checkbox>

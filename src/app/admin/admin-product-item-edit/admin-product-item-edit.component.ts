@@ -44,6 +44,7 @@ export class AdminProductItemEditComponent implements OnInit {
   }
 
   editProduct(event, product) {
+    this.selectedCategory = product.productCategory;  // wichtig, damit der Initial Wert der vorhandene Wert beim Dropdown Edit übernommen wird!
     this.editState = true;
     this.productToEdit = product;
   }

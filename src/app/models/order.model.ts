@@ -13,4 +13,5 @@ export class Order {
   shippingMethod: string;
   paymentMethod: string;
   shipqingEqualsBillingAddress: boolean;
+  anonymusOrder: boolean;
 }

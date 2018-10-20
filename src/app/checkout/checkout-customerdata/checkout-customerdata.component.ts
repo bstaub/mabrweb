@@ -73,7 +73,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
     this.customerShippingAddress.address = this.CustomerAddressForm.value.customerShippingAddress.address_s;
     this.customerShippingAddress.zip = this.CustomerAddressForm.value.customerShippingAddress.zip_s;
     this.customerShippingAddress.city = this.CustomerAddressForm.value.customerShippingAddress.city_s;
-    this.customerBillingAddress.country = this.CustomerAddressForm.value.customerShippingAddress.country_s;
+    this.customerShippingAddress.country = this.CustomerAddressForm.value.customerShippingAddress.country_s;
     this.customerShippingAddress.phone = this.CustomerAddressForm.value.customerShippingAddress.phone_s;
     this.customerShippingAddress.mail = this.CustomerAddressForm.value.customerShippingAddress.mail_s;
 

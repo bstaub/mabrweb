@@ -108,9 +108,11 @@ export class OrderFirestoreService {
     this.orderCollection.doc(userId).ref.get()
       .then((docSnapshot) => {
         if (!docSnapshot.exists) {
+          console.log('test1');
           this.creatNewUserOrder(userId);
           this.saveProductsInFS(userId, this.localStorageService.getData('products'));
         } else {
+          console.log('test2');
           this.loadProductsToLocalStorage(userId);
         }
       });

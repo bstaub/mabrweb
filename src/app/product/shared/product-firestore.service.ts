@@ -216,7 +216,13 @@ export class ProductFirestoreService {
   }
   */
 
-  updateProduct(productKey, product: Product) {
+  updateProduct(productKey, product: Product, image?, category?: any) {  // image?, category? ist optional und für Admin Edit Only
+    if (image) {
+      product.image = image;
+    }
+    if (category) {
+      product.productCategory = category;
+    }
     this.productDoc = this.afs.doc(`products/${productKey}`);
     this.productDoc.update(product);
   }

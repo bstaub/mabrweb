@@ -8,9 +8,9 @@ import { CheckoutThxComponent } from './checkout-thx/checkout-thx.component';
 
 export const CHECKOUT_ROUTES: Routes = [
   {path: '', redirectTo: 'customerdata', pathMatch: 'full'},
-  {path: 'shipmentdata', component: CheckoutShipmentdataComponent},
-  {path: 'customerdata', component: CheckoutCustomerdataComponent},
+  {path: 'shipmentdata', component: CheckoutShipmentdataComponent, data: {checkoutStep: 2}},
+  {path: 'customerdata', component: CheckoutCustomerdataComponent, data: {checkoutStep: 1}},
   {path: 'login', component: CheckoutLoginComponent},
-  {path: 'paymentdata', component: CheckoutPaymentComponent},
-  {path: 'thx', component: CheckoutThxComponent},
+  {path: 'paymentdata', component: CheckoutPaymentComponent,  data: {checkoutStep: 3}},
+  {path: 'thx', component: CheckoutThxComponent,  data: {checkoutStep: 4}},
 ];

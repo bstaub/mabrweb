@@ -75,4 +75,10 @@ export class CheckoutShipmentdataComponent implements OnInit {
 
   }
 
+  goBack() {
+    this.router.navigate(['/checkout/customerdata']);
+  }
+
+
+
 }

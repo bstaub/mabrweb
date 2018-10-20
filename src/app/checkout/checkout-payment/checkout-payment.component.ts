@@ -10,7 +10,8 @@ import { LocalStorageService } from '../../shared/local-storage.service';
 @Component({
   selector: 'app-checkout-payment',
   templateUrl: './checkout-payment.component.html',
-  styles: [``]
+  styles: [`
+  `]
 })
 export class CheckoutPaymentComponent implements OnInit {
 
@@ -101,5 +102,9 @@ export class CheckoutPaymentComponent implements OnInit {
     });
 
   }
+  goBack() {
+    this.router.navigate(['/checkout/shipmentdata']);
+  }
+
 }
 

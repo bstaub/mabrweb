@@ -60,7 +60,7 @@ export class OrderDetailComponent implements OnInit {
 
   onEnterOrderData() {
     if (this.user) {
-      this.router.navigate(['/checkout']);
+      this.router.navigate(['/checkout/customerdata']);
     } else {
       this.router.navigate(['/checkout/login']);
     }

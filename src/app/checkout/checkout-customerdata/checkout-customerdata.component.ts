@@ -157,5 +157,9 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
   }
 
+  goBack() {
+    this.router.navigate(['/bestellung']);
+  }
+
 
 }

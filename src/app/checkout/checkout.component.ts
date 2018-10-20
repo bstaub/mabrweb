@@ -59,6 +59,7 @@ export class CheckoutComponent implements OnInit {
       )
       .subscribe(data => {
         this.currCheckoutStep = data.checkoutStep;
+        console.log(this.currCheckoutStep);
 
       });
 

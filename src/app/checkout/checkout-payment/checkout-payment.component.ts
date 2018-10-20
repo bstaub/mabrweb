@@ -48,7 +48,9 @@ export class CheckoutPaymentComponent implements OnInit {
     this.order.status = 'done';
     this.order.totalValue = this.orderData.totalValue;
     this.order.userId = this.user.uid;
-    this.order.customerAddress = this.orderData.customerAddress;
+    this.order.customerBillingAddress = this.orderData.customerBillingAddress;
+    this.order.customerShippingAddress = this.orderData.customerShippingAddress;
+    this.order.shipqingEqualsBillingAddress = this.orderData.shipqingEqualsBillingAddress;
     this.order.shippingMethod = this.orderData.shippingMethod;
     this.order.paymentMethod = this.PaymentForm.value.paymentMethod;
     this.orderFirestoreService.updateOrder(this.order);

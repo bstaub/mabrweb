@@ -144,7 +144,9 @@ export class OrderFirestoreService {
     this.order.shippingMethod = 'normal';
     this.order.paymentMethod = 'invoice';
     this.order.totalValue = 0;
-    this.order.customerAddress = this.customerAddress;
+    this.order.customerBillingAddress = this.customerAddress;
+    this.order.customerShippingAddress = this.customerAddress;
+    this.order.shipqingEqualsBillingAddress = true;
     return this.order;
   }
 

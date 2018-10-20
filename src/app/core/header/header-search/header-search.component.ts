@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ProductFirestoreService } from '../../../product/shared/product-firestore.service';
 
@@ -12,6 +12,7 @@ export class HeaderSearchComponent implements OnInit {
   results: Object;
   resultsArray: any;
   searchTerm$ = new Subject<String>();
+  @ViewChild('searchTerm') input_search: ElementRef;
 
 
   constructor(private productFirestoreService: ProductFirestoreService
@@ -25,6 +26,7 @@ export class HeaderSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+
   }
 
   getAllSearch(searchTerm: string) {
@@ -38,6 +40,10 @@ export class HeaderSearchComponent implements OnInit {
         // https://angularfirebase.com/lessons/sharing-data-between-angular-components-four-methods/
         this.productFirestoreService.changeMessage(this.resultsArray);  // RxJS BehaviorSubject
       });
+  }
+
+  searchinput() {
+    this.input_search.nativeElement.value = '';
   }
 
 }

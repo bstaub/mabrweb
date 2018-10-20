@@ -216,7 +216,7 @@ export class ProductFirestoreService {
   }
   */
 
-  updateProduct(productKey, product: Product, image?, category?: any) {  // image?, category? ist optional und für Admin Edit Only
+  updateProduct(productKey, product: Product, image?: string, category?: string) {  // image?, category? ist optional und für Admin Edit Only
     if (image) {
       product.image = image;
     }

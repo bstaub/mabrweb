@@ -3,7 +3,7 @@
 
 
   <div class="row">
-    <div class="col-md-8 offset-2">
+    <div class="col-md-10 offset-1">
       <h1>Warenkorb</h1>
 
       <div class="table-responsive">
@@ -12,8 +12,9 @@
           <tr>
             <th>Artikel</th>
             <th>Menge</th>
-            <th class="text-right">CHF</th>
-            <th class="text-right">Total</th>
+            <th class="text-right">Preis CHF</th>
+            <th class="text-right">Rabatt %</th>
+            <th class="text-right">Total CHF</th>
             <th></th>
           </tr>
           </thead>
@@ -47,7 +48,8 @@
 
 
             <td class="text-right">{{product.price  | number : '1.2-2'}}</td>
-            <td class="text-right">{{product.price * product.qty  | number : '1.2-2'}}</td>
+            <td  class="text-right"><p *ngIf="product.discountFactor != 1">{{(1- product.discountFactor) *100 | number : '1.0'}}</p></td>
+            <td class="text-right">{{product.price * product.qty * product.discountFactor | number : '1.2-2'}}</td>
             <td>
 
               <button class="btn btn-sm btn-danger" (click)="onDeletItem(product.productId)">
@@ -59,6 +61,7 @@
           <tfoot>
 
           <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td>Total</td>
@@ -78,7 +81,7 @@
 
 
   <div class="row">
-    <div class="col-md-8 offset-2">
+    <div class="col-md-10 offset-1">
       <button class="btn btn-primary" (click)="onDeleteScart()">Warenkorb Löschen</button>&nbsp;
     </div>
   </div>

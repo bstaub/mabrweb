@@ -184,7 +184,7 @@ export class OrderFirestoreService {
     let totalValue = 0;
     this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
     this.productsPerOrderLocalStorage.forEach((product) => {
-      lineValue = product.qty * product.price;
+      lineValue = product.qty * product.price * product.discountFactor;
       lineValue.toFixed(2);
       totalValue += lineValue;
     });
@@ -286,7 +286,8 @@ export class OrderFirestoreService {
       name: product.name,
       description: product.description,
       price: product.price,
-      image: product.image
+      image: product.image,
+      discountFactor: product.discountFactor ? product.discountFactor : 1
     });
     this.localStorageService.setData('products', this.productsPerOrderLocalStorage);
   }
@@ -307,7 +308,8 @@ export class OrderFirestoreService {
       name: productPerOrderLocalStorage.name,
       description: productPerOrderLocalStorage.description,
       price: productPerOrderLocalStorage.price,
-      image: productPerOrderLocalStorage.image
+      image: productPerOrderLocalStorage.image,
+      discountFactor: productPerOrderLocalStorage.discountFactor
     });
 
     this.localStorageService.destroyLocalStorage('products');

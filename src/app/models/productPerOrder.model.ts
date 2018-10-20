@@ -6,5 +6,5 @@ export class ProductPerOrder {
   description?: string;
   image?: string;
   price?: number;
-  // discountFactor?: number;
+  discountFactor?: number;
 }

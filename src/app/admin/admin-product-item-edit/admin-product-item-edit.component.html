@@ -15,10 +15,24 @@
                 <div>
                   <label>Preis: </label> <input type="number" [(ngModel)]="product.price" name="price">
                 </div>
+                <p>Bildname</p>
+                <p-fileUpload
+                  name="myfile[]"
+                  chooseLabel="Bild Upload"
+                  cancelLabel="Abbrechen"
+                  type="file"
+                  (onSelect)="onFileSelection($event)"
+                  [showUploadButton]="false"
+                  accept="image/*">
+                </p-fileUpload>
+                <div *ngIf="(categories$ | async) as Cat">
+                <p-dropdown [options]="Cat" [(ngModel)]="selectedCategory" name="selectedCategory" placeholder="{{product.productCategory}}" optionLabel="name" [showClear]="true" filter="true"></p-dropdown>
+                <!--<p>Gewählte Kategorie: {{selectedCategory ? selectedCategory.name : 'none'}}</p>-->
+                </div>
                 <div>
                   <label>Discount: </label> <p-checkbox binary="true" value="discount" label="Aktion" [(ngModel)]="product.discount" name="discount"></p-checkbox>
                 </div>
-                <div>
+                <div *ngIf="product.discount">
                   <label>discountFactor: </label> <input type="number" [(ngModel)]="product.discountFactor" name="discountFactor">
                 </div>
                 <div>
@@ -70,6 +84,9 @@
             </div>
             <div>
               <label>Preis: </label> {{product.price}}
+            </div>
+            <div>
+              <label>Kategorie: </label> {{product.productCategory}}
             </div>
             <div>
               <label>Discount: </label> {{product.discount}}

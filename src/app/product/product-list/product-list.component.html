@@ -3,7 +3,7 @@
   <div *ngIf="products" class="product-list">
     <!-- <div class="media" *ngFor="let product of products | async" style="width: 300px;"> -->
     <!--<div class="media" *ngFor="let product of products; let i = index">-->
-    <div *ngFor="let product of products | async; let i = index">
+    <div *ngFor="let product of products | async | checkStatus; let i = index">
       <app-product-item [product]='product' [count]='i'></app-product-item>
     </div>
   </div>

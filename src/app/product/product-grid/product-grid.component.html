@@ -45,7 +45,7 @@
 
   <ng-container *ngIf="!filteredProducts">
     <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
-       *ngFor="let product of products | async | slice:0:limit; let i = index">
+       *ngFor="let product of products | async | checkStatus |slice:0:limit; let i = index">
       <div class="product-image">
         <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
       </div>

@@ -3,19 +3,13 @@ import { Product } from '../../models/product.model';
 import { ActivatedRoute } from '@angular/router';
 import { ProductFirestoreService } from '../shared/product-firestore.service';
 import { Observable } from 'rxjs';
-import { ProductPerOrder } from '../../models/productPerOrder.model';
 import { UserService } from '../../user/shared/user.service';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 
 @Component({
   selector: 'app-detail-list',
   templateUrl: './product-detail.component.html',
-  styles: [`
-        .app-detail-list {
-          display: block;
-          margin: 45px;
-        }
-  `]
+  styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
 
@@ -26,8 +20,6 @@ export class ProductDetailComponent implements OnInit {
   public selectedProduct: Observable<Product>;
   user: any;
 
-  productPerOrder: ProductPerOrder;
-
   constructor(private activatedRoute: ActivatedRoute,
               private productFirestoreService: ProductFirestoreService,
               private userService: UserService,
@@ -35,7 +27,6 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('start detail');
     this.user = this.userService.getCurrentUser();
     this.activatedRoute.params.subscribe(
       params => {

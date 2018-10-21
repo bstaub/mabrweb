@@ -7,7 +7,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { RegisterGuard } from './guards/register.guard';
 import { AdminGuard } from './guards/admin.guard';
 
-
 export const USER_ROUTES: Routes = [
   {
     path: '',

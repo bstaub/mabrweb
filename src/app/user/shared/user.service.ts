@@ -28,11 +28,9 @@ export class UserService {
         return {id, ...data};
       }))
     );
-
   }
 
   getUsers() {
-    // return this.users;
     this.usersCollection = this.afs.collection('users');
     return this.usersCollection.valueChanges();
   }
@@ -51,7 +49,6 @@ export class UserService {
     } else { // no user is signed in
       return 0;
     }
-
   }
 
   get authenticated(): boolean {
@@ -80,14 +77,12 @@ export class UserService {
   updateUser(user: User) {
     this.userDoc = this.afs.doc(`users/${user.id}`);
     this.userDoc.update(user);
-
   }
 
   deleteUser(user: User) {
     this.userDoc = this.afs.doc(`users/${user.id}`);
     this.userDoc.delete();
   }
-
 
   /*
   setUserMerge(user: User) {

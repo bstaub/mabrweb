@@ -334,6 +334,8 @@ export class OrderFirestoreService {
   clearScart(productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
     this.deleteProductsInFS(this.getOrderId(), productsPerOrderLocalStorage);
     this.localStorageService.destroyLocalStorage('products');
+    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorage, this.order);
   }
 
   updateOrder(order: Order) {

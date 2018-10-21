@@ -13,6 +13,7 @@ export class HeaderSearchComponent implements OnInit {
   resultsArray: any;
   searchTerm$ = new Subject<String>();
   @ViewChild('searchTerm') input_search: ElementRef;
+  stringToSearch: string;
 
 
   constructor(private productFirestoreService: ProductFirestoreService
@@ -35,15 +36,23 @@ export class HeaderSearchComponent implements OnInit {
         this.resultsArray = data.filter(item => {
           // return item.name === searchTerm;
           // return item.name.match(/Spiel/);
-          return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+          if (searchTerm.length > 0) {
+            this.stringToSearch = searchTerm;
+          } else {
+            this.stringToSearch = 'nichtsAusgebenDasGibtEsNicht159753';
+          }
+          return item.name.toLowerCase().includes(this.stringToSearch.toLocaleLowerCase());
+
         });
         // https://angularfirebase.com/lessons/sharing-data-between-angular-components-four-methods/
         this.productFirestoreService.changeMessage(this.resultsArray);  // RxJS BehaviorSubject
       });
   }
 
-  searchinput() {
+  searchinputReset() {
+    // this.stringToSearch = '';
     this.input_search.nativeElement.value = '';
+
   }
 
 }

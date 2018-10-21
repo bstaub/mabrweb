@@ -4,47 +4,17 @@ import { AuthService } from '../../user/shared/auth.service';
 import { UserService } from '../../user/shared/user.service';
 import { SettingsService } from '../../shared/settings.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styles: [`
-    ul {
-      margin-bottom: 0;
-    }
-    
-    .shopping li {
-      list-style-type: none;
-    }
-    
-    .card {
-      text-align: center;
-      border: 1px solid #e1e1e1;
-      background: white;
-    }
-
-    thead {
-      border-bottom: 1px solid black;
-    }
-
-   
-
-    .burgerMenu {
-      font-size: 30px;
-      cursor: pointer;
-      margin-right: 50px;
-    }
-
-
-  `]
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
 
   @Output() offCanvasClicked = new EventEmitter();
 
-
-  // isLoggedIn: boolean = false;
   isLoggedIn: boolean;
   loggedInUser: string;
   showRegister: boolean;
@@ -74,9 +44,6 @@ export class HeaderComponent implements OnInit {
     );
     this.showRegister = this.settingsService.getSettings().allowRegistration;
     this.showAdmin = this.settingsService.getSettings().allowAdministration;
-
-
-
   }
 
   logout() {
@@ -84,9 +51,6 @@ export class HeaderComponent implements OnInit {
     this.isLoggedIn = false;
     this.localStorageService.destroyLocalStorage('products');
   }
-
-
-
 
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
   OpenMenuCanvas() {

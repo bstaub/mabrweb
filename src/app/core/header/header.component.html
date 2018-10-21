@@ -1,11 +1,14 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
 <!--<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">-->
   <span class="burgerMenu" (click)="OpenMenuCanvas()">☰</span>
-  <a class="navbar-brand" [routerLink]="['']">Shop - mabrweb</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-          aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+
+  <a class="navbar-brand" [routerLink]="['']">mabr</a>
+
+  <app-header-search></app-header-search>
+
+  <app-header-order-flyout></app-header-order-flyout>
+
+
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
@@ -25,10 +28,6 @@
         <!--</div>-->
       <!--</li>-->
     </ul>
-
-
-
-    <app-header-search></app-header-search>
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
@@ -50,8 +49,6 @@
     <button style="margin-left: 7px;" (click)="logout()" class="btn btn-secondary btn-circle" *ngIf="isLoggedIn">
       <i class="fa fa-sign-out" aria-hidden="true"></i>
     </button>
-
-    <app-header-order-flyout></app-header-order-flyout>
 
 
   </div>

@@ -56,7 +56,7 @@ import { Order } from '../../../models/order.model';
       font-size: 12px;
       font-weight: bold;
       line-height: 1;
-      background: green;
+      background: white;
       border-radius: 10px;
     }
     

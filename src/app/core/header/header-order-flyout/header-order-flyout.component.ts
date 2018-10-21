@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalStorageService } from '../../../shared/local-storage.service';
+import { OrderFlyoutService } from '../../shared/order-flyout-service';
+import { ProductPerOrderLocalStorage } from '../../../models/productPerOrderLocalStorage.model';
+import { Order } from '../../../models/order.model';
 
 @Component({
   selector: 'app-header-order-flyout',
@@ -17,7 +20,7 @@ import { LocalStorageService } from '../../../shared/local-storage.service';
     .shopping li {
       list-style-type: none;
     }
-    
+
     .submenu {
       position: relative;
     }
@@ -47,28 +50,38 @@ import { LocalStorageService } from '../../../shared/local-storage.service';
       color: white;
       font-weight: bold;
     }
+    .bubble {
+      display: inline-block;
+      padding: 4px 7px 4px 7px;
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 1;
+      background: green;
+      border-radius: 10px;
+    }
+    
   `]
 })
 export class HeaderOrderFlyoutComponent implements OnInit {
-  itemsForBasket: any;
+  productsPerOrderLocalStorage: ProductPerOrderLocalStorage[];
+  order: Order;
 
   constructor(
     private localStorageService: LocalStorageService,
-  ) { }
+    private orderFlyoutService: OrderFlyoutService
+  ) {
+  }
 
   ngOnInit() {
-    // delete only works on ngInit
-    this.getProductsFromLocalStorage();
+    this.orderFlyoutService.currentProductsPerOrderLocalStorage.subscribe(
+      (data: ProductPerOrderLocalStorage[]) => this.productsPerOrderLocalStorage = data
+    );
+
+    this.orderFlyoutService.currentOrder.subscribe(
+      (data: Order) => this.order = data
+    );
   }
 
 
-  removeItem(event) {
-    // console.log(event.target.dataset.id);
-    event.target.parentElement.parentElement.remove();
-  }
-
-  getProductsFromLocalStorage() {
-    this.itemsForBasket = this.localStorageService.getData('products');
-  }
 
 }

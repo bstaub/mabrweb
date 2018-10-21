@@ -24,6 +24,8 @@ import { SliderService } from './shared/slider.service';
 import { OffCanvasComponent } from './home/off-canvas/off-canvas.component';
 import { PageTitleComponent } from './page-title/page-title.component';
 import { HeaderOrderFlyoutComponent } from './header/header-order-flyout/header-order-flyout.component';
+import { OrderFlyoutService } from './shared/order-flyout-service';
+
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -65,6 +67,7 @@ import { HeaderOrderFlyoutComponent } from './header/header-order-flyout/header-
     SettingsService,
     LocalStorageService,
     SliderService,
+    OrderFlyoutService,
     {provide: LocationStrategy, useClass: PathLocationStrategy}
   ],
 })

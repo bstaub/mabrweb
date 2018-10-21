@@ -9,6 +9,7 @@ import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalSt
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { CustomerAddress } from '../../models/customerAddress.model';
+import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
 
 
 @Injectable({
@@ -49,6 +50,7 @@ export class OrderFirestoreService {
   constructor(public afs: AngularFirestore,
               private userService: UserService,
               private localStorageService: LocalStorageService,
+              private orderFlyoutService: OrderFlyoutService,
   ) {
 
     this.orderCollection = this.afs.collection('orders');
@@ -246,6 +248,7 @@ export class OrderFirestoreService {
                     this.pushProductToLocalStorage(this.product);
                   }
                   this.localStorageService.setData('products', this.productsPerOrderLocalStorage);
+                  this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorage, this.order);
                   this.saveProductsInFS(orderId, this.productsPerOrderLocalStorage);
                   this.calcOrderTotalValue();
                 }
@@ -290,6 +293,7 @@ export class OrderFirestoreService {
       discountFactor: product.discountFactor ? product.discountFactor : 1
     });
     this.localStorageService.setData('products', this.productsPerOrderLocalStorage);
+    this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorage, this.order);
   }
 
   productExistInScart(product: Product) {
@@ -314,6 +318,7 @@ export class OrderFirestoreService {
 
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
+    this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorageNew, this.order);
     this.saveProductsInFS(this.getOrderId(), this.productsPerOrderLocalStorageNew);
   }
 
@@ -322,6 +327,7 @@ export class OrderFirestoreService {
     this.productsPerOrderLocalStorageNew = this.productsPerOrderLocalStorage.filter(product => product.productId !== productIdToDelete);
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
+    this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorageNew, this.order);
     this.deleteProductInFS(this.getOrderId(), productIdToDelete);
   }
 
@@ -343,6 +349,7 @@ export class OrderFirestoreService {
       .catch(function (error) {
         console.error('error updating document: ', error);
       });
+    this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorage, this.order);
   }
 
   resetUserOrder(order: Order) {

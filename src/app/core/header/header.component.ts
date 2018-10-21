@@ -13,36 +13,11 @@ import { Router } from '@angular/router';
     ul {
       margin-bottom: 0;
     }
-
-    li.submenu {
-      padding: 20px;
-    }
-
+    
     .shopping li {
       list-style-type: none;
     }
-
-    .submenu {
-      position: relative;
-    }
-
-    .submenu #shopping-cart {
-      display: none;
-    }
-
-    .submenu:hover #shopping-cart {
-      display: block;
-      position: absolute;
-      right: -15px;
-      top: 66px;
-      z-index: 1;
-      background-color: white;
-      padding: 20px;
-      min-height: 400px;
-      min-width: 400px;
-      border: 1px solid black;
-    }
-
+    
     .card {
       text-align: center;
       border: 1px solid #e1e1e1;
@@ -53,14 +28,7 @@ import { Router } from '@angular/router';
       border-bottom: 1px solid black;
     }
 
-    .remove {
-      background-color: red;
-      border-radius: 50%;
-      padding: 5px 10px;
-      text-decoration: none;
-      color: white;
-      font-weight: bold;
-    }
+   
 
     .burgerMenu {
       font-size: 30px;
@@ -75,7 +43,7 @@ export class HeaderComponent implements OnInit {
 
   @Output() offCanvasClicked = new EventEmitter();
 
-  itemsForBasket: any;
+
   // isLoggedIn: boolean = false;
   isLoggedIn: boolean;
   loggedInUser: string;
@@ -108,8 +76,7 @@ export class HeaderComponent implements OnInit {
     this.showAdmin = this.settingsService.getSettings().allowAdministration;
 
 
-    // delete only works on ngInit
-    this.getProductsFromLocalStorage();
+
   }
 
   logout() {
@@ -119,14 +86,7 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  getProductsFromLocalStorage() {
-    this.itemsForBasket = this.localStorageService.getData('products');
-  }
 
-  removeItem(event) {
-    // console.log(event.target.dataset.id);
-    event.target.parentElement.parentElement.remove();
-  }
 
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
   OpenMenuCanvas() {

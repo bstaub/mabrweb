@@ -11,8 +11,6 @@ import { ProductFirestoreService } from '../../product/shared/product-firestore.
 })
 export class AdminProductListComponent implements OnInit {
 
-  // products: Observable<any[]>;
-  // products: Observable<any>;
   products: Observable<Product[]>;
 
   constructor(private productService: ProductService, private productFireStoreService: ProductFirestoreService) {
@@ -22,27 +20,9 @@ export class AdminProductListComponent implements OnInit {
     this.getProductList();
   }
 
-  getProductListAsync() {
-    // | async in Teamplate Ausgabe hinzufügen, product kann dann auch vom Typ Observable<any[]> zurückgeben!
-    // this.products = this.productService.getProductList().valueChanges();
-  }
-
   getProductList() {
     this.products = this.productFireStoreService.getProducts();
 
-
-    // this.productService.getProductList().snapshotChanges().pipe(
-    //   map(changes =>
-    //     changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
-    //   )
-    // ).subscribe(products => {
-    //   console.log('bslogger: ', products);
-    //   this.products = products;
-    // });
-  }
-
-  deleteProducts() {
-    this.productService.deleteAll();
   }
 
 }

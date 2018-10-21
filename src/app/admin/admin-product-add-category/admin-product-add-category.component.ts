@@ -19,17 +19,12 @@ export class AdminProductAddCategoryComponent implements OnInit {
   }
 
   onSubmit() {
-
-    /*
-        const categoryObj = Object.assign(
-          {id: 101,
-            name: this.category,
-          description: 'Keine Produktbeschreibung vorhanden'},
-          this.productCategory);
-    */
-
-
-    this.productCategoryService.addCategory({id: this.productCategoryService.getPushKey(), name: this.category, description: this.beschreibung });
+    this.productCategoryService.addCategory(
+      {
+        id: this.productCategoryService.getPushKey(),
+        name: this.category,
+        description: this.beschreibung
+      });
   }
 
 }

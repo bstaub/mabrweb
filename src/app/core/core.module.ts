@@ -23,6 +23,7 @@ import { HomeSliderNgcarouselComponent } from './home/home-slider-ngcarousel/hom
 import { SliderService } from './shared/slider.service';
 import { OffCanvasComponent } from './home/off-canvas/off-canvas.component';
 import { PageTitleComponent } from './page-title/page-title.component';
+import { HeaderOrderFlyoutComponent } from './header/header-order-flyout/header-order-flyout.component';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -34,6 +35,7 @@ import { PageTitleComponent } from './page-title/page-title.component';
     HomeSliderComponent,
     HomeSliderNgcarouselComponent,
     OffCanvasComponent,
+    HeaderOrderFlyoutComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +50,7 @@ import { PageTitleComponent } from './page-title/page-title.component';
     HeaderSearchComponent,
     OffCanvasComponent,
     SharedModule,
+    HeaderOrderFlyoutComponent,
   ],
   providers: [AuthService,
     AdminGuard,

@@ -1,0 +1,38 @@
+<div class="pull-right shopping">
+  <ul>
+    <li class="submenu">
+      <a [routerLink]="['bestellung']"><img src="assets/cart.png" id="img-cart"></a>
+      <div id="shopping-cart">
+
+        <table id="cart-content" class="u-full-width">
+          <thead>
+          <tr>
+            <th>Bild</th>
+            <th>Name</th>
+            <th>Anz.</th>
+            <th>Preis</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr *ngFor="let item of itemsForBasket">
+            <td>
+              <img src="{{item.image}}" width="60">
+            </td>
+            <td>{{item.name}}</td>
+            <td>{{item.qty}}</td>
+            <td>CHF {{item.price}}</td>
+            <td>
+              <a href="#" class="remove" [attr.data-id]="item.productId" (click)="removeItem($event)">X</a>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+
+        <a [routerLink]="['bestellung']" id="clear-cart" class="button u-full-width btn btn-outline-primary mt-2">Bestellen</a>
+      </div>
+    </li>
+  </ul>
+</div>

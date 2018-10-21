@@ -1,43 +1,47 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ProductFirestoreService } from '../../../product/shared/product-firestore.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-header-search',
   templateUrl: './header-search.component.html',
   styleUrls: ['./header-search.component.css']
 })
-export class HeaderSearchComponent implements OnInit {
+export class HeaderSearchComponent implements OnInit, OnDestroy {
 
-  results: Object;
+
   resultsArray: any;
-  searchTerm$ = new Subject<String>();
-  @ViewChild('searchTerm') input_search: ElementRef;
   stringToSearch: string;
+  searchFormReactive: FormGroup;
+  // get search() {
+  //   return this.searchFormReactive.get('search');
+  // }
+  subscription_getDataToSearch: Subscription;
 
 
-  constructor(private productFirestoreService: ProductFirestoreService
+  constructor(private productFirestoreService: ProductFirestoreService,
   ) {
-    // https://alligator.io/angular/real-time-search-angular-rxjs
-    this.productFirestoreService.getDataToSearch2(this.searchTerm$)
-      .subscribe(result => {
-        this.results = result.results;
-        console.log(result);
-      });
+
   }
 
   ngOnInit() {
-
+    this.searchFormReactive = new FormGroup({
+      search: new FormControl('')
+    });
   }
 
-  getAllSearch(searchTerm: string) {
-    this.productFirestoreService.getDataToSearch()
+  getAllSearch() {  // trigger on submit and on keyup event, need submit for reset!
+    this.productFirestoreService.searchCloseClicked.emit(false);
+    if (!this.searchFormReactive.value.search) {
+      this.resetForm();
+    }
+
+    this.subscription_getDataToSearch = this.productFirestoreService.getDataToSearch()
       .subscribe( data => {
         this.resultsArray = data.filter(item => {
-          // return item.name === searchTerm;
-          // return item.name.match(/Spiel/);
-          if (searchTerm.length > 0) {
-            this.stringToSearch = searchTerm;
+          if (this.searchFormReactive.value.search && this.searchFormReactive.value.search.length > 0) {
+            this.stringToSearch = this.searchFormReactive.value.search;
           } else {
             this.stringToSearch = 'nichtsAusgebenDasGibtEsNicht159753';
           }
@@ -49,10 +53,17 @@ export class HeaderSearchComponent implements OnInit {
       });
   }
 
-  searchinputReset() {
-    // this.stringToSearch = '';
-    this.input_search.nativeElement.value = '';
+  resetForm() {
+    this.searchFormReactive.reset();
+    setTimeout(() => {
+      this.productFirestoreService.searchCloseClicked.emit(true);
+    }, 100);
 
   }
+
+  ngOnDestroy() {
+    this.subscription_getDataToSearch.unsubscribe();
+  }
+
 
 }

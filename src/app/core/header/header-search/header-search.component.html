@@ -1,15 +1,9 @@
-<form class="form-inline my-2 my-lg-0">
+<form (ngSubmit)="getAllSearch()" [formGroup]="searchFormReactive" class="form-inline my-2 my-lg-0">
   <input class="form-control mr-sm-2"
+         formControlName="search"
          type="text"
          placeholder="Search"
          aria-label="Search"
-         (keyup)="getAllSearch(searchTerm.value)"
-         #searchTerm>
-  <input *ngIf="false" class="form-control mr-sm-2"
-         type="text"
-         placeholder="Search2"
-         aria-label="Search2"
-         (keyup)="searchTerm$.next($event.target.value)"
-         #searchTerm2>
-  <button class="btn btn-secondary btn-circle" type="submit" (click)="searchinputReset()"><i class="fa fa-search" aria-hidden="true"></i></button>
+         (keyup)="getAllSearch()">
+  <button class="btn btn-secondary btn-circle" type="submit" (click)="resetForm()"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
 </form>

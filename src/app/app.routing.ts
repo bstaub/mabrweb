@@ -39,7 +39,8 @@ const APP_ROUTES: Routes = [
 
 
 @NgModule({
-  imports: [RouterModule.forRoot(APP_ROUTES)],
+  // https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change
+  imports: [RouterModule.forRoot(APP_ROUTES, {scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule],
   providers: [
     // AdminGuard,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../shared/product.service';
@@ -11,7 +11,7 @@ import { ProductCategory } from '../../models/product-category.model';
   templateUrl: './product-grid.component.html',
   styleUrls: ['./product-grid.component.css']
 })
-export class ProductGridComponent implements OnInit {
+export class ProductGridComponent implements OnInit, OnDestroy {
 
   products: Observable<Product[]>;
   categories: Observable<ProductCategory[]>;
@@ -35,16 +35,24 @@ export class ProductGridComponent implements OnInit {
     this.getProductList();
     this.categories = this.productCategory.getCategories();
 
-    // RxJS BehaviorSubject start
-    // this.productFireStoreService.currentMessage.subscribe(message => this.filteredProducts = message);
-    this.productFireStoreService.currentMessage.subscribe(message => {
-      if (message !== 0) {
-        this.filteredProducts = message;
-      } else {
-        this.filteredProducts = null;
-      }
-    });
-    // RxJS BehaviorSubject end
+    // https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change
+    // this.router.events.subscribe((evt) => {
+    //   if (!(evt instanceof NavigationEnd)) {
+    //     return;
+    //   }
+    //   window.scrollTo(0, 0);
+    // });
+
+    // // RxJS BehaviorSubject start
+    // // this.productFireStoreService.currentMessage.subscribe(message => this.filteredProducts = message);
+    // this.productFireStoreService.currentMessage.subscribe(message => {
+    //   if (message !== 0) {
+    //     this.filteredProducts = message;
+    //   } else {
+    //     this.filteredProducts = null;
+    //   }
+    // });
+    // // RxJS BehaviorSubject end
   }
 
   getProductList() {
@@ -90,6 +98,8 @@ export class ProductGridComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
 
+  }
 
 }

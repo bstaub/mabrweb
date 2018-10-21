@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, Query } from 'angularfire2/firestore';
-import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { map } from 'rxjs/operators';
 import { Product } from '../../models/product.model';
 
 
@@ -22,6 +22,15 @@ export class ProductFirestoreService {
   currentMessage = this.messageSource.asObservable();
   // RxJS BehaviorSubject end
 
+  // Service Event zum Suggest start
+  searchCloseClicked = new EventEmitter<boolean>();
+  // Service Event zum Suggest end
+
+  // RxJS BehaviorSubject start
+  changeMessage(message) {
+    this.messageSource.next(message);
+  }
+  // RxJS BehaviorSubject end
 
   constructor(public afs: AngularFirestore) {
 
@@ -29,12 +38,6 @@ export class ProductFirestoreService {
     this.sortProductsByNameAsc();  // Initial sorting List
 
   }
-
-  // RxJS BehaviorSubject start
-  changeMessage(message) {
-    this.messageSource.next(message);
-  }
-  // RxJS BehaviorSubject end
 
   getData() {
     this.products = this.productCollection.snapshotChanges().pipe(
@@ -46,61 +49,10 @@ export class ProductFirestoreService {
     );
   }
 
-  // https://stackoverflow.com/questions/48751908/filtering-firestore-observable-against-javascript-object-values
-  /*
-  loadData() {
-    this.productCollection = this.afs.collection<any>('products', ref => ref.orderBy('name', 'asc'));
-    return this.productCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const id = a.payload.doc.id;
-          const data = a.payload.doc.data();
-          // data.id = id;
-
-          return { id, data };
-        });
-      })
-    );
-  }
-  */
-
-  /*
-  getAllSearch(searchTerm: string) {
-    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
-    this.products = this.productCollection.snapshotChanges().pipe(
-      map(val => val.filter( fil => fil.payload.doc.name === searchTerm) ),
-      // f.payload.doc.data.name
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Product;
-        const key = a.payload.doc.id;
-        return {key, ...data};
-      }))
-    );
-  }
-  */
-
   getDataToSearch(): Observable<Product[]> {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
-    return this.products = this.productCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Product;
-        const key = a.payload.doc.id;
-        return {key, ...data};
-      }))
-    );
-  }
-
-  getDataToSearch2(terms: Observable<any>): Observable<any> {
-    return terms.pipe(
-      debounceTime(400),
-      distinctUntilChanged(),
-      switchMap(term => this.searchEntries(term))
-    );
-  }
-
-  searchEntries(term) {
-    this.productCollection = this.afs.collection('products', ref => ref.where('name', '==', term).limit(10));
-    return this.products = this.productCollection.snapshotChanges().pipe(
+    // return this.products = this.productCollection.snapshotChanges().pipe(  // Fehler weil this.produkts überschrieben nach Fulltext Search wurde!!!
+    return this.productCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Product;
         const key = a.payload.doc.id;
@@ -146,6 +98,7 @@ export class ProductFirestoreService {
 
 
   sortProductsByNameAsc() {
+    console.log('load initial products from productsService');
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
     this.getData();
   }

@@ -1,21 +1,74 @@
 <!-- Page Title-->
-<div class="page-title">
+<div *ngIf="!homepage" class="page-title">
   <div class="container-fluid">
     <div class="column">
       <h1>{{ title }}</h1>
+
+      <div *ngIf="filteredProducts">
+        <ul class="suggest">
+          <ng-container *ngFor="let suggest of filteredProducts">
+            <li>
+              <a *ngIf="suggest.name" (click)="closeSuggest()" routerLink="/produkte/detail/{{suggest.key}}">{{ suggest.name }}</a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+
     </div>
     <div class="column">
       <ul class="breadcrumbs">
         <li>
           <a routerLink="/home" href="">Home</a>
         </li>
-        <ng-container *ngFor="let child of children">
-          <li class="separator">&nbsp;</li>
-          <li>
-            <a *ngIf="child.link; else noLink" [routerLink]="child.link">{{ child.title }}</a>
-            <ng-template #noLink>{{child.title}}</ng-template>
-          </li>
-        </ng-container>
+
+        <div *ngIf="!filteredProducts">
+          <ng-container *ngFor="let child of children">
+            <li class="separator">&nbsp;</li>
+            <li>
+              <a *ngIf="child.link; else noLink" [routerLink]="child.link">{{ child.title }}</a>
+              <ng-template #noLink>{{child.title}}</ng-template>
+            </li>
+          </ng-container>
+        </div>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="homepage && filteredProducts && searchCloseClicked" class="page-title">
+  <div class="container-fluid">
+    <div class="column">
+      <h1>{{ title }}</h1>
+
+      <div *ngIf="filteredProducts">
+        <ul class="suggest">
+          <ng-container *ngFor="let suggest of filteredProducts">
+            <li>
+              <a *ngIf="suggest.name" (click)="closeSuggest()" routerLink="/produkte/detail/{{suggest.key}}">{{ suggest.name }}</a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+
+    </div>
+    <div class="column">
+      <ul class="breadcrumbs">
+        <li>
+          <a routerLink="/home" href="">Home</a>
+        </li>
+
+        <div *ngIf="!filteredProducts">
+          <ng-container *ngFor="let child of children">
+            <li class="separator">&nbsp;</li>
+            <li>
+              <a *ngIf="child.link; else noLink" [routerLink]="child.link">{{ child.title }}</a>
+              <ng-template #noLink>{{child.title}}</ng-template>
+            </li>
+          </ng-container>
+        </div>
+
       </ul>
     </div>
   </div>

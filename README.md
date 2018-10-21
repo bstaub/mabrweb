@@ -133,7 +133,7 @@ enviroments: firebase config erstellen für test und prod
 
 ### Deployment
 
-- Defninition of development und deployment process
+- Defninition of development und deployment process, Testing Works for DEV
 
 ### Testing
 

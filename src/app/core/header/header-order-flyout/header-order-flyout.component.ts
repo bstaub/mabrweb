@@ -21,6 +21,12 @@ import { Order } from '../../../models/order.model';
       list-style-type: none;
     }
 
+    @media (max-width: 580px){
+      .shopping ul {
+        padding-left: 0;
+      }
+    }  
+    
     .submenu {
       position: relative;
     }
@@ -34,7 +40,7 @@ import { Order } from '../../../models/order.model';
       position: absolute;
       right: -15px;
       top: 66px;
-      z-index: 1;
+      z-index: 3;
       background-color: white;
       padding: 20px;
       min-height: 400px;
@@ -65,6 +71,7 @@ import { Order } from '../../../models/order.model';
 export class HeaderOrderFlyoutComponent implements OnInit {
   productsPerOrderLocalStorage: ProductPerOrderLocalStorage[];
   order: Order;
+  visibleStatus: boolean = true;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -80,6 +87,13 @@ export class HeaderOrderFlyoutComponent implements OnInit {
     this.orderFlyoutService.currentOrder.subscribe(
       (data: Order) => this.order = data
     );
+  }
+
+  closeFlyout() {
+    this.visibleStatus = false;
+    setTimeout(() => {
+      this.visibleStatus = true;
+    }, 100);
   }
 
 

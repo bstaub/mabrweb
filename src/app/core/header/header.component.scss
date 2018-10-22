@@ -20,4 +20,19 @@ thead {
   font-size: 30px;
   cursor: pointer;
   margin-right: 50px;
+
+  @media (max-width: 580px) {
+    margin-right: 0;
+  }
+}
+
+
+@media (max-width: 580px) {
+  app-header-search {
+    width: 180px;
+  }
+  .navbar-brand {
+    margin-right: 0;
+  }
+
 }

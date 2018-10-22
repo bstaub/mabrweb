@@ -17,9 +17,10 @@ import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
 })
 export class OrderFirestoreService {
 
+  orders: any;
   userOrder: Observable<Order[]>;
   userOrderDoc: Observable<Order>;
-  products: Observable<any[]>;
+  products: Observable<Product[]>;
 
   orderPerUser: AngularFirestoreDocument<Order>;
   orderCollection: AngularFirestoreCollection<Order>;
@@ -28,6 +29,7 @@ export class OrderFirestoreService {
 
   orderCollection_completed: AngularFirestoreCollection<Order>;
   orderCollection_completedAnonymus: AngularFirestoreCollection<Order>;
+  orderCollection_completed_sorted: AngularFirestoreCollection<Order>;
 
   productsOrderCollection: AngularFirestoreCollection<any>;
   productsPerOrderDocument: AngularFirestoreDocument<any>;
@@ -94,6 +96,21 @@ export class OrderFirestoreService {
     return this.userOrderDoc;
   }
 
+  getLatestOrder() {
+    this.orderCollection_completed_sorted = this.afs.collection('orders_completed', ref => ref.orderBy('shopOrderId', 'desc').limit(1));
+    // return this.products = this.productCollection.snapshotChanges().pipe(  // Fehler weil this.produkts überschrieben nach Fulltext Search wurde!!!
+    this.orders = this.orderCollection_completed_sorted.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+
+    return  this.orders;
+
+  }
+
 
   getProductsPerOrder(oderKey) {
     this.user = this.userService.getCurrentUser();
@@ -140,7 +157,7 @@ export class OrderFirestoreService {
   createEmptyOrder() {
     this.customerAddress = new CustomerAddress();
     this.order = new Order();
-    this.order.shopOrderId = 'ShopID XXX-123';
+    this.order.shopOrderId = 0;
     this.order.orderDate = new Date();
     this.order.status = 'pending';
     this.order.shippingMethod = 'normal';
@@ -415,12 +432,6 @@ export class OrderFirestoreService {
         console.error('Error archiving document: ', error);
       });
     });
-  }
-
-  // todo:
-  generateShopOrderId(): string {
-    return 'XXX-001';
-
   }
 
   getOrderId() {

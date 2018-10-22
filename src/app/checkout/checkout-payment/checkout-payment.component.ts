@@ -21,6 +21,7 @@ export class CheckoutPaymentComponent implements OnInit {
   orderId: string;
   order: Order;
   closingOrderId: string;
+  nextShopOrderId: number;
 
 
   constructor(private orderFirestoreService: OrderFirestoreService,
@@ -44,7 +45,7 @@ export class CheckoutPaymentComponent implements OnInit {
   onSubmit() {
     this.order = new Order();
     this.order.key = this.orderFirestoreService.getOrderId();
-    this.order.shopOrderId = this.orderFirestoreService.generateShopOrderId();
+    this.order.shopOrderId = this.nextShopOrderId;
     this.order.orderDate = new Date();
     this.order.status = 'done';
     this.order.totalValue = this.orderData.totalValue;
@@ -64,13 +65,13 @@ export class CheckoutPaymentComponent implements OnInit {
       this.orderFirestoreService.resetUserOrder(this.order);
       this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
     } else {
-      this.orderFirestoreService.deleteOrderAnonymus(this.order.key);
       this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
+      this.orderFirestoreService.deleteOrderAnonymus(this.order.key);
       this.localStorageService.destroyLocalStorage('anonymusOrderId');
     }
 
 
-    this.router.navigate(['/checkout/thx']);
+    this.router.navigate(['/checkout/thx'], {queryParams: {shopOrderId: this.nextShopOrderId}});
   }
 
 
@@ -78,6 +79,12 @@ export class CheckoutPaymentComponent implements OnInit {
     this.orderFirestoreService.getUserOrder(this.orderFirestoreService.getOrderId()).subscribe((res) => {
       this.orderData = res;
     });
+
+    this.orderFirestoreService.getLatestOrder().subscribe((res) => {
+      this.nextShopOrderId = res[0].shopOrderId + 1;
+    });
+
+
   }
 
   initPaymentFormGroup() {
@@ -102,6 +109,7 @@ export class CheckoutPaymentComponent implements OnInit {
     });
 
   }
+
   goBack() {
     this.router.navigate(['/checkout/shipmentdata']);
   }

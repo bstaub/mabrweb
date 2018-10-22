@@ -9,7 +9,6 @@
 
         <div *ngIf="(productsPerOrderLocalStorage?.length > 0);then items else no_items">  </div>
 
-
         <ng-template #items>
         <table id="cart-content" class="u-full-width">
           <thead>
@@ -49,10 +48,6 @@
         <ng-template #no_items>
           Es befinden sich keine Artikel im Warenkorb
         </ng-template>
-
-
-
-
 
       </div>
     </li>

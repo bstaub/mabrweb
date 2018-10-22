@@ -6,7 +6,7 @@ export class Order {
   userId: string;
   customerBillingAddress: CustomerAddress;
   customerShippingAddress: CustomerAddress;
-  shopOrderId = 'XXX-000';
+  shopOrderId = 0;
   orderDate: any = null;
   status = 'pending';
   totalValue: number;

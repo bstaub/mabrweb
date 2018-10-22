@@ -3,8 +3,14 @@
     <li class="submenu">
       <a [routerLink]="['bestellung']"><img src="assets/cart.png" id="img-cart"></a>
       <span class="bubble">{{productsPerOrderLocalStorage?.length || '0'}}</span>
+
+
       <div id="shopping-cart">
 
+        <div *ngIf="(productsPerOrderLocalStorage?.length > 0);then items else no_items">  </div>
+
+
+        <ng-template #items>
         <table id="cart-content" class="u-full-width">
           <thead>
           <tr>
@@ -37,6 +43,17 @@
         </table>
 
         <a [routerLink]="['bestellung']" id="clear-cart" class="button u-full-width btn btn-outline-primary mt-2">Bestellen</a>
+
+        </ng-template>
+
+        <ng-template #no_items>
+          Es befinden sich keine Artikel im Warenkorb
+        </ng-template>
+
+
+
+
+
       </div>
     </li>
   </ul>

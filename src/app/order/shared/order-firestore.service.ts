@@ -335,6 +335,7 @@ export class OrderFirestoreService {
     this.deleteProductsInFS(this.getOrderId(), productsPerOrderLocalStorage);
     this.localStorageService.destroyLocalStorage('products');
     this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.calcOrderTotalValue();
     this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorage, this.order);
   }
 

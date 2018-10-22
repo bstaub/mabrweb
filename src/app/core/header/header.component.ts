@@ -4,6 +4,8 @@ import { AuthService } from '../../user/shared/auth.service';
 import { UserService } from '../../user/shared/user.service';
 import { SettingsService } from '../../shared/settings.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { Order } from '../../models/order.model';
+import { OrderFlyoutService } from '../shared/order-flyout-service';
 
 
 @Component({
@@ -28,6 +30,7 @@ export class HeaderComponent implements OnInit {
               private userService: UserService,
               private settingsService: SettingsService,
               private localStorageService: LocalStorageService,
+              private orderFlyoutService: OrderFlyoutService,
   ) {
   }
 
@@ -50,6 +53,7 @@ export class HeaderComponent implements OnInit {
     this.authService.logout();
     this.isLoggedIn = false;
     this.localStorageService.destroyLocalStorage('products');
+    this.orderFlyoutService.refreshOrderFlyout(this.localStorageService.getData('products'), new Order());
   }
 
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */

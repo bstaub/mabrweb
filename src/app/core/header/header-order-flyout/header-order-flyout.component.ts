@@ -43,8 +43,8 @@ import { Order } from '../../../models/order.model';
       z-index: 3;
       background-color: white;
       padding: 20px;
-      min-height: 400px;
-      min-width: 400px;
+      min-height: 200px;
+      min-width: 373px;
       border: 1px solid black;
     }
 

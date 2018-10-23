@@ -13,7 +13,7 @@ import { filter, map, mergeMap } from 'rxjs/operators';
   `]
 })
 export class CheckoutComponent implements OnInit {
-  currCheckoutStep: any[];
+  currCheckoutStep: any = 1;
   checkoutSteps = [{id: '1', description: 'Adressdaten eingeben'}, {id: '2', description: 'Versandart wählen'}, {id: '3', description: 'Zahlart wählen'}, {id: '4', description: 'Bestellbestätigung'}];
 
 
@@ -44,6 +44,7 @@ export class CheckoutComponent implements OnInit {
       .pipe(filter(event => event instanceof NavigationEnd),
         map(() => {
           let route = this.activatedRoute.firstChild;
+          console.log(route);
           let child = route;
           while (child) {
             if (child.firstChild) {
@@ -58,9 +59,8 @@ export class CheckoutComponent implements OnInit {
         mergeMap(route => route.data)
       )
       .subscribe(data => {
+        console.log(data);
         this.currCheckoutStep = data.checkoutStep;
-        // console.log(this.currCheckoutStep);
-
       });
 
 

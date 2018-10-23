@@ -19,13 +19,15 @@ import { UserLoginRegisterSlideComponent } from './user/user-login-register-slid
 import { CheckoutComponent } from './checkout/checkout.component';
 import { UserComponent } from './user/user.component';
 import { CheckoutCustomerdataComponent } from './checkout/checkout-customerdata/checkout-customerdata.component';
+import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login.component';
 
 
 const APP_ROUTES: Routes = [
   {path: '', component: HomeComponent},
   {path: 'admin', component: AdminComponent, children: ADMIN_ROUTES, canActivate: [AdminGuard]},
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES},
-  {path: 'bestellung', component: OrderDetailComponent, data: {checkoutStep: 1}},
+  {path: 'bestellung', component: OrderDetailComponent},
+  {path: 'checkout-login', component: CheckoutLoginComponent},
   {path: 'checkout', component: CheckoutComponent, children: CHECKOUT_ROUTES},
   {path: 'users', component: UserComponent, children: USER_ROUTES, canActivate: [Auth2Guard]}, // Router Outlet auf UserComponent nicht vergessen!
   {path: 'login', component: UserLoginComponent},

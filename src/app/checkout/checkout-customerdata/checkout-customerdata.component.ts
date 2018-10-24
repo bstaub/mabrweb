@@ -25,6 +25,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
   customerBillingAddress: CustomerAddress;
   customerShippingAddress: CustomerAddress;
   shipqingEqualsBillingAddress = true;
+  formIsValid: boolean;
 
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
@@ -40,6 +41,17 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
 
     this.initCustomerAddressFormGroup();
+
+    this.CustomerAddressForm.valueChanges.subscribe(() => {
+        if (this.shipqingEqualsBillingAddress) {
+          this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid;
+        } else {
+          this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid && this.CustomerAddressForm.controls.customerShippingAddress.valid;
+
+        }
+
+      }
+    );
 
   }
 
@@ -97,19 +109,20 @@ export class CheckoutCustomerdataComponent implements OnInit {
         city_b: new FormControl(null, Validators.required),
         country_b: new FormControl(null, Validators.required),
         mail_b: new FormControl(null, [
-          Validators.email
+          Validators.email,
+          Validators.required
         ]),
         phone_b: new FormControl(null)
       }),
 
       shipqingEqualsBillingAddress: new FormControl(this.shipqingEqualsBillingAddress),
       customerShippingAddress: new FormGroup({
-        firstname_s: new FormControl(null),
-        lastname_s: new FormControl(null),
-        address_s: new FormControl(null),
-        zip_s: new FormControl(null),
-        city_s: new FormControl(null),
-        country_s: new FormControl(null),
+        firstname_s: new FormControl(null, Validators.required),
+        lastname_s: new FormControl(null, Validators.required),
+        address_s: new FormControl(null, Validators.required),
+        zip_s: new FormControl(null, Validators.required),
+        city_s: new FormControl(null, Validators.required),
+        country_s: new FormControl(null, Validators.required),
         mail_s: new FormControl(null, [
           Validators.email
         ]),
@@ -122,7 +135,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
     setTimeout(() => {
 
-      if (this.orderData) {
+      if (this.user) {
         this.setOrderData();
       }
     }, 1300);
@@ -130,6 +143,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
   }
 
   setOrderData() {
+
 
     this.shipqingEqualsBillingAddress = this.orderData.shipqingEqualsBillingAddress;
 
@@ -155,6 +169,27 @@ export class CheckoutCustomerdataComponent implements OnInit {
       },
     });
 
+    this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').clearValidators();
+    this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').updateValueAndValidity();
+
+  }
+
+  setValidation(e) {
+    if (e.target.checked) {
+
+      console.log('checked_bil: ' + this.CustomerAddressForm.controls.customerBillingAddress.valid);
+      console.log('checked_ship: ' + this.CustomerAddressForm.controls.customerShippingAddress.valid);
+      this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid;
+    } else {
+      console.log('unchecked_bil: ' + this.CustomerAddressForm.controls.customerBillingAddress.valid);
+      console.log('unchecked_ship: ' + this.CustomerAddressForm.controls.customerShippingAddress.valid);
+      this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid && this.CustomerAddressForm.controls.customerShippingAddress.valid;
+      // this.CustomerAddressForm.controls.customerShippingAddress.get('firstname_s').setValidators([Validators.required]);
+      // this.CustomerAddressForm.controls.customerShippingAddress.get('firstname_s').updateValueAndValidity();
+      // this.CustomerAddressForm.value.customerShippingAddress.firstname_s.setValidators([Validators.required]);
+      // this.CustomerAddressForm.value.customerShippingAddress.firstname_s.updateValueAndValidity();
+      // console.log('not_checked: ' + this.CustomerAddressForm.valid);
+    }
   }
 
   goBack() {

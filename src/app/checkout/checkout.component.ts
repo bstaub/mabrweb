@@ -44,7 +44,7 @@ export class CheckoutComponent implements OnInit {
       .pipe(filter(event => event instanceof NavigationEnd),
         map(() => {
           let route = this.activatedRoute.firstChild;
-          console.log(route);
+          // console.log(route);
           let child = route;
           while (child) {
             if (child.firstChild) {
@@ -59,7 +59,7 @@ export class CheckoutComponent implements OnInit {
         mergeMap(route => route.data)
       )
       .subscribe(data => {
-        console.log(data);
+       //  console.log(data);
         this.currCheckoutStep = data.checkoutStep;
       });
 

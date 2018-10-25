@@ -47,9 +47,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
           this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid;
         } else {
           this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid && this.CustomerAddressForm.controls.customerShippingAddress.valid;
-
         }
-
       }
     );
 
@@ -176,19 +174,10 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
   setValidation(e) {
     if (e.target.checked) {
-
-      console.log('checked_bil: ' + this.CustomerAddressForm.controls.customerBillingAddress.valid);
-      console.log('checked_ship: ' + this.CustomerAddressForm.controls.customerShippingAddress.valid);
       this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid;
     } else {
-      console.log('unchecked_bil: ' + this.CustomerAddressForm.controls.customerBillingAddress.valid);
-      console.log('unchecked_ship: ' + this.CustomerAddressForm.controls.customerShippingAddress.valid);
       this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid && this.CustomerAddressForm.controls.customerShippingAddress.valid;
-      // this.CustomerAddressForm.controls.customerShippingAddress.get('firstname_s').setValidators([Validators.required]);
-      // this.CustomerAddressForm.controls.customerShippingAddress.get('firstname_s').updateValueAndValidity();
-      // this.CustomerAddressForm.value.customerShippingAddress.firstname_s.setValidators([Validators.required]);
-      // this.CustomerAddressForm.value.customerShippingAddress.firstname_s.updateValueAndValidity();
-      // console.log('not_checked: ' + this.CustomerAddressForm.valid);
+
     }
   }
 

@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 import { UserService } from '../../user/shared/user.service';
 import { Order } from '../../models/order.model';
 import { CustomerAddress } from '../../models/customerAddress.model';
 import { Router } from '@angular/router';
+import { AuthService } from '../../user/shared/auth.service';
+import { LocalStorageService } from '../../shared/local-storage.service';
+
 
 
 @Component({
@@ -16,12 +19,15 @@ import { Router } from '@angular/router';
     }
   `]
 })
+
+
 export class CheckoutCustomerdataComponent implements OnInit {
+
   CustomerAddressForm: FormGroup;
-  user: any;
   orderData: any;
   orderId: string;
   order: Order;
+  user: any;
   customerBillingAddress: CustomerAddress;
   customerShippingAddress: CustomerAddress;
   shipqingEqualsBillingAddress = true;
@@ -30,17 +36,30 @@ export class CheckoutCustomerdataComponent implements OnInit {
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
               private router: Router,
+              private authService: AuthService,
+              private localStorageService: LocalStorageService,
+
   ) {
   }
 
-  ngOnInit() {
-    setTimeout(() => {
-      this.user = this.userService.getCurrentUser();
-      this.getOrderData();
-    }, 1000);
 
+  ngOnInit() {
 
     this.initCustomerAddressFormGroup();
+    this.authService.user$.subscribe((user) => {
+      if (user && user.emailVerified) {
+        this.user = user;
+        this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').clearValidators();
+        this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').updateValueAndValidity();
+        this.getOrderData(user.id);
+
+      } else {
+        this.getOrderData(this.localStorageService.getData('anonymusOrderId').orderId);
+
+
+      }
+    });
+
 
     this.CustomerAddressForm.valueChanges.subscribe(() => {
         if (this.shipqingEqualsBillingAddress) {
@@ -50,17 +69,17 @@ export class CheckoutCustomerdataComponent implements OnInit {
         }
       }
     );
-
   }
 
-  getOrderData() {
-    this.orderFirestoreService.getUserOrder(this.orderFirestoreService.getOrderId()).subscribe((res) => {
+
+  getOrderData(userId) {
+    this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
+      this.setOrderData();
     });
   }
 
   onSubmit() {
-    // console.log(this.CustomerAddressForm);
 
     this.order = new Order();
     this.order.key = this.orderFirestoreService.getOrderId();
@@ -126,22 +145,12 @@ export class CheckoutCustomerdataComponent implements OnInit {
         ]),
         phone_s: new FormControl(null)
       })
-
-
     });
 
-
-    setTimeout(() => {
-
-      if (this.user) {
-        this.setOrderData();
-      }
-    }, 1300);
 
   }
 
   setOrderData() {
-
 
     this.shipqingEqualsBillingAddress = this.orderData.shipqingEqualsBillingAddress;
 
@@ -167,8 +176,6 @@ export class CheckoutCustomerdataComponent implements OnInit {
       },
     });
 
-    this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').clearValidators();
-    this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').updateValueAndValidity();
 
   }
 

@@ -76,10 +76,6 @@ export class OrderFirestoreService {
 
   getUserOrder(userId) {
 
-    // todo
-    if (!userId) {
-      userId = '0';
-    }
 
     this.user = this.userService.getCurrentUser();
     if (this.user) {
@@ -107,7 +103,7 @@ export class OrderFirestoreService {
       }))
     );
 
-    return  this.orders;
+    return this.orders;
 
   }
 
@@ -442,6 +438,7 @@ export class OrderFirestoreService {
       return this.localStorageService.getData('anonymusOrderId').orderId;
     }
   }
+
 
   getAnonymusOrderId() {
     return this.localStorageService.getData('anonymusOrderId').orderId;

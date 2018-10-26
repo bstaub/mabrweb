@@ -5,6 +5,7 @@ import { ProductFirestoreService } from '../../product/shared/product-firestore.
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalStorage.model';
+import { AuthService } from '../../user/shared/auth.service';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class OrderDetailComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private localStorageService: LocalStorageService,
+    private authService: AuthService,
   ) {
 
 
@@ -36,22 +38,20 @@ export class OrderDetailComponent implements OnInit {
 
   ngOnInit() {
 
-    setTimeout(() => {
-      this.user = this.userService.getCurrentUser();
+    this.authService.user$.subscribe((user) => {
+      if (user && user.emailVerified) {
+        this.user = user;
+        this.getProducts(user.id);
+      } else {
+        this.getProducts(this.localStorageService.getData('anonymusOrderId').orderId);
+      }
+    });
 
-      this.getProducts();
-    }, 1000);
 
   }
 
-  getProducts() {
-    if (this.user) {
-      this.orderId = this.user.uid;
-    } else {
-      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
-    }
-
-    this.orderFirestoreService.getUserOrder(this.orderId).subscribe((res) => {
+  getProducts(orderId) {
+    this.orderFirestoreService.getUserOrder(orderId).subscribe((res) => {
       this.order = res;
     });
     this.productPerOrderLocalStorage = this.localStorageService.getData('products');
@@ -59,8 +59,6 @@ export class OrderDetailComponent implements OnInit {
 
 
   onEnterOrderData() {
-
-
     if (this.user) {
       this.router.navigate(['/checkout/customerdata']);
     } else {

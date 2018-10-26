@@ -6,6 +6,14 @@
       <h5 class="card-title">{{ user.username }}</h5>
       <p class="card-subtitle">{{ user.email }}</p>
       <p class="card-text small">{{ user.id }}</p>
+      <p><strong>Rollen</strong></p>
+      <p class="card-subtitle"><p-checkbox (onChange)="updateUser(user)" binary="true" value="admin" label="admin" [(ngModel)]="user.roles.admin" name="admin"></p-checkbox></p>
+      <p></p>
+      <p class="card-subtitle"><p-checkbox (onChange)="updateUser(user)" binary="true" value="authuser" label="authuser" [(ngModel)]="user.roles.authuser" name="authuser"></p-checkbox></p>
+      <br>
+      <p><strong>Letzte Bestellung</strong></p>
+      <p class="card-subtitle">XXX</p>
+      <br>
       <button appBackButton>Zurück</button>
     </div>
   </div>

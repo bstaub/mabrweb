@@ -4,6 +4,8 @@ import { UserService } from '../../user/shared/user.service';
 import { Router } from '@angular/router';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 import { Order } from '../../models/order.model';
+import { AuthService } from '../../user/shared/auth.service';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 
 
@@ -23,18 +25,20 @@ export class CheckoutShipmentdataComponent implements OnInit {
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
               private router: Router,
+              private authService: AuthService,
+              private localStorageService: LocalStorageService,
   ) {
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.user = this.userService.getCurrentUser();
-      this.getOrderData();
-
-    }, 1000);
-
-
     this.initShipmentFormGroup();
+    this.authService.user$.subscribe((user) => {
+      if (user && user.emailVerified) {
+        this.getOrderData(user.id);
+      } else {
+        this.getOrderData(this.localStorageService.getData('anonymusOrderId').orderId);
+      }
+    });
   }
 
   onSubmit() {
@@ -45,9 +49,10 @@ export class CheckoutShipmentdataComponent implements OnInit {
     this.router.navigate(['/checkout/paymentdata']);
   }
 
-  getOrderData() {
-    this.orderFirestoreService.getUserOrder(this.orderFirestoreService.getOrderId()).subscribe((res) => {
+  getOrderData(userId) {
+    this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
+      this.setOrderData();
     });
   }
 
@@ -56,21 +61,11 @@ export class CheckoutShipmentdataComponent implements OnInit {
       shippingMethod: new FormControl()
 
     });
-
-    setTimeout(() => {
-
-      if (this.orderData) {
-        this.setOrderData();
-      }
-    }, 1300);
-
-
   }
 
   setOrderData() {
     this.ShipmentForm.patchValue({
       shippingMethod: this.orderData.shippingMethod
-
     });
 
   }

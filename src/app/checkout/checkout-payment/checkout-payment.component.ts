@@ -5,6 +5,7 @@ import { OrderFirestoreService } from '../../order/shared/order-firestore.servic
 import { UserService } from '../../user/shared/user.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { AuthService } from '../../user/shared/auth.service';
 
 
 @Component({
@@ -28,18 +29,22 @@ export class CheckoutPaymentComponent implements OnInit {
               private userService: UserService,
               private router: Router,
               private localStorageService: LocalStorageService,
+              private authService: AuthService,
   ) {
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.user = this.userService.getCurrentUser();
-      this.getOrderData();
-
-    }, 1000);
-
 
     this.initPaymentFormGroup();
+    this.authService.user$.subscribe((user) => {
+      if (user && user.emailVerified) {
+        this.user = user;
+        this.getOrderData(user.id);
+      } else {
+        this.user = '0';
+        this.getOrderData(this.localStorageService.getData('anonymusOrderId').orderId);
+      }
+    });
   }
 
   onSubmit() {
@@ -49,7 +54,7 @@ export class CheckoutPaymentComponent implements OnInit {
     this.order.orderDate = new Date();
     this.order.status = 'done';
     this.order.totalValue = this.orderData.totalValue;
-    this.order.userId = this.user.uid;
+    this.order.userId = this.user.id;
     this.order.customerBillingAddress = this.orderData.customerBillingAddress;
     this.order.customerShippingAddress = this.orderData.customerShippingAddress;
     this.order.shipqingEqualsBillingAddress = this.orderData.shipqingEqualsBillingAddress;
@@ -61,7 +66,7 @@ export class CheckoutPaymentComponent implements OnInit {
     this.closingOrderId = this.orderFirestoreService.completeUserOrder(this.order);
     this.orderFirestoreService.completeProductsPerOrder(this.closingOrderId, this.localStorageService.getData('products'));
 
-    if (this.user) {
+    if (this.user !== '0') {
       this.orderFirestoreService.resetUserOrder(this.order);
       this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
     } else {
@@ -75,39 +80,28 @@ export class CheckoutPaymentComponent implements OnInit {
   }
 
 
-  getOrderData() {
-    this.orderFirestoreService.getUserOrder(this.orderFirestoreService.getOrderId()).subscribe((res) => {
+  getOrderData(userId) {
+    this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
+      this.setOrderData();
     });
 
     this.orderFirestoreService.getLatestOrder().subscribe((res) => {
       this.nextShopOrderId = res[0].shopOrderId + 1;
     });
-
-
   }
+
 
   initPaymentFormGroup() {
     this.PaymentForm = new FormGroup({
       paymentMethod: new FormControl()
-
     });
-
-    setTimeout(() => {
-
-      if (this.orderData) {
-        this.setOrderData();
-      }
-    }, 1300);
-
   }
 
   setOrderData() {
     this.PaymentForm.patchValue({
       paymentMethod: this.orderData.paymentMethod
-
     });
-
   }
 
   goBack() {

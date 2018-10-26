@@ -83,8 +83,10 @@ export class OrderFirestoreService {
 
     this.user = this.userService.getCurrentUser();
     if (this.user) {
+      console.log('user');
       this.orderPerUser = this.afs.collection('orders').doc(userId);
     } else {
+      console.log('no_user');
       this.orderPerUser = this.afs.collection('orders_anonymus').doc(userId);
     }
     this.userOrderDoc = this.orderPerUser.snapshotChanges().pipe(
@@ -107,7 +109,7 @@ export class OrderFirestoreService {
       }))
     );
 
-    return  this.orders;
+    return this.orders;
 
   }
 
@@ -437,6 +439,14 @@ export class OrderFirestoreService {
   getOrderId() {
     this.user = this.userService.getCurrentUser();
     if (this.user) {
+      return this.user.uid;
+    } else {
+      return this.localStorageService.getData('anonymusOrderId').orderId;
+    }
+  }
+
+  getOrderIdWithUserId(userId: string) {
+    if (userId !== '0') {
       return this.user.uid;
     } else {
       return this.localStorageService.getData('anonymusOrderId').orderId;

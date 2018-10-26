@@ -5,6 +5,8 @@ import { ProductFirestoreService } from '../../product/shared/product-firestore.
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalStorage.model';
+import { AuthService } from '../../user/shared/auth.service';
+
 
 
 @Component({
@@ -29,6 +31,7 @@ export class OrderDetailComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private localStorageService: LocalStorageService,
+    private authService: AuthService,
   ) {
 
 
@@ -36,11 +39,27 @@ export class OrderDetailComponent implements OnInit {
 
   ngOnInit() {
 
+
+    this.authService.user$.subscribe((user) => {
+      if (user && user.emailVerified) {
+        this.user = user;
+      } else {
+        this.user = null;
+
+      }
+    });
+
+    this.getProducts();
+
+    /*
+
     setTimeout(() => {
       this.user = this.userService.getCurrentUser();
 
       this.getProducts();
     }, 1000);
+
+    */
 
   }
 

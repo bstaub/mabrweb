@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../shared/user.service';
 import { Observable } from 'rxjs';
+import { SettingsService } from '../../shared/settings.service';
 
 @Component({
   selector: 'app-user-list',
@@ -9,8 +10,11 @@ import { Observable } from 'rxjs';
 })
 export class UserListComponent implements OnInit {
   public users$: Observable<any[]>;
+  p: number = 1;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+              private settingsService: SettingsService,
+  ) { }
 
   ngOnInit() {
     this.getUsers();
@@ -20,4 +24,7 @@ export class UserListComponent implements OnInit {
     this.users$ = this.userService.getUsers();
   }
 
+  get itemsPerPage() {
+    return this.settingsService.getSettings().itemsPerPage;
+  }
 }

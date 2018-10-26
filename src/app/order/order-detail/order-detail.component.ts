@@ -6,6 +6,7 @@ import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalStorage.model';
 import { AuthService } from '../../user/shared/auth.service';
+import { SettingsService } from '../../shared/settings.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class OrderDetailComponent implements OnInit {
   userId: string;
   order: any;
   totalValue: number;
+  p: number = 1;
 
 
   constructor(
@@ -31,6 +33,7 @@ export class OrderDetailComponent implements OnInit {
     private userService: UserService,
     private localStorageService: LocalStorageService,
     private authService: AuthService,
+    private settingsService: SettingsService,
   ) {
 
 
@@ -99,6 +102,10 @@ export class OrderDetailComponent implements OnInit {
     productPerOrderLocalStorage.qty = Number(productPerOrderLocalStorage.qty);
     this.orderFirestoreService.updateProductQty(productPerOrderLocalStorage);
     this.orderFirestoreService.calcOrderTotalValue();
+  }
+
+  get itemsPerPage() {
+    return this.settingsService.getSettings().itemsPerPage;
   }
 
 

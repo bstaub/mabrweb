@@ -19,7 +19,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let product of productPerOrderLocalStorage">
+          <tr *ngFor="let product of productPerOrderLocalStorage | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
             <td>
               <figure class="media">
                 <div>
@@ -79,6 +79,17 @@
     </div>
   </div>
 
+  <pagination-controls (pageChange)="p = $event"
+                       maxSize="9"
+                       directionLinks="true"
+                       autoHide="true"
+                       responsive="true"
+                       previousLabel="Zurück"
+                       nextLabel="Vor"
+                       screenReaderPaginationLabel="Pagination"
+                       screenReaderPageLabel="Seite"
+                       screenReaderCurrentLabel="Du bist auf Seite">
+  </pagination-controls>
 
   <div class="row">
     <div class="col-md-10 offset-1">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from '../../user/shared/user.service';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { OrderFirestoreService } from '../../order/shared/order-firestore.servic
 import { Order } from '../../models/order.model';
 import { AuthService } from '../../user/shared/auth.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { Subscription } from 'rxjs-compat/Subscription';
 
 
 
@@ -14,12 +15,14 @@ import { LocalStorageService } from '../../shared/local-storage.service';
   templateUrl: './checkout-shipmentdata.component.html',
   styles: [``]
 })
-export class CheckoutShipmentdataComponent implements OnInit {
+export class CheckoutShipmentdataComponent implements OnInit, OnDestroy {
   ShipmentForm: FormGroup;
   user: any;
   orderData: any;
   orderId: string;
   order: Order;
+  authSubscription: Subscription;
+  orderSubscription: Subscription;
 
 
   constructor(private orderFirestoreService: OrderFirestoreService,
@@ -32,13 +35,14 @@ export class CheckoutShipmentdataComponent implements OnInit {
 
   ngOnInit() {
     this.initShipmentFormGroup();
-    this.authService.user$.subscribe((user) => {
+    this.authSubscription = this.authService.user$.subscribe((user) => {
       if (user && user.emailVerified) {
         this.getOrderData(user.id);
       } else {
         this.getOrderData(this.localStorageService.getData('anonymusOrderId').orderId);
       }
     });
+
   }
 
   onSubmit() {
@@ -50,10 +54,11 @@ export class CheckoutShipmentdataComponent implements OnInit {
   }
 
   getOrderData(userId) {
-    this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
+    this.orderSubscription = this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
       this.setOrderData();
     });
+
   }
 
   initShipmentFormGroup() {
@@ -72,6 +77,11 @@ export class CheckoutShipmentdataComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/checkout/customerdata']);
+  }
+
+  ngOnDestroy() {
+    this.authSubscription.unsubscribe();
+    this.orderSubscription.unsubscribe();
   }
 
 

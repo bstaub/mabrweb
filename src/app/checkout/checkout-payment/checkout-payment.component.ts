@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Order } from '../../models/order.model';
 import { Router } from '@angular/router';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
@@ -6,6 +6,7 @@ import { UserService } from '../../user/shared/user.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { AuthService } from '../../user/shared/auth.service';
+import { Subscription } from 'rxjs-compat/Subscription';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { AuthService } from '../../user/shared/auth.service';
   styles: [`
   `]
 })
-export class CheckoutPaymentComponent implements OnInit {
+export class CheckoutPaymentComponent implements OnInit, OnDestroy {
 
   PaymentForm: FormGroup;
   user: any;
@@ -23,6 +24,9 @@ export class CheckoutPaymentComponent implements OnInit {
   order: Order;
   closingOrderId: string;
   nextShopOrderId: number;
+  authSubscription: Subscription;
+  nextOrderIdSubscription: Subscription;
+  orderSubscription: Subscription;
 
 
   constructor(private orderFirestoreService: OrderFirestoreService,
@@ -36,7 +40,7 @@ export class CheckoutPaymentComponent implements OnInit {
   ngOnInit() {
 
     this.initPaymentFormGroup();
-    this.authService.user$.subscribe((user) => {
+    this.authSubscription = this.authService.user$.subscribe((user) => {
       if (user && user.emailVerified) {
         this.user = user;
         this.getOrderData(user.id);
@@ -45,6 +49,7 @@ export class CheckoutPaymentComponent implements OnInit {
         this.getOrderData(this.localStorageService.getData('anonymusOrderId').orderId);
       }
     });
+
   }
 
   onSubmit() {
@@ -81,14 +86,16 @@ export class CheckoutPaymentComponent implements OnInit {
 
 
   getOrderData(userId) {
-    this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
+    this.orderSubscription = this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
       this.setOrderData();
     });
 
-    this.orderFirestoreService.getLatestOrder().subscribe((res) => {
+
+    this.nextOrderIdSubscription = this.orderFirestoreService.getLatestOrder().subscribe((res) => {
       this.nextShopOrderId = res[0].shopOrderId + 1;
     });
+
   }
 
 
@@ -106,6 +113,12 @@ export class CheckoutPaymentComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/checkout/shipmentdata']);
+  }
+
+  ngOnDestroy() {
+    this.authSubscription.unsubscribe();
+    this.nextOrderIdSubscription.unsubscribe();
+    this.orderSubscription.unsubscribe();
   }
 
 }

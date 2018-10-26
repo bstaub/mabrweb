@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LocalStorageService } from '../../../shared/local-storage.service';
 import { OrderFlyoutService } from '../../shared/order-flyout-service';
 import { ProductPerOrderLocalStorage } from '../../../models/productPerOrderLocalStorage.model';
 import { Order } from '../../../models/order.model';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-header-order-flyout',
@@ -21,12 +23,12 @@ import { Order } from '../../../models/order.model';
       list-style-type: none;
     }
 
-    @media (max-width: 580px){
+    @media (max-width: 580px) {
       .shopping ul {
         padding-left: 0;
       }
-    }  
-    
+    }
+
     .submenu {
       position: relative;
     }
@@ -56,6 +58,7 @@ import { Order } from '../../../models/order.model';
       color: white;
       font-weight: bold;
     }
+
     .bubble {
       display: inline-block;
       padding: 4px 7px 4px 7px;
@@ -65,28 +68,34 @@ import { Order } from '../../../models/order.model';
       background: white;
       border-radius: 10px;
     }
-    
+
   `]
 })
-export class HeaderOrderFlyoutComponent implements OnInit {
+export class HeaderOrderFlyoutComponent implements OnInit, OnDestroy {
   productsPerOrderLocalStorage: ProductPerOrderLocalStorage[];
   order: Order;
-  visibleStatus: boolean = true;
+  visibleStatus = true;
+  productsSubscription: Subscription;
+  orderSubscription: Subscription;
+
 
   constructor(
     private localStorageService: LocalStorageService,
-    private orderFlyoutService: OrderFlyoutService
+    private orderFlyoutService: OrderFlyoutService,
+
   ) {
   }
 
   ngOnInit() {
-    this.orderFlyoutService.currentProductsPerOrderLocalStorage.subscribe(
+    this.productsSubscription = this.orderFlyoutService.currentProductsPerOrderLocalStorage.subscribe(
       (data: ProductPerOrderLocalStorage[]) => this.productsPerOrderLocalStorage = data
     );
 
-    this.orderFlyoutService.currentOrder.subscribe(
+
+    this.orderSubscription = this.orderFlyoutService.currentOrder.subscribe(
       (data: Order) => this.order = data
     );
+
   }
 
   closeFlyout() {
@@ -96,6 +105,10 @@ export class HeaderOrderFlyoutComponent implements OnInit {
     }, 100);
   }
 
+  ngOnDestroy() {
+    this.productsSubscription.unsubscribe();
+    this.orderSubscription.unsubscribe();
+  }
 
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderFirestoreService } from '../shared/order-firestore.service';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
@@ -8,6 +8,7 @@ import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalSt
 import { AuthService } from '../../user/shared/auth.service';
 import { SettingsService } from '../../shared/settings.service';
 import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
+import { Subscription } from 'rxjs-compat/Subscription';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
   templateUrl: './order-detail.component.html',
   styles: []
 })
-export class OrderDetailComponent implements OnInit {
+export class OrderDetailComponent implements OnInit, OnDestroy {
 
   productPerOrderLocalStorage: ProductPerOrderLocalStorage[];
   orderId: string;
@@ -23,7 +24,10 @@ export class OrderDetailComponent implements OnInit {
   userId: string;
   order: any;
   totalValue: number;
-  p: number = 1;
+  authSubscription: Subscription;
+  productsSubscription: Subscription;
+  p = 1;
+
 
 
   constructor(
@@ -35,14 +39,15 @@ export class OrderDetailComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private authService: AuthService,
     private settingsService: SettingsService,
-    private orderFlyoutService: OrderFlyoutService
+    private orderFlyoutService: OrderFlyoutService,
+
   ) {
 
 
   }
 
   ngOnInit() {
-    this.authService.user$.subscribe((user) => {
+    this.authSubscription = this.authService.user$.subscribe((user) => {
       if (user && user.emailVerified) {
         this.user = user;
         this.getProducts(user.id);
@@ -51,9 +56,12 @@ export class OrderDetailComponent implements OnInit {
       }
     });
 
-    this.orderFlyoutService.currentProductsPerOrderLocalStorage.subscribe(
+
+
+    this.productsSubscription = this.orderFlyoutService.currentProductsPerOrderLocalStorage.subscribe(
       (data: ProductPerOrderLocalStorage[]) => this.productPerOrderLocalStorage = data
     );
+
 
   }
 
@@ -111,6 +119,11 @@ export class OrderDetailComponent implements OnInit {
 
   get itemsPerPage() {
     return this.settingsService.getSettings().itemsPerPage;
+  }
+
+  ngOnDestroy() {
+    this.authSubscription.unsubscribe();
+    this.productsSubscription.unsubscribe();
   }
 
 

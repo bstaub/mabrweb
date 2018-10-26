@@ -7,7 +7,7 @@ import { CustomerAddress } from '../../models/customerAddress.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../user/shared/auth.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-
+import { Subscription } from 'rxjs-compat/Subscription';
 
 
 @Component({
@@ -21,7 +21,7 @@ import { LocalStorageService } from '../../shared/local-storage.service';
 })
 
 
-export class CheckoutCustomerdataComponent implements OnInit {
+export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
 
   CustomerAddressForm: FormGroup;
   orderData: any;
@@ -32,13 +32,15 @@ export class CheckoutCustomerdataComponent implements OnInit {
   customerShippingAddress: CustomerAddress;
   shipqingEqualsBillingAddress = true;
   formIsValid: boolean;
+  authSubscription: Subscription;
+  addressFormSubscription: Subscription;
+  orderSubscription: Subscription;
 
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
               private router: Router,
               private authService: AuthService,
               private localStorageService: LocalStorageService,
-
   ) {
   }
 
@@ -46,7 +48,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
   ngOnInit() {
 
     this.initCustomerAddressFormGroup();
-    this.authService.user$.subscribe((user) => {
+    this.authSubscription = this.authService.user$.subscribe((user) => {
       if (user && user.emailVerified) {
         this.user = user;
         this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').clearValidators();
@@ -60,8 +62,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
       }
     });
 
-
-    this.CustomerAddressForm.valueChanges.subscribe(() => {
+    this.addressFormSubscription = this.CustomerAddressForm.valueChanges.subscribe(() => {
         if (this.shipqingEqualsBillingAddress) {
           this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid;
         } else {
@@ -69,14 +70,16 @@ export class CheckoutCustomerdataComponent implements OnInit {
         }
       }
     );
+
   }
 
 
   getOrderData(userId) {
-    this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
+    this.orderSubscription = this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
       this.setOrderData();
     });
+
   }
 
   onSubmit() {
@@ -190,6 +193,12 @@ export class CheckoutCustomerdataComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/bestellung']);
+  }
+
+  ngOnDestroy() {
+    this.authSubscription.unsubscribe();
+    this.addressFormSubscription.unsubscribe();
+    this.orderSubscription.unsubscribe();
   }
 
 

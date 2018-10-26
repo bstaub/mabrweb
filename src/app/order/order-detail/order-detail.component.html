@@ -19,7 +19,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let product of productPerOrderLocalStorage | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+          <tr *ngFor="let product of productPerOrderLocalStorage | arraySort: 'name' | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
             <td>
               <figure class="media">
                 <div>

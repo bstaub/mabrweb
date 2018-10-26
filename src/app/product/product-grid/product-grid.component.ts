@@ -88,14 +88,6 @@ export class ProductGridComponent implements OnInit, OnDestroy {
       this.productFireStoreService.sortProductsByPriceDesc();
       this.products = this.productFireStoreService.getProducts();
     }
-    if (selectedSortOption === 'old-new') {
-      this.productFireStoreService.sortProductsByCreatedDateAsc();
-      this.products = this.productFireStoreService.getProducts();
-    }
-    if (selectedSortOption === 'new-old') {
-      this.productFireStoreService.sortProductsByCreatedDateDesc();
-      this.products = this.productFireStoreService.getProducts();
-    }
   }
 
   ngOnDestroy() {

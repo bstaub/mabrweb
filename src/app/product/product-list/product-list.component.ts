@@ -15,8 +15,9 @@ import { Product } from '../../models/product.model';
 export class ProductListComponent implements OnInit {
 
   products: Observable<Product[]>;
+  p: number = 1;
 
-  constructor(private productService: ProductService, private productFireStoreService: ProductFirestoreService) {
+  constructor(private productFireStoreService: ProductFirestoreService) {
   }
 
   ngOnInit() {

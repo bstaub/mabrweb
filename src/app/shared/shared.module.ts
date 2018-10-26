@@ -12,6 +12,7 @@ import { ArraySortDescPipe } from './pipe/array-sort-desc.pipe';
 import { BackButtonDirective } from './directive/back-button.directive';
 import { PageTitleComponent } from '../core/page-title/page-title.component';
 import { CheckStatusPipe } from './pipe/check-status.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 // todo: SortPip, Md2HtmlPipe, NotificationService?? hier auslagern
@@ -36,6 +37,7 @@ import { CheckStatusPipe } from './pipe/check-status.pipe';
     CheckboxModule,
     FileUploadModule,
     NgPrimeModule,
+    NgxPaginationModule,
   ],
 
   exports: [
@@ -55,6 +57,7 @@ import { CheckStatusPipe } from './pipe/check-status.pipe';
     BackButtonDirective,
     PageTitleComponent,
     CheckStatusPipe,
+    NgxPaginationModule,
   ]
 
 })

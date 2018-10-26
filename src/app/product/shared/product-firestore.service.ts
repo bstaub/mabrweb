@@ -72,7 +72,6 @@ export class ProductFirestoreService {
     );
   }
 
-
   getNewProductsWithLimit(limit: number) {
     this.productCollection = this.afs.collection('products', ref => ref.where('newProduct', '==', true).limit(limit));
     return this.productsNew$ = this.productCollection.snapshotChanges().pipe(
@@ -96,7 +95,6 @@ export class ProductFirestoreService {
     );
   }
 
-
   sortProductsByNameAsc() {
     console.log('load initial products from productsService');
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
@@ -115,18 +113,6 @@ export class ProductFirestoreService {
 
   sortProductsByPriceDesc() {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('price', 'desc'));
-    this.getData();
-  }
-
-  sortProductsByCreatedDateAsc() { // Test Fail
-    this.productCollection = this.afs.collection('products', ref => ref.where('createdDate', '>', '0'));
-    this.getData();
-  }
-
-  sortProductsByCreatedDateDesc() {  // Test Fail
-    // Do 01 Jan 2037 00:00:00 UTC  --> 2114380800
-    // https://www.unixtimeconverter.io/2114380800
-    this.productCollection = this.afs.collection('products', ref => ref.where('createdDate', '<', 'toDay'));
     this.getData();
   }
 

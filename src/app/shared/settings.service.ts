@@ -8,6 +8,7 @@ export class SettingsService {
   settings: Settings = {
     allowRegistration: true,
     allowAdministration: true,
+    itemsPerPage: 5,
   }
   constructor() {
     if (localStorage.getItem('settings') != null) {

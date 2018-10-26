@@ -3,6 +3,7 @@ import { ProductService } from '../shared/product.service';
 import { Observable } from 'rxjs/index';
 import { ProductFirestoreService } from '../shared/product-firestore.service';
 import { Product } from '../../models/product.model';
+import { SettingsService } from '../../shared/settings.service';
 
 
 @Component({
@@ -17,7 +18,9 @@ export class ProductListComponent implements OnInit {
   products: Observable<Product[]>;
   p: number = 1;
 
-  constructor(private productFireStoreService: ProductFirestoreService) {
+  constructor(private productFireStoreService: ProductFirestoreService,
+              private settingsService: SettingsService,
+  ) {
   }
 
   ngOnInit() {
@@ -26,6 +29,10 @@ export class ProductListComponent implements OnInit {
 
   getProductList() {
     this.products = this.productFireStoreService.getProducts();
+  }
+
+  get itemsPerPage() {
+    return this.settingsService.getSettings().itemsPerPage;
   }
 
 }

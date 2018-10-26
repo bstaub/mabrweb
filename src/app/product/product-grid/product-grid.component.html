@@ -20,8 +20,6 @@
         <option value="z-a">alphabetisch, Z-A</option>
         <option value="low-high">Preis, tief nach hoch</option>
         <option value="high-low">Price, hoch nach tief</option>
-        <!--<option value="new-old">Datum, neu nach alt</option>-->
-        <!--<option value="old-new">Datum, alt nach neu</option>-->
       </select>
     </div>
   </div>
@@ -31,7 +29,8 @@
 
   <ng-container *ngIf="filteredProducts">
     <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
-       *ngFor="let product of filteredProducts | slice:0:limit; let i = index">
+       *ngFor="let product of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+      <!--*ngFor="let product of filteredProducts | slice:0:limit; let i = index">-->
       <div class="product-image">
         <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
       </div>
@@ -45,7 +44,8 @@
 
   <ng-container *ngIf="!filteredProducts">
     <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
-       *ngFor="let product of products | async | checkStatus |slice:0:limit; let i = index">
+       *ngFor="let product of products | async | checkStatus | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+      <!--*ngFor="let product of products | async | checkStatus |slice:0:limit; let i = index">-->
       <div class="product-image">
         <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
       </div>
@@ -60,8 +60,14 @@
 
 </section>
 
-<div class="fullSize">
-  <button style="margin-left: 40px; margin-top: 30px;" class="btn btn-secondary" (click)="limit=limit+next">Weitere
-    laden
-  </button>
-</div>
+<pagination-controls (pageChange)="p = $event"
+                     maxSize="9"
+                     directionLinks="true"
+                     autoHide="true"
+                     responsive="true"
+                     previousLabel="Zurück"
+                     nextLabel="Vor"
+                     screenReaderPaginationLabel="Pagination"
+                     screenReaderPageLabel="Seite"
+                     screenReaderCurrentLabel="Du bist auf Seite">
+</pagination-controls>

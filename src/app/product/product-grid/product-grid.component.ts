@@ -5,6 +5,7 @@ import { ProductService } from '../shared/product.service';
 import { ProductFirestoreService } from '../shared/product-firestore.service';
 import { ProductCategoryService } from '../shared/product-category.service';
 import { ProductCategory } from '../../models/product-category.model';
+import { SettingsService } from '../../shared/settings.service';
 
 @Component({
   selector: 'app-product-grid',
@@ -19,40 +20,19 @@ export class ProductGridComponent implements OnInit, OnDestroy {
 
   selectedProduct: string; // just for show Product Category in Template
   selectedSort: string;
-
-  // einfach Produkte nachladen start
-  limit = 5;
-  next = 5;
-  // einfach Produkte nachladen end
+  p: number = 1; // ngx-pageination
 
   constructor(private productService: ProductService,
               private productFireStoreService: ProductFirestoreService,
               private productCategory: ProductCategoryService,
+              private settingsService: SettingsService,
   ) {
   }
 
   ngOnInit() {
     this.getProductList();
     this.categories = this.productCategory.getCategories();
-
-    // https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change
-    // this.router.events.subscribe((evt) => {
-    //   if (!(evt instanceof NavigationEnd)) {
-    //     return;
-    //   }
-    //   window.scrollTo(0, 0);
-    // });
-
-    // // RxJS BehaviorSubject start
-    // // this.productFireStoreService.currentMessage.subscribe(message => this.filteredProducts = message);
-    // this.productFireStoreService.currentMessage.subscribe(message => {
-    //   if (message !== 0) {
-    //     this.filteredProducts = message;
-    //   } else {
-    //     this.filteredProducts = null;
-    //   }
-    // });
-    // // RxJS BehaviorSubject end
+    // https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change  (not needed anymore in angular 7)
   }
 
   getProductList() {
@@ -67,7 +47,6 @@ export class ProductGridComponent implements OnInit, OnDestroy {
     } else {
       this.filteredProducts = this.productFireStoreService.getCategory(categoryName);
     }
-
   }
 
   selectedSortOption(event) {
@@ -88,6 +67,10 @@ export class ProductGridComponent implements OnInit, OnDestroy {
       this.productFireStoreService.sortProductsByPriceDesc();
       this.products = this.productFireStoreService.getProducts();
     }
+  }
+
+  get itemsPerPage() {
+    return this.settingsService.getSettings().itemsPerPage;
   }
 
   ngOnDestroy() {

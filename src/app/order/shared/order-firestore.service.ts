@@ -76,17 +76,11 @@ export class OrderFirestoreService {
 
   getUserOrder(userId) {
 
-    // todo
-    if (!userId) {
-      userId = '0';
-    }
 
     this.user = this.userService.getCurrentUser();
     if (this.user) {
-      console.log('user');
       this.orderPerUser = this.afs.collection('orders').doc(userId);
     } else {
-      console.log('no_user');
       this.orderPerUser = this.afs.collection('orders_anonymus').doc(userId);
     }
     this.userOrderDoc = this.orderPerUser.snapshotChanges().pipe(
@@ -445,14 +439,6 @@ export class OrderFirestoreService {
     }
   }
 
-  getOrderIdWithUserId(userId: string) {
-    this.user = this.userService.getCurrentUser();
-    if (userId !== '0') {
-      return this.user.uid;
-    } else {
-      return this.localStorageService.getData('anonymusOrderId').orderId;
-    }
-  }
 
   getAnonymusOrderId() {
     return this.localStorageService.getData('anonymusOrderId').orderId;

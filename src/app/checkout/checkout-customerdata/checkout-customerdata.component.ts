@@ -7,7 +7,7 @@ import { CustomerAddress } from '../../models/customerAddress.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../user/shared/auth.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { ISubscription } from 'rxjs-compat/Subscription';
+
 
 
 @Component({
@@ -27,6 +27,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
   orderData: any;
   orderId: string;
   order: Order;
+  user: any;
   customerBillingAddress: CustomerAddress;
   customerShippingAddress: CustomerAddress;
   shipqingEqualsBillingAddress = true;
@@ -47,6 +48,7 @@ export class CheckoutCustomerdataComponent implements OnInit {
     this.initCustomerAddressFormGroup();
     this.authService.user$.subscribe((user) => {
       if (user && user.emailVerified) {
+        this.user = user;
         this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').clearValidators();
         this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').updateValueAndValidity();
         this.getOrderData(user.id);
@@ -73,8 +75,6 @@ export class CheckoutCustomerdataComponent implements OnInit {
   getOrderData(userId) {
     this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
-      console.log('orderData');
-      console.log(this.orderData);
       this.setOrderData();
     });
   }
@@ -151,9 +151,6 @@ export class CheckoutCustomerdataComponent implements OnInit {
   }
 
   setOrderData() {
-
-    console.log('orderData2');
-    console.log(this.orderData);
 
     this.shipqingEqualsBillingAddress = this.orderData.shipqingEqualsBillingAddress;
 

@@ -8,7 +8,6 @@ import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalSt
 import { AuthService } from '../../user/shared/auth.service';
 
 
-
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
@@ -39,38 +38,20 @@ export class OrderDetailComponent implements OnInit {
 
   ngOnInit() {
 
-
     this.authService.user$.subscribe((user) => {
       if (user && user.emailVerified) {
         this.user = user;
+        this.getProducts(user.id);
       } else {
-        this.user = null;
-
+        this.getProducts(this.localStorageService.getData('anonymusOrderId').orderId);
       }
     });
 
-    this.getProducts();
-
-    /*
-
-    setTimeout(() => {
-      this.user = this.userService.getCurrentUser();
-
-      this.getProducts();
-    }, 1000);
-
-    */
 
   }
 
-  getProducts() {
-    if (this.user) {
-      this.orderId = this.user.uid;
-    } else {
-      this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
-    }
-
-    this.orderFirestoreService.getUserOrder(this.orderId).subscribe((res) => {
+  getProducts(orderId) {
+    this.orderFirestoreService.getUserOrder(orderId).subscribe((res) => {
       this.order = res;
     });
     this.productPerOrderLocalStorage = this.localStorageService.getData('products');
@@ -78,8 +59,6 @@ export class OrderDetailComponent implements OnInit {
 
 
   onEnterOrderData() {
-
-
     if (this.user) {
       this.router.navigate(['/checkout/customerdata']);
     } else {

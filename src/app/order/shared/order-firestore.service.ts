@@ -446,6 +446,7 @@ export class OrderFirestoreService {
   }
 
   getOrderIdWithUserId(userId: string) {
+    this.user = this.userService.getCurrentUser();
     if (userId !== '0') {
       return this.user.uid;
     } else {

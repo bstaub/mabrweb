@@ -20,7 +20,9 @@ import { ISubscription } from 'rxjs-compat/Subscription';
   `]
 })
 
-export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
+
+export class CheckoutCustomerdataComponent implements OnInit {
+
   CustomerAddressForm: FormGroup;
   orderData: any;
   orderId: string;
@@ -35,7 +37,7 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
               private router: Router,
               private authService: AuthService,
               private localStorageService: LocalStorageService,
-              private orderDataSubscription: ISubscription,
+
   ) {
   }
 
@@ -68,12 +70,8 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnDestroy() {
-    this.orderDataSubscription.unsubscribe();
-  }
-
   getOrderData(userId) {
-    this.orderDataSubscription = this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
+    this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
       console.log('orderData');
       console.log(this.orderData);

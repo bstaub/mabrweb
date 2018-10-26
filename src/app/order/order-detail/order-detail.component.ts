@@ -7,6 +7,7 @@ import { LocalStorageService } from '../../shared/local-storage.service';
 import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalStorage.model';
 import { AuthService } from '../../user/shared/auth.service';
 import { SettingsService } from '../../shared/settings.service';
+import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
 
 
 @Component({
@@ -34,13 +35,13 @@ export class OrderDetailComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private authService: AuthService,
     private settingsService: SettingsService,
+    private orderFlyoutService: OrderFlyoutService
   ) {
 
 
   }
 
   ngOnInit() {
-
     this.authService.user$.subscribe((user) => {
       if (user && user.emailVerified) {
         this.user = user;
@@ -50,14 +51,18 @@ export class OrderDetailComponent implements OnInit {
       }
     });
 
+    this.orderFlyoutService.currentProductsPerOrderLocalStorage.subscribe(
+      (data: ProductPerOrderLocalStorage[]) => this.productPerOrderLocalStorage = data
+    );
 
   }
 
   getProducts(orderId) {
     this.orderFirestoreService.getUserOrder(orderId).subscribe((res) => {
       this.order = res;
+      this.orderFlyoutService.refreshOrderFlyout(this.localStorageService.getData('products'), this.order);
     });
-    this.productPerOrderLocalStorage = this.localStorageService.getData('products');
+
   }
 
 

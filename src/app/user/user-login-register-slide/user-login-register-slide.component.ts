@@ -45,7 +45,7 @@ export class UserLoginRegisterSlideComponent implements OnInit {
 
           setTimeout(() => {
 
-            this.orderFirestoreService.loadOrderAfterLogin(userData.user.uid);
+            this.orderFirestoreService.loadOrderAfterLogin(userData.user.uid)
             this.orderFirestoreService.deleteOrderAnonymusComplete(this.orderFirestoreService.getAnonymusOrderId());
             this.localStorageService.destroyLocalStorage('anonymusOrderId');
 

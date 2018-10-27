@@ -3,14 +3,14 @@
 <br>
 
   <div class="row">
-    <div class="col-md-8 offset-2">
-     <button [ngClass]="{'active': step.id == currCheckoutStep}" *ngFor="let step of checkoutSteps">{{step.description}}</button>
+    <div class="col-md-10 offset-1">
+     <div class="pointer" [ngClass]="{'active': step.id == currCheckoutStep}" *ngFor="let step of checkoutSteps"><span>{{step.description}}</span></div>
     </div>
   </div>
 
   <br>
   <div class="row">
-    <div class="col-md-8 offset-2">
+    <div class="col-md-10 offset-1">
       <router-outlet></router-outlet>
     </div>
   </div>

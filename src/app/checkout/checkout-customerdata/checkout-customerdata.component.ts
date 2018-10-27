@@ -27,7 +27,6 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
   orderData: any;
   orderId: string;
   order: Order;
-  user: any;
   customerBillingAddress: CustomerAddress;
   customerShippingAddress: CustomerAddress;
   shipqingEqualsBillingAddress = true;
@@ -50,7 +49,6 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
     this.initCustomerAddressFormGroup();
     this.authSubscription = this.authService.user$.subscribe((user) => {
       if (user && user.emailVerified) {
-        this.user = user;
         this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').clearValidators();
         this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').updateValueAndValidity();
         this.getOrderData(user.id);
@@ -182,14 +180,6 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
 
   }
 
-  setValidation(e) {
-    if (e.target.checked) {
-      this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid;
-    } else {
-      this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid && this.CustomerAddressForm.controls.customerShippingAddress.valid;
-
-    }
-  }
 
   goBack() {
     this.router.navigate(['/bestellung']);

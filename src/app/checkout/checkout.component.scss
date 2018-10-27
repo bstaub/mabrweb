@@ -15,6 +15,7 @@
   border-left: 20px solid white;
   border-top: 20px solid transparent;
   border-bottom: 20px solid transparent;
+  z-index: 20;
 }
 .pointer:before {
   content: "";
@@ -26,6 +27,11 @@
   border-left: 20px solid #007bff;
   border-top: 20px solid transparent;
   border-bottom: 20px solid transparent;
+  z-index: 50;
+}
+
+.active.pointer:before {
+  border-left: 20px solid #768cb6;
 }
 
 div.active {

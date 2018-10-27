@@ -6,15 +6,11 @@ import { filter, map, mergeMap } from 'rxjs/operators';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styles: [`
-    button.active {
-      background-color: #768cb6;
-    }
-  `]
+  styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
   currCheckoutStep: any = 1;
-  checkoutSteps = [{id: '1', description: 'Adressdaten eingeben'}, {id: '2', description: 'Versandart wählen'}, {id: '3', description: 'Zahlart wählen'}, {id: '4', description: 'Bestellbestätigung'}];
+  checkoutSteps = [{id: '1', description: 'Adressdaten'}, {id: '2', description: 'Versandart'}, {id: '3', description: 'Zahlart'}, {id: '4', description: 'Übersicht'}, {id: '5', description: 'Abschluss'}];
 
 
   constructor(

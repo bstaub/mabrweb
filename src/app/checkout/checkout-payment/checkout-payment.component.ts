@@ -55,33 +55,9 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.order = new Order();
     this.order.key = this.orderFirestoreService.getOrderId();
-    this.order.shopOrderId = this.nextShopOrderId;
-    this.order.orderDate = new Date();
-    this.order.status = 'done';
-    this.order.totalValue = this.orderData.totalValue;
-    this.order.userId = this.user.id;
-    this.order.customerBillingAddress = this.orderData.customerBillingAddress;
-    this.order.customerShippingAddress = this.orderData.customerShippingAddress;
-    this.order.shipqingEqualsBillingAddress = this.orderData.shipqingEqualsBillingAddress;
-    this.order.shippingMethod = this.orderData.shippingMethod;
     this.order.paymentMethod = this.PaymentForm.value.paymentMethod;
-    this.order.anonymusOrder = !this.user;
     this.orderFirestoreService.updateOrder(this.order);
-
-    this.closingOrderId = this.orderFirestoreService.completeUserOrder(this.order);
-    this.orderFirestoreService.completeProductsPerOrder(this.closingOrderId, this.localStorageService.getData('products'));
-
-    if (this.user !== '0') {
-      this.orderFirestoreService.resetUserOrder(this.order);
-      this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
-    } else {
-      this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
-      this.orderFirestoreService.deleteOrderAnonymus(this.order.key);
-      this.localStorageService.destroyLocalStorage('anonymusOrderId');
-    }
-
-
-    this.router.navigate(['/checkout/thx'], {queryParams: {shopOrderId: this.nextShopOrderId}});
+    this.router.navigate(['/checkout/overview'], {queryParams: {shopOrderId: this.nextShopOrderId}});
   }
 
 

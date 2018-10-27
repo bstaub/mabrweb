@@ -10,7 +10,7 @@ import { SettingsService } from '../../shared/settings.service';
 })
 export class UserListComponent implements OnInit {
   public users$: Observable<any[]>;
-  p: number = 1;
+  p = 1;
 
   constructor(private userService: UserService,
               private settingsService: SettingsService,

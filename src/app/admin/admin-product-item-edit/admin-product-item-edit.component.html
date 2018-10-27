@@ -40,14 +40,9 @@
                 <div>
                   <label>Bestrated: </label> <p-checkbox binary="true" value="bestRated" label="bestRated" [(ngModel)]="product.bestRated" name="bestRated"></p-checkbox>
                 </div>
-                <!--<p-rating [(ngModel)]="product.bestRatedNumber"></p-rating>-->
                 <div>
                   <label>bestRatedNumber: </label> <input type="number" [(ngModel)]="product.bestRatedNumber" name="bestRatedNumber">
                 </div>
-                <!--<div>-->
-                  <!--<label>Status: </label> {{product.active}}-->
-                <!--</div>-->
-
                 <span class="button is-small btn-primary" *ngIf='product.active' (click)='updateActive(false)'>inaktiv</span>
 
                 <span class="button is-small btn-primary" *ngIf='!product.active' (click)='updateActive(true)'>aktiv</span>

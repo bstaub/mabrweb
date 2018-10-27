@@ -18,7 +18,7 @@ export class AdminProductItemEditComponent implements OnInit {
   @Input() product: Product;
   @Input() count: number;
 
-  editState: boolean = false;
+  editState = false;
   productToEdit: Product;
   image: any;
   selectedCategory: ProductCategory;
@@ -33,6 +33,9 @@ export class AdminProductItemEditComponent implements OnInit {
 
   ngOnInit() {
     this.categories$ = this.productCategory.getCategories();
+    if (this.product.discountFactor == null || this.product.discount === false) {
+      this.product.discountFactor = 1;
+    }
   }
 
   updateActive(isActive: boolean) {
@@ -50,7 +53,7 @@ export class AdminProductItemEditComponent implements OnInit {
   }
 
   updateProduct(product: Product) {
-    this.productService.updateProduct(product.key, product, this.image, this.selectedCategory.name);  // Parameter 2 und 3 is optional for Admin Edit!
+    this.productService.updateProduct(product.key, product, this.image, this.selectedCategory.name);  // Parameter 3 und 4 is optional for Admin Edit!
   }
 
   onFileSelection($event) {
@@ -64,14 +67,4 @@ export class AdminProductItemEditComponent implements OnInit {
 
       });
   }
-
-  // addToBasket(product) {
-  //   this.productPerOrder = {
-  //     productId: product.key,
-  //     qty: product.itemcount
-  //   };
-  //   this.orderFirestoreService.addProductToOrder(this.productPerOrder);
-  //   alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
-  // }
-
 }

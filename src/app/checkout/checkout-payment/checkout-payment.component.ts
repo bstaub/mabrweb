@@ -55,6 +55,7 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.order = new Order();
     this.order.key = this.orderFirestoreService.getOrderId();
+    this.order.paymentMethod = this.PaymentForm.value.paymentMethod;
     this.orderFirestoreService.updateOrder(this.order);
     this.router.navigate(['/checkout/overview'], {queryParams: {shopOrderId: this.nextShopOrderId}});
   }

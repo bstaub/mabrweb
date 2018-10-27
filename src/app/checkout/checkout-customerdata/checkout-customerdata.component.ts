@@ -34,6 +34,7 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
   authSubscription: Subscription;
   addressFormSubscription: Subscription;
   orderSubscription: Subscription;
+  user: any;
 
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
@@ -49,11 +50,13 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
     this.initCustomerAddressFormGroup();
     this.authSubscription = this.authService.user$.subscribe((user) => {
       if (user && user.emailVerified) {
+        this.user = user;
         this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').clearValidators();
         this.CustomerAddressForm.controls.customerBillingAddress.get('mail_b').updateValueAndValidity();
         this.getOrderData(user.id);
 
       } else {
+        this.user = null;
         this.getOrderData(this.localStorageService.getData('anonymusOrderId').orderId);
 
 
@@ -163,7 +166,8 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
         zip_b: this.orderData.customerBillingAddress.zip,
         city_b: this.orderData.customerBillingAddress.city,
         country_b: this.orderData.customerBillingAddress.country,
-        phone_b: this.orderData.customerBillingAddress.phone
+        phone_b: this.orderData.customerBillingAddress.phone,
+        mail_b: this.orderData.customerBillingAddress.mail
       },
 
       customerShippingAddress: {
@@ -173,7 +177,8 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
         zip_s: this.orderData.customerShippingAddress.zip,
         city_s: this.orderData.customerShippingAddress.city,
         country_s: this.orderData.customerShippingAddress.country,
-        phone_s: this.orderData.customerShippingAddress.phone
+        phone_s: this.orderData.customerShippingAddress.phone,
+        mail_s: this.orderData.customerShippingAddress.mail
       },
     });
 

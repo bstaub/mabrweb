@@ -56,7 +56,7 @@ export class CheckoutOverviewComponent implements OnInit {
     this.order.customerShippingAddress = this.orderData.customerShippingAddress;
     this.order.shipqingEqualsBillingAddress = this.orderData.shipqingEqualsBillingAddress;
     this.order.shippingMethod = this.orderData.shippingMethod;
-    this.order.anonymusOrder = !this.user;
+    this.order.anonymusOrder = !(this.user === 0);
     this.orderFirestoreService.updateOrder(this.order);
     this.closingOrderId = this.orderFirestoreService.completeUserOrder(this.order);
     this.orderFirestoreService.completeProductsPerOrder(this.closingOrderId, this.localStorageService.getData('products'));
@@ -87,12 +87,12 @@ export class CheckoutOverviewComponent implements OnInit {
   }
 
   setOrderData() {
-   // todo stuff
+    // todo stuff
   }
 
 
   goBack() {
-    this.router.navigate(['/checkout/shipmentdata']);
+    this.router.navigate(['/checkout/paymentdata']);
   }
 
 }

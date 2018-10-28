@@ -5,6 +5,7 @@ import { ProductFirestoreService } from '../shared/product-firestore.service';
 import { Observable } from 'rxjs';
 import { UserService } from '../../user/shared/user.service';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
+import { AlertifyService } from '../../shared/alertify.service';
 
 @Component({
   selector: 'app-detail-list',
@@ -23,7 +24,9 @@ export class ProductDetailComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               private productFirestoreService: ProductFirestoreService,
               private userService: UserService,
-              private orderFirestoreService: OrderFirestoreService) {
+              private orderFirestoreService: OrderFirestoreService,
+              private alertifyService: AlertifyService,
+  ) {
   }
 
   ngOnInit() {
@@ -40,7 +43,7 @@ export class ProductDetailComponent implements OnInit {
   addToBasket(product) {
     product.key = this.productId;
     this.orderFirestoreService.addProductToOrder(product);
-    alert(product.name + ' wurde dem Warenkorb hinzugefügt. ');
+    this.alertifyService.success(product.name + ' wurde dem Warenkorb hinzugefügt.');
   }
 
 

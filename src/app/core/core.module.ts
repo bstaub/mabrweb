@@ -22,9 +22,9 @@ import { NgxSiemaModule } from 'ngx-siema';
 import { HomeSliderNgcarouselComponent } from './home/home-slider-ngcarousel/home-slider-ngcarousel.component';
 import { SliderService } from './shared/slider.service';
 import { OffCanvasComponent } from './home/off-canvas/off-canvas.component';
-import { PageTitleComponent } from './page-title/page-title.component';
 import { HeaderOrderFlyoutComponent } from './header/header-order-flyout/header-order-flyout.component';
 import { OrderFlyoutService } from './shared/order-flyout-service';
+import {AlertifyService} from '../shared/alertify.service';
 
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -68,6 +68,7 @@ import { OrderFlyoutService } from './shared/order-flyout-service';
     LocalStorageService,
     SliderService,
     OrderFlyoutService,
+    AlertifyService,
     {provide: LocationStrategy, useClass: PathLocationStrategy}
   ],
 })

@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div *ngIf="products" class="product-list">
-    <div *ngFor="let product of products | async | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+    <div *ngFor="let product of products | async | paginate: { itemsPerPage: 20, currentPage: p }; let i = index">
       <app-admin-product-item-edit [product]='product' [count]='i'></app-admin-product-item-edit>
     </div>
   </div>

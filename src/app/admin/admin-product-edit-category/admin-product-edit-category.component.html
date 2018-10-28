@@ -1,0 +1,3 @@
+<ul class="list-group" *ngIf="(categories | async) as kat">
+  <li *ngFor="let k of kat" class="list-group-item">{{k.name}}</li>
+</ul>

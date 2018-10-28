@@ -7,6 +7,7 @@ import { StorageService } from '../../shared/storage.service';
 import { ProductCategory } from '../../models/product-category.model';
 import { ProductCategoryService } from '../../product/shared/product-category.service';
 import { Observable } from 'rxjs';
+import { AlertifyService } from '../../shared/alertify.service';
 
 @Component({
   selector: 'app-admin-product-item-edit',
@@ -27,7 +28,8 @@ export class AdminProductItemEditComponent implements OnInit {
   constructor(private productService: ProductFirestoreService,
               private orderFirestoreService: OrderFirestoreService,
               private storageService: StorageService,
-              private productCategory: ProductCategoryService
+              private productCategory: ProductCategoryService,
+              private alertifyService: AlertifyService,
   ) {
   }
 
@@ -43,7 +45,10 @@ export class AdminProductItemEditComponent implements OnInit {
   }
 
   deleteProduct() {
-    this.productService.deleteProduct(this.product.key);
+    this.alertifyService.confirm('Wollen Sie das Produkt ' + this.product.name + ' wirklich löschen?', () => {
+        this.productService.deleteProduct(this.product.key);
+        this.alertifyService.success(this.product.name + ' wurde erfolgreich gelöscht.');
+    });
   }
 
   editProduct(event, product) {
@@ -54,6 +59,7 @@ export class AdminProductItemEditComponent implements OnInit {
 
   updateProduct(product: Product) {
     this.productService.updateProduct(product.key, product, this.image, this.selectedCategory.name);  // Parameter 3 und 4 is optional for Admin Edit!
+    this.alertifyService.success(product.name + ' wurde erfolgreich editiert.');
   }
 
   onFileSelection($event) {

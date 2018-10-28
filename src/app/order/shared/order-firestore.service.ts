@@ -18,9 +18,8 @@ import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
 export class OrderFirestoreService {
 
   orders: any;
-  userOrder: Observable<Order[]>;
-  userOrderDoc: Observable<Order>;
-  products: Observable<Product[]>;
+  userOrder$: Observable<Order[]>;
+  userOrderDoc$: Observable<Order>;
 
   orderPerUser: AngularFirestoreDocument<Order>;
   orderCollection: AngularFirestoreCollection<Order>;
@@ -63,7 +62,7 @@ export class OrderFirestoreService {
 
     this.user = this.userService.getCurrentUser();
 
-    this.userOrder = this.orderCollection.snapshotChanges().pipe(
+    this.userOrder$ = this.orderCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Order;
         const key = a.payload.doc.id;
@@ -87,13 +86,13 @@ export class OrderFirestoreService {
     } else {
       this.orderPerUser = this.afs.collection('orders_anonymus').doc(userId);
     }
-    this.userOrderDoc = this.orderPerUser.snapshotChanges().pipe(
+    this.userOrderDoc$ = this.orderPerUser.snapshotChanges().pipe(
       map(res => {
         const data = res.payload.data() as Order;
         const key = res.payload.id;
         return {key, ...data};
       }));
-    return this.userOrderDoc;
+    return this.userOrderDoc$;
   }
 
   getLatestOrder() {

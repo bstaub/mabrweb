@@ -7,7 +7,8 @@ import { CustomerAddress } from '../../models/customerAddress.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../user/shared/auth.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { Subscription } from 'rxjs-compat/Subscription';
+import { Subscription } from 'rxjs';
+
 
 
 @Component({

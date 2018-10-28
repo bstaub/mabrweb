@@ -6,7 +6,7 @@ import { OrderFirestoreService } from '../../order/shared/order-firestore.servic
 import { Order } from '../../models/order.model';
 import { AuthService } from '../../user/shared/auth.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { Subscription } from 'rxjs-compat/Subscription';
+import { Subscription } from 'rxjs';
 
 
 

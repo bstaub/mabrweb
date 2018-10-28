@@ -8,7 +8,7 @@ import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalSt
 import { AuthService } from '../../user/shared/auth.service';
 import { SettingsService } from '../../shared/settings.service';
 import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
-import { Subscription } from 'rxjs-compat/Subscription';
+import { Subscription } from 'rxjs';
 
 
 

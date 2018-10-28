@@ -43,3 +43,15 @@ div.active {
   top: 8px;
   left: 38px;
 }
+
+@media only screen and (max-width: 760px) {
+
+  .pointer span {
+    top: 8px;
+    left: 26px;
+    font-size: 0.8em;
+    width: 17%;
+
+  }
+
+}

@@ -6,7 +6,7 @@ import { UserService } from '../../user/shared/user.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { AuthService } from '../../user/shared/auth.service';
-import { Subscription } from 'rxjs-compat/Subscription';
+import { Subscription } from 'rxjs';
 
 
 @Component({

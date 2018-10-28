@@ -55,3 +55,13 @@ li.submenu {
   background: white;
   border-radius: 10px;
 }
+
+@media only screen and (max-width: 425px) {
+
+  .shopping .submenu div#shopping-cart {
+    display: none;
+  }
+
+}
+
+

@@ -1,5 +1,27 @@
 <div class="container-fluid">
 
+  <div class="sort">
+    <div class="collection-sort">
+      <label>Filter nach:</label>
+      <select [(ngModel)]="selectedProduct" (change)="selectedOption()">
+        <!--<option value="">- Wählen -</option>-->
+        <option value="/">-alle Kategorien-</option>
+        <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
+      </select>
+    </div>
+
+    <div class="collection-sort">
+      <label>Sortieren nach:</label>
+      <select [(ngModel)]="selectedSort" (change)="selectedOption()">
+        <option value="default">Default</option>
+        <option value="a-z">alphabetisch, A-Z</option>
+        <option value="z-a">alphabetisch, Z-A</option>
+        <option value="low-high">Preis, tief nach hoch</option>
+        <option value="high-low">Price, hoch nach tief</option>
+      </select>
+    </div>
+  </div>
+
   <div *ngIf="products" class="product-list">
     <div *ngFor="let product of products | async | checkStatus | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
       <app-product-item [product]='product' [count]='i'></app-product-item>

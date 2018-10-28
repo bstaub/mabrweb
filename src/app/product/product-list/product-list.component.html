@@ -1,26 +1,30 @@
 <div class="container-fluid">
 
-  <div class="sort">
-    <div class="collection-sort">
-      <label>Filter nach:</label>
-      <select [(ngModel)]="selectedProduct" (change)="selectedOption()">
-        <!--<option value="">- Wählen -</option>-->
-        <option value="/">-alle Kategorien-</option>
-        <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
-      </select>
-    </div>
+  <nav class="product-filter">
+    <h1><span *ngIf="selectedCategory === '/'">Alle Kategorien</span><span *ngIf="selectedCategory !== '/'">{{selectedCategory}}</span></h1>
 
-    <div class="collection-sort">
-      <label>Sortieren nach:</label>
-      <select [(ngModel)]="selectedSort" (change)="selectedOption()">
-        <option value="default">Default</option>
-        <option value="a-z">alphabetisch, A-Z</option>
-        <option value="z-a">alphabetisch, Z-A</option>
-        <option value="low-high">Preis, tief nach hoch</option>
-        <option value="high-low">Price, hoch nach tief</option>
-      </select>
+    <div class="sort">
+      <div class="collection-sort">
+        <label>Filter nach:</label>
+        <select [(ngModel)]="selectedCategory" (change)="selectedOption()">
+          <option disabled hidden [value]="selectUndefinedOptionValue">-alle Kategorien-</option>
+          <option value="/">-alle Kategorien-</option>
+          <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
+        </select>
+      </div>
+
+      <div class="collection-sort">
+        <label>Sortieren nach:</label>
+        <select [(ngModel)]="selectedSort" (change)="selectedOption()">
+          <option disabled hidden [value]="selectUndefinedOptionValue">alphabetisch, A-Z</option>
+          <option value="a-z">alphabetisch, A-Z</option>
+          <option value="z-a">alphabetisch, Z-A</option>
+          <option value="low-high">Preis, tief nach hoch</option>
+          <option value="high-low">Price, hoch nach tief</option>
+        </select>
+      </div>
     </div>
-  </div>
+  </nav>
 
   <div *ngIf="products" class="product-list">
     <div *ngFor="let product of products | async | checkStatus | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">

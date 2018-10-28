@@ -16,9 +16,11 @@ export class ProductGridComponent implements OnInit, OnDestroy {
 
   products: Observable<Product[]>;
   categories: Observable<ProductCategory[]>;
-  selectedProduct: string;
+  selectedCategory: string;
   selectedSort: string;
   p = 1;
+  selectUndefinedOptionValue: any;
+
 
   constructor(private productService: ProductService,
               private productFireStoreService: ProductFirestoreService,
@@ -38,7 +40,7 @@ export class ProductGridComponent implements OnInit, OnDestroy {
   }
 
   selectedOption() {
-    this.products = this.productFireStoreService.filterProductsByCategoryAndField(this.selectedProduct, this.selectedSort);
+    this.products = this.productFireStoreService.filterProductsByCategoryAndField(this.selectedCategory, this.selectedSort);
   }
 
   get itemsPerPage() {

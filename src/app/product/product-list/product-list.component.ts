@@ -18,9 +18,10 @@ export class ProductListComponent implements OnInit {
 
   products: Observable<Product[]>;
   categories: Observable<ProductCategory[]>;
-  selectedProduct: string;
+  selectedCategory: string;
   selectedSort: string;
   p = 1;
+  selectUndefinedOptionValue: any;
 
   constructor(private productFireStoreService: ProductFirestoreService,
               private productCategory: ProductCategoryService,
@@ -38,7 +39,7 @@ export class ProductListComponent implements OnInit {
   }
 
   selectedOption() {
-    this.products = this.productFireStoreService.filterProductsByCategoryAndField(this.selectedProduct, this.selectedSort);
+    this.products = this.productFireStoreService.filterProductsByCategoryAndField(this.selectedCategory, this.selectedSort);
   }
 
   get itemsPerPage() {

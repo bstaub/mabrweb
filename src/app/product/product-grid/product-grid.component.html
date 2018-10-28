@@ -1,11 +1,11 @@
 <nav class="product-filter">
-  <h1>{{selectedProduct}}</h1>
+  <h1><span *ngIf="selectedCategory === '/'">Alle Kategorien</span><span *ngIf="selectedCategory !== '/'">{{selectedCategory}}</span></h1>
 
   <div class="sort">
     <div class="collection-sort">
       <label>Filter nach:</label>
-        <select [(ngModel)]="selectedProduct" (change)="selectedOption()">
-        <!--<option value="">- Wählen -</option>-->
+        <select [(ngModel)]="selectedCategory" (change)="selectedOption()">
+        <option disabled hidden [value]="selectUndefinedOptionValue">-alle Kategorien-</option>
         <option value="/">-alle Kategorien-</option>
         <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
       </select>
@@ -14,7 +14,7 @@
     <div class="collection-sort">
       <label>Sortieren nach:</label>
         <select [(ngModel)]="selectedSort" (change)="selectedOption()">
-        <option value="default">Default</option>
+        <option disabled hidden [value]="selectUndefinedOptionValue">alphabetisch, A-Z</option>
         <option value="a-z">alphabetisch, A-Z</option>
         <option value="z-a">alphabetisch, Z-A</option>
         <option value="low-high">Preis, tief nach hoch</option>
@@ -26,7 +26,7 @@
 
 <section class="products" *ngIf="products">
 
-  <ng-container *ngIf="!filteredProducts">
+  <ng-container>
     <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
        *ngFor="let product of products | async | checkStatus | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
       <!--*ngFor="let product of products | async | checkStatus |slice:0:limit; let i = index">-->

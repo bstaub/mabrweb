@@ -3,8 +3,8 @@
 
   <div class="sort">
     <div class="collection-sort">
-      <label>Filter by:</label>
-      <select [(ngModel)]="selectedProduct" (change)="selectedCategory($event)">
+      <label>Filter nach:</label>
+        <select [(ngModel)]="selectedProduct" (change)="selectedOption()">
         <!--<option value="">- Wählen -</option>-->
         <option value="/">-alle Kategorien-</option>
         <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
@@ -12,10 +12,9 @@
     </div>
 
     <div class="collection-sort">
-      <label>Sort by:</label>
-      <select [(ngModel)]="selectedSort" (change)="selectedSortOption($event)">
+      <label>Sortieren nach:</label>
+        <select [(ngModel)]="selectedSort" (change)="selectedOption()">
         <option value="default">Default</option>
-        <option value="bestseller">Bestseller</option>
         <option value="a-z">alphabetisch, A-Z</option>
         <option value="z-a">alphabetisch, Z-A</option>
         <option value="low-high">Preis, tief nach hoch</option>
@@ -26,21 +25,6 @@
 </nav>
 
 <section class="products" *ngIf="products">
-
-  <ng-container *ngIf="filteredProducts">
-    <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
-       *ngFor="let product of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
-      <!--*ngFor="let product of filteredProducts | slice:0:limit; let i = index">-->
-      <div class="product-image">
-        <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
-      </div>
-      <div class="product-info">
-        <h5>{{product.name}}</h5>
-        <p *ngIf="product.discountFactor !== 1" style="text-decoration:line-through;">CHF {{product.price}}</p>
-        <h6>CHF {{product.price * product.discountFactor | number : '1.2-2'}}</h6>
-      </div>
-    </a>
-  </ng-container>
 
   <ng-container *ngIf="!filteredProducts">
     <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"

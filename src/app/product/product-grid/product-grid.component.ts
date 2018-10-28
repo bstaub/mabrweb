@@ -16,11 +16,9 @@ export class ProductGridComponent implements OnInit, OnDestroy {
 
   products: Observable<Product[]>;
   categories: Observable<ProductCategory[]>;
-  filteredProducts: any[] | number;
-
-  selectedProduct: string; // just for show Product Category in Template
+  selectedProduct: string;
   selectedSort: string;
-  p: number = 1; // ngx-pageination
+  p = 1;
 
   constructor(private productService: ProductService,
               private productFireStoreService: ProductFirestoreService,
@@ -39,34 +37,8 @@ export class ProductGridComponent implements OnInit, OnDestroy {
     this.products = this.productFireStoreService.getProducts();
   }
 
-  selectedCategory(event) {
-    const categoryName = event.target.value;
-    if (categoryName === '/') {  // when no category is selected (/), set filteredProduct to null
-      this.filteredProducts = null;
-      this.products = this.productFireStoreService.getProducts();
-    } else {
-      this.filteredProducts = this.productFireStoreService.getCategory(categoryName);
-    }
-  }
-
-  selectedSortOption(event) {
-    const selectedSortOption = event.target.value;
-    if (selectedSortOption === 'a-z') {
-      this.productFireStoreService.sortProductsByNameAsc();
-      this.products = this.productFireStoreService.getProducts();
-    }
-    if (selectedSortOption === 'z-a') {
-      this.productFireStoreService.sortProductsByNameDesc();
-      this.products = this.productFireStoreService.getProducts();
-    }
-    if (selectedSortOption === 'low-high') {
-      this.productFireStoreService.sortProductsByPriceAsc();
-      this.products = this.productFireStoreService.getProducts();
-    }
-    if (selectedSortOption === 'high-low') {
-      this.productFireStoreService.sortProductsByPriceDesc();
-      this.products = this.productFireStoreService.getProducts();
-    }
+  selectedOption() {
+    this.products = this.productFireStoreService.filterProductsByCategoryAndField(this.selectedProduct, this.selectedSort);
   }
 
   get itemsPerPage() {

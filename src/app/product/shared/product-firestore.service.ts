@@ -49,6 +49,16 @@ export class ProductFirestoreService {
     );
   }
 
+  getData2() {
+    return this.productCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+  }
+
   getDataToSearch(): Observable<Product[]> {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
     // return this.products = this.productCollection.snapshotChanges().pipe(  // Fehler weil this.produkts überschrieben nach Fulltext Search wurde!!!
@@ -95,24 +105,54 @@ export class ProductFirestoreService {
     );
   }
 
+  filterProductsByCategoryAndField(category: string, field: string) {
+    console.log('category: ', category);
+    console.log('field: ', field);
+    if ((category !== undefined && category !== '/') && field !== undefined) {
+      if (field === 'a-z') {
+        console.log('a-z_1');
+        this.productCollection = this.afs.collection('products', ref => ref.where('productCategory', '==', category).orderBy('name', 'asc'));
+      } else if (field === 'z-a') {
+        this.productCollection = this.afs.collection('products', ref => ref.where('productCategory', '==', category).orderBy('name', 'desc'));
+      } else if (field === 'low-high') {
+        this.productCollection = this.afs.collection('products', ref => ref.where('productCategory', '==', category).orderBy('price', 'asc'));
+      } else if (field === 'high-low') {
+        this.productCollection = this.afs.collection('products', ref => ref.where('productCategory', '==', category).orderBy('price', 'desc'));
+      } else {
+        console.log('new defined field1: ', field);
+      }
+    } else if (category !== undefined && field === undefined) {
+        if (category !== '/') {
+          console.log('eine kat gewählt: ', category);
+          this.productCollection = this.afs.collection('products', ref => ref.where('productCategory', '==', category).orderBy('name', 'asc'));
+        } else {
+          console.log('alle Kategorien gewählt');
+          this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+        }
+    } else if ((category === undefined || category === '/') && field !== undefined) {
+      if (field === 'a-z') {
+        console.log('a-z_2');
+        this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+      } else if (field === 'z-a') {
+        this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'desc'));
+      } else if (field === 'low-high') {
+        this.productCollection = this.afs.collection('products', ref => ref.orderBy('price', 'asc'));
+      } else if (field === 'high-low') {
+        this.productCollection = this.afs.collection('products', ref => ref.orderBy('price', 'desc'));
+      } else {
+        console.log('new defined field2: ', field);
+      }
+    } else if (category === '/' && field === undefined) {
+      this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+    } else {
+      console.log('not defined last');
+    }
+    return this.getData2();
+  }
+
   sortProductsByNameAsc() {
     console.log('load initial products from productsService');
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
-    this.getData();
-  }
-
-  sortProductsByNameDesc() {
-    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'desc'));
-    this.getData();
-  }
-
-  sortProductsByPriceAsc() {
-    this.productCollection = this.afs.collection('products', ref => ref.orderBy('price', 'asc'));
-    this.getData();
-  }
-
-  sortProductsByPriceDesc() {
-    this.productCollection = this.afs.collection('products', ref => ref.orderBy('price', 'desc'));
     this.getData();
   }
 

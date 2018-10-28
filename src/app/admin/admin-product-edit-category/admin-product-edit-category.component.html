@@ -1,3 +1,22 @@
-<ul class="list-group" *ngIf="(categories | async) as kat">
-  <li *ngFor="let k of kat" class="list-group-item">{{k.name}}</li>
-</ul>
+<div class="table-responsive-sm">
+<table class="table" *ngIf="(categories | async) as kategorie">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Name</th>
+    <th scope="col">Beschreibung</th>
+    <th scope="col">Aktion</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let kat of kategorie; let i = index">
+    <th scope="row">{{i}}</th>
+    <td>{{kat.name}}</td>
+    <td>{{kat.description}}</td>
+    <td><button class="btn btn-sm btn-danger" (click)="onDeletItem(kat.id)">
+      <fa name="trash"></fa>
+    </button></td>
+  </tr>
+  </tbody>
+</table>
+</div>

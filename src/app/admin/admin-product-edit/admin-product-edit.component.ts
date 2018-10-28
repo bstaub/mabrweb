@@ -7,6 +7,7 @@ import { ProductCategoryService } from '../../product/shared/product-category.se
 import { Observable } from 'rxjs';
 import { ProductCategory } from '../../models/product-category.model';
 import { Product } from '../../models/product.model';
+import { AlertifyService } from '../../shared/alertify.service';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class AdminProductEditComponent implements OnInit {
     private productFirestoreService: ProductFirestoreService,
     private storageService: StorageService,
     private productCategory: ProductCategoryService,
+    private alertifyService: AlertifyService,
   ) { }
 
 
@@ -65,6 +67,7 @@ export class AdminProductEditComponent implements OnInit {
       this.product);
 
     this.productFirestoreService.addProduct(productObj);
+    this.alertifyService.success(this.product.name + ' wurde erfolgreich angelegt. Produkt muss noch über die Liste aktiviert werden!');
   }
 
   onFileSelection($event) {

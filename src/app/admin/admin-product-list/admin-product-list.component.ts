@@ -12,7 +12,7 @@ import { SettingsService } from '../../shared/settings.service';
 export class AdminProductListComponent implements OnInit {
 
   products: Observable<Product[]>;
-  p: number = 1;
+  p = 1;
 
   constructor( private productFireStoreService: ProductFirestoreService,
                private settingsService: SettingsService,

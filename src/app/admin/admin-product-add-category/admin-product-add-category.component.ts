@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductCategoryService } from '../../product/shared/product-category.service';
+import { AlertifyService } from '../../shared/alertify.service';
 
 @Component({
   selector: 'app-admin-product-add-category',
@@ -11,7 +12,9 @@ export class AdminProductAddCategoryComponent implements OnInit {
   category: string;
   beschreibung: string;
 
-  constructor(private productCategoryService: ProductCategoryService) {
+  constructor(private productCategoryService: ProductCategoryService,
+              private alertifyService: AlertifyService,
+  ) {
   }
 
   ngOnInit() {
@@ -25,6 +28,7 @@ export class AdminProductAddCategoryComponent implements OnInit {
         name: this.category,
         description: this.beschreibung
       });
+    this.alertifyService.success('Kategorie ' + this.category + ' wurde erfolgreich hinzugefügt.');
   }
 
 }

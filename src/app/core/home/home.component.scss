@@ -1,3 +1,8 @@
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .featured-product {
   display: flex;
   width:200px;
@@ -14,4 +19,47 @@
   }
 
 }
+
+.row {
+  margin-bottom: 30px;
+}
+
+/*
+// Box Styling start
+h4.my-0.font-weight-normal {
+  text-align: left;
+  border-bottom: 1px solid #e1e7ec;
+  font-size: 15px;
+  color: #9da9b9;
+}
+
+.shadow-sm {
+  box-shadow: none!important;
+}
+
+.card-header {
+  background-color: initial;
+  border-bottom: 0;
+}
+
+.card {
+  border: 0;
+  border-radius:0;
+  font-size: 13px;
+
+  a{
+    color: #9da9b9;
+    text-decoration: none;
+  }
+  a:hover{
+    color: grey;
+  }
+  p{
+    color: #9da9b9;
+  }
+}
+// Box Styling end
+*/
+
+
 

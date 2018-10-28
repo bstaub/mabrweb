@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../../models/product.model';
-import { ProductService } from '../../product/shared/product.service';
 import { ProductFirestoreService } from '../../product/shared/product-firestore.service';
+import { SettingsService } from '../../shared/settings.service';
 
 @Component({
   selector: 'app-admin-product-list',
@@ -11,38 +11,25 @@ import { ProductFirestoreService } from '../../product/shared/product-firestore.
 })
 export class AdminProductListComponent implements OnInit {
 
-  // products: Observable<any[]>;
-  // products: Observable<any>;
   products: Observable<Product[]>;
+  p: number = 1;
 
-  constructor(private productService: ProductService, private productFireStoreService: ProductFirestoreService) {
+  constructor( private productFireStoreService: ProductFirestoreService,
+               private settingsService: SettingsService,
+  ) {
   }
 
   ngOnInit() {
     this.getProductList();
   }
 
-  getProductListAsync() {
-    // | async in Teamplate Ausgabe hinzufügen, product kann dann auch vom Typ Observable<any[]> zurückgeben!
-    // this.products = this.productService.getProductList().valueChanges();
-  }
-
   getProductList() {
     this.products = this.productFireStoreService.getProducts();
 
-
-    // this.productService.getProductList().snapshotChanges().pipe(
-    //   map(changes =>
-    //     changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
-    //   )
-    // ).subscribe(products => {
-    //   console.log('bslogger: ', products);
-    //   this.products = products;
-    // });
   }
 
-  deleteProducts() {
-    this.productService.deleteAll();
+  get itemsPerPage() {
+    return this.settingsService.getSettings().itemsPerPage;
   }
 
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService} from '../shared/product.service';
-import { Observable} from 'rxjs/index';
-import {map} from 'rxjs/internal/operators';
-import {ProductFirestoreService} from '../shared/product-firestore.service';
-import {Product} from '../../models/product.model';
-
+import { Observable } from 'rxjs/index';
+import { ProductFirestoreService } from '../shared/product-firestore.service';
+import { Product } from '../../models/product.model';
+import { SettingsService } from '../../shared/settings.service';
+import { ProductCategory } from '../../models/product-category.model';
+import { ProductCategoryService } from '../shared/product-category.service';
 
 
 @Component({
@@ -16,37 +16,34 @@ import {Product} from '../../models/product.model';
 })
 export class ProductListComponent implements OnInit {
 
-  // products: Observable<any[]>;
-  // products: Observable<any>;
   products: Observable<Product[]>;
+  categories: Observable<ProductCategory[]>;
+  selectedCategory: string;
+  selectedSort: string;
+  p = 1;
+  selectUndefinedOptionValue: any;
 
-  constructor(private productService: ProductService, private productFireStoreService: ProductFirestoreService) { }
+  constructor(private productFireStoreService: ProductFirestoreService,
+              private productCategory: ProductCategoryService,
+              private settingsService: SettingsService,
+  ) {
+  }
 
   ngOnInit() {
     this.getProductList();
-  }
-
-  getProductListAsync() {
-    // | async in Teamplate Ausgabe hinzufügen, product kann dann auch vom Typ Observable<any[]> zurückgeben!
-    // this.products = this.productService.getProductList().valueChanges();
+    this.categories = this.productCategory.getCategories();
   }
 
   getProductList() {
     this.products = this.productFireStoreService.getProducts();
-
-
-    // this.productService.getProductList().snapshotChanges().pipe(
-    //   map(changes =>
-    //     changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
-    //   )
-    // ).subscribe(products => {
-    //   console.log('bslogger: ', products);
-    //   this.products = products;
-    // });
   }
 
-  deleteProducts() {
-    this.productService.deleteAll();
+  selectedOption() {
+    this.products = this.productFireStoreService.filterProductsByCategoryAndField(this.selectedCategory, this.selectedSort);
+  }
+
+  get itemsPerPage() {
+    return this.settingsService.getSettings().itemsPerPage;
   }
 
 }

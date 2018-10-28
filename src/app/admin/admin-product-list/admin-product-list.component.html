@@ -1,9 +1,19 @@
 <div class="container-fluid">
   <div *ngIf="products" class="product-list">
-    <!-- <div class="media" *ngFor="let product of products | async" style="width: 300px;"> -->
-    <!--<div class="media" *ngFor="let product of products; let i = index">-->
-    <div *ngFor="let product of products | async; let i = index">
-      <app-admin-product-item [product]='product' [count]='i'></app-admin-product-item>
+    <div *ngFor="let product of products | async | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+      <app-admin-product-item-edit [product]='product' [count]='i'></app-admin-product-item-edit>
     </div>
   </div>
 </div>
+
+<pagination-controls (pageChange)="p = $event"
+                     maxSize="9"
+                     directionLinks="true"
+                     autoHide="true"
+                     responsive="true"
+                     previousLabel="Zurück"
+                     nextLabel="Vor"
+                     screenReaderPaginationLabel="Pagination"
+                     screenReaderPageLabel="Seite"
+                     screenReaderCurrentLabel="Du bist auf Seite">
+</pagination-controls>

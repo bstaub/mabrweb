@@ -4,23 +4,33 @@
   <div *ngIf="selectedProduct | async as product; else loading" class="row mb-3">
     <div class="col-xs-12 col-md-6">
       <div>
-        <label>Name: </label> {{product.name}}
+        <label>Name: </label>
+        <p>{{product.name}}</p>
       </div>
       <div>
-        <label>Beschreibung: </label> {{product.description}}
+        <label>Beschreibung: </label>
+        <p>{{product.description}}</p>
+
       </div>
       <div>
-        <label>Preis: </label> {{product.price}}
+        <label>Preis: </label>
+        <p *ngIf="product.discountFactor !== 1" style="text-decoration:line-through;">CHF {{product.price}}</p>
+        <p>CHF {{product.price * product.discountFactor | number : '1.2-2'}}</p>
       </div>
 
-      <br><input type="text" name="anzahl" style="width: 50px;height: 36px;border-radius: 5px;" [(ngModel)]="product.itemcount" name="itemcount"><button class="btn btn-outline-success mt-3 mb-3" style="display: inline-block;" (click)='addToBasket(product)'>in den Warenkorb</button>
+
+      <br><input type="text" name="anzahl" style="width: 50px;height: 36px;border-radius: 5px;"
+                 [(ngModel)]="product.itemcount" name="itemcount">
+      <button class="btn btn-outline-success mt-3 mb-3" style="display: inline-block;" (click)='addToBasket(product)'>in
+        den Warenkorb
+      </button>
 
     </div>
     <div class="col-xs-12 col-md-6">
-      <!-- 'Fake Storage || //:0' -->
-      <!--<img src="{{product.picture + count}}" class="img-fluid" alt="Dummy Images">-->
       <img src="{{product.image || '//:0'}}" class="img-fluid" alt="Dummy Images">
     </div>
+
+    <button appBackButton>Zurück</button>
 
   </div>
 

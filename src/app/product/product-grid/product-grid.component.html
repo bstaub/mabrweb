@@ -1,71 +1,57 @@
 <nav class="product-filter">
-  <h1>{{selectedProduct}}</h1>
+  <h1><span *ngIf="selectedCategory === '/'">Alle Kategorien</span><span *ngIf="selectedCategory !== '/'">{{selectedCategory}}</span></h1>
 
   <div class="sort">
     <div class="collection-sort">
-      <label>Filter by:</label>
-      <select [(ngModel)]="selectedProduct" (change)="selectedCategory($event)">
-        <!--<option value="">- Wählen -</option>-->
+      <label>Filter nach:</label>
+        <select [(ngModel)]="selectedCategory" (change)="selectedOption()">
+        <option disabled hidden [value]="selectUndefinedOptionValue">-alle Kategorien-</option>
         <option value="/">-alle Kategorien-</option>
         <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
       </select>
     </div>
 
     <div class="collection-sort">
-      <label>Sort by:</label>
-      <select [(ngModel)]="selectedSort" (change)="selectedSortOption($event)">
-        <option value="default">Default</option>
-        <option value="bestseller">Bestseller</option>
+      <label>Sortieren nach:</label>
+        <select [(ngModel)]="selectedSort" (change)="selectedOption()">
+        <option disabled hidden [value]="selectUndefinedOptionValue">alphabetisch, A-Z</option>
         <option value="a-z">alphabetisch, A-Z</option>
         <option value="z-a">alphabetisch, Z-A</option>
         <option value="low-high">Preis, tief nach hoch</option>
         <option value="high-low">Price, hoch nach tief</option>
-        <option value="new-old">Datum, neu nach alt</option>
-        <option value="old-new">Datum, alt nach neu</option>
       </select>
     </div>
   </div>
 </nav>
 
-<section class="products" *ngIf="products" >
+<section class="products" *ngIf="products">
 
-  <ng-container *ngIf="filteredProducts">
-        <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
-             *ngFor="let product of filteredProducts | slice:0:limit; let i = index">
-          <div class="product-image">
-            <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
-          </div>
-          <div class="product-info">
-            <h5>{{product.name}}</h5>
-            <h6>CHF {{product.price}}.--</h6>
-          </div>
-        </a>
-  </ng-container>
-
-  <ng-container *ngIf="!filteredProducts">
-        <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
-             *ngFor="let product of products | async | slice:0:limit; let i = index">
-          <div class="product-image">
-            <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
-          </div>
-          <div class="product-info">
-            <h5>{{product.name}}</h5>
-            <h6>CHF {{product.price}}.--</h6>
-          </div>
-        </a>
+  <ng-container>
+    <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
+       *ngFor="let product of products | async | checkStatus | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+      <!--*ngFor="let product of products | async | checkStatus |slice:0:limit; let i = index">-->
+      <div class="product-image">
+        <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">
+      </div>
+      <div class="product-info">
+        <h5>{{product.name}}</h5>
+        <p *ngIf="product.discountFactor !== 1" style="text-decoration:line-through;">CHF {{product.price}}</p>
+        <!-- https://stackoverflow.com/questions/35513413/angular-how-to-display-number-always-with-2-decimal-places-in-input -->
+        <h6>CHF {{product.price * product.discountFactor | number : '1.2-2'}}</h6>
+      </div>
+    </a>
   </ng-container>
 
 </section>
 
-<div class="fullSize">
-  <button style="margin-left: 40px; margin-top: 30px;" class="btn btn-secondary" (click)="limit=limit+next">Weitere laden</button>
-</div>
-
-
-<!--<section *ngIf="products" class="row product-list">-->
-<!---->
-<!--<div class="product-card" *ngFor="let product of products | async; let i = index">-->
-<!--<app-product-item [product]='product' [count]='i'></app-product-item>-->
-<!--</div>-->
-<!---->
-<!--</section>-->
+<pagination-controls (pageChange)="p = $event"
+                     maxSize="9"
+                     directionLinks="true"
+                     autoHide="true"
+                     responsive="true"
+                     previousLabel="Zurück"
+                     nextLabel="Vor"
+                     screenReaderPaginationLabel="Pagination"
+                     screenReaderPageLabel="Seite"
+                     screenReaderCurrentLabel="Du bist auf Seite">
+</pagination-controls>

@@ -4,6 +4,7 @@ import { AuthService } from '../shared/auth.service';
 import { NotificationService } from '../../shared/notification.service';
 import { Router } from '@angular/router';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 @Component({
   selector: 'app-user-login',
@@ -16,7 +17,8 @@ export class UserLoginComponent implements OnInit {
               private router: Router,
               private notifier: NotificationService,
               private orderFirestoreService: OrderFirestoreService,
-              ) {
+              private localStorageService: LocalStorageService,
+  ) {
   }
 
   ngOnInit() {
@@ -32,9 +34,9 @@ export class UserLoginComponent implements OnInit {
           setTimeout(() => {
             // https://stackoverflow.com/questions/45025334/how-to-use-router-navigatebyurl-and-router-navigate-in-angular
 
+            this.orderFirestoreService.loadOrderAfterLogin(userData.user.uid);
+            this.localStorageService.destroyLocalStorage('anonymusOrderId');
 
-            this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
-            this.orderFirestoreService.loadProducts(userData.user.uid);
             this.router.navigateByUrl('');  // geht zur Homepage!
             // this.router.navigate(['/login']);
           }, 2000);

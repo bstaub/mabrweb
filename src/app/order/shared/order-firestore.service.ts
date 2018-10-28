@@ -9,6 +9,7 @@ import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalSt
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { CustomerAddress } from '../../models/customerAddress.model';
+import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
 
 
 @Injectable({
@@ -16,9 +17,10 @@ import { CustomerAddress } from '../../models/customerAddress.model';
 })
 export class OrderFirestoreService {
 
+  orders: any;
   userOrder: Observable<Order[]>;
   userOrderDoc: Observable<Order>;
-  products: Observable<any[]>;
+  products: Observable<Product[]>;
 
   orderPerUser: AngularFirestoreDocument<Order>;
   orderCollection: AngularFirestoreCollection<Order>;
@@ -27,6 +29,7 @@ export class OrderFirestoreService {
 
   orderCollection_completed: AngularFirestoreCollection<Order>;
   orderCollection_completedAnonymus: AngularFirestoreCollection<Order>;
+  orderCollection_completed_sorted: AngularFirestoreCollection<Order>;
 
   productsOrderCollection: AngularFirestoreCollection<any>;
   productsPerOrderDocument: AngularFirestoreDocument<any>;
@@ -34,6 +37,7 @@ export class OrderFirestoreService {
   orderDoc: AngularFirestoreDocument<Order>;
   order: Order;
   productPerOrder: ProductPerOrder;
+  product: Product;
   customerAddress: CustomerAddress;
   user: any;
   totalValue: number;
@@ -47,7 +51,9 @@ export class OrderFirestoreService {
 
   constructor(public afs: AngularFirestore,
               private userService: UserService,
-              private localStorageService: LocalStorageService) {
+              private localStorageService: LocalStorageService,
+              private orderFlyoutService: OrderFlyoutService,
+  ) {
 
     this.orderCollection = this.afs.collection('orders');
     this.orderCollectionAnonymus = this.afs.collection('orders_anonymus');
@@ -69,6 +75,12 @@ export class OrderFirestoreService {
 
 
   getUserOrder(userId) {
+
+    // todo:
+    if (!userId) {
+      userId = this.localStorageService.getData('anonymusOrderId').orderId || '0';
+    }
+
     this.user = this.userService.getCurrentUser();
     if (this.user) {
       this.orderPerUser = this.afs.collection('orders').doc(userId);
@@ -84,6 +96,22 @@ export class OrderFirestoreService {
     return this.userOrderDoc;
   }
 
+  getLatestOrder() {
+    this.orderCollection_completed_sorted = this.afs.collection('orders_completed', ref => ref.orderBy('shopOrderId', 'desc').limit(1));
+    // return this.products = this.productCollection.snapshotChanges().pipe(  // Fehler weil this.produkts überschrieben nach Fulltext Search wurde!!!
+    this.orders = this.orderCollection_completed_sorted.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Product;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))
+    );
+
+    return this.orders;
+
+  }
+
+
 
   getProductsPerOrder(oderKey) {
     this.user = this.userService.getCurrentUser();
@@ -96,15 +124,23 @@ export class OrderFirestoreService {
   }
 
 
-  creatNewUserOrder(userId: string) {
+  loadOrderAfterLogin(userId: string) {
+    console.log(userId);
     this.orderCollection.doc(userId).ref.get()
       .then((docSnapshot) => {
         if (!docSnapshot.exists) {
-          this.order = this.createEmptyOrder();
-          this.order.userId = userId;
-          this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(this.order)));
+          this.creatNewUserOrder(userId);
+          this.saveProductsInFS(userId, this.localStorageService.getData('products'));
+        } else {
+          this.loadProductsToLocalStorage(userId);
         }
       });
+  }
+
+  creatNewUserOrder(userId: string) {
+    this.order = this.createEmptyOrder();
+    this.order.userId = userId;
+    this.orderCollection.doc(userId).set(JSON.parse(JSON.stringify(this.order)));
   }
 
   createNewUserOrderAnonymus() {
@@ -123,16 +159,17 @@ export class OrderFirestoreService {
   createEmptyOrder() {
     this.customerAddress = new CustomerAddress();
     this.order = new Order();
-    this.order.shopOrderId = 'ShopID XXX-123';
+    this.order.shopOrderId = 0;
     this.order.orderDate = new Date();
     this.order.status = 'pending';
     this.order.shippingMethod = 'normal';
     this.order.paymentMethod = 'invoice';
     this.order.totalValue = 0;
-    this.order.customerAddress = this.customerAddress;
+    this.order.customerBillingAddress = this.customerAddress;
+    this.order.customerShippingAddress = this.customerAddress;
+    this.order.shipqingEqualsBillingAddress = true;
     return this.order;
   }
-
 
   saveProductsInFS(orderId: string, products: Array<ProductPerOrderLocalStorage>) {
     this.user = this.userService.getCurrentUser();
@@ -144,18 +181,11 @@ export class OrderFirestoreService {
       this.orderCollectionVar = this.orderCollectionAnonymus;
     }
 
-    let lineValue = 0;
-    let totalValue = 0;
-
     products.forEach((product) => {
       const productPerOrder = new ProductPerOrder();
       productPerOrder.productId = product.productId;
       productPerOrder.qty = product.qty;
       productPerOrder.orderId = orderId;
-
-      lineValue = product.qty * product.price;
-      lineValue.toFixed(2);
-      totalValue += lineValue;
 
       this.productsOrderCollection.doc(productPerOrder.productId).set({
         // userId: this.orderCollectionVar.doc(productPerOrder.orderId).ref,
@@ -167,8 +197,22 @@ export class OrderFirestoreService {
 
     });
 
+    this.calcOrderTotalValue();
+  }
+
+  calcOrderTotalValue() {
+    let lineValue = 0;
+    let totalValue = 0;
+    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.productsPerOrderLocalStorage.forEach((product) => {
+      lineValue = product.qty * product.price * product.discountFactor;
+      lineValue.toFixed(2);
+      totalValue += lineValue;
+    });
+    this.totalValue = totalValue;
+
     this.order = new Order();
-    this.order.key = orderId;
+    this.order.key = this.getOrderId();
     this.order.totalValue = totalValue;
     this.updateOrder(this.order);
   }
@@ -192,37 +236,48 @@ export class OrderFirestoreService {
       });
   }
 
+  loadProductsToLocalStorage(orderId: string) {
+    this.getProductsPerOrder(orderId).ref.get()
+      .then((res) => {
+        res.forEach(doc => {
+          const newProduct = doc.data();
+          newProduct.id = doc.id;
+          if (newProduct.productId) {
+            newProduct.productId.get()
+              .then(ressource => {
+                newProduct.productData = ressource.data();
+                if (newProduct.productData) {
+                  this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
 
-  loadProducts(userId: string) {
-    this.localStorageService.destroyLocalStorage('products');
-    this.getProductsPerOrder(userId).ref.get().then((res) => {
-      res.forEach(doc => {
-        const newProduct = doc.data();
-        newProduct.id = doc.id;
-        if (newProduct.productId) {
-          newProduct.productId.get()
-            .then(ressource => {
-              newProduct.productData = ressource.data();
-              if (newProduct.productData) {
-                const productStore = this.localStorageService.getData('products');
-                productStore.push({
-                  productId: newProduct.id,
-                  qty: Number(newProduct.qty),
-                  name: newProduct.productData.name,
-                  description: newProduct.productData.description,
-                  price: newProduct.productData.price,
-                  image: newProduct.productData.image
-                });
-                this.localStorageService.setData('products', productStore);
-              }
-            })
-            .catch(err => console.error(err));
-        }
-      });
-    })
+                  this.product = new Product();
+                  this.product.key = newProduct.id;
+                  this.product.name = newProduct.productData.name;
+                  this.product.description = newProduct.productData.description;
+                  this.product.price = newProduct.productData.price;
+                  this.product.itemcount = Number(newProduct.qty);
+                  this.product.image = newProduct.productData.image;
+                  this.product.discount = newProduct.productData.discount;
+
+                  if (this.productExistInScart(this.product)) {
+                    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+                    this.productsPerOrderLocalStorageUpdate = this.productsPerOrderLocalStorage.filter(productExist => productExist.productId === this.product.key);
+                    this.productsPerOrderLocalStorageUpdate[0].qty += Number(this.product.itemcount);
+                    this.updateProductQty(this.productsPerOrderLocalStorageUpdate[0]);
+                  } else {
+                    this.pushProductToLocalStorage(this.product);
+                  }
+                  this.localStorageService.setData('products', this.productsPerOrderLocalStorage);
+                  this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorage, this.order);
+                  this.saveProductsInFS(orderId, this.productsPerOrderLocalStorage);
+                  this.calcOrderTotalValue();
+                }
+              })
+              .catch(err => console.error(err));
+          }
+        });
+      })
       .catch(err => console.error(err));
   }
-
 
   addProductToOrder(product: Product) {
     if (this.productExistInScart(product)) {
@@ -233,13 +288,11 @@ export class OrderFirestoreService {
     } else {
       this.pushProductToLocalStorage(product);
     }
-
     this.user = this.userService.getCurrentUser();
     if (this.user) {
       this.orderId = this.user.uid;
     } else {
       if (!this.userOrderAnonymusExist()) {
-        console.log('ordercreated');
         this.createNewUserOrderAnonymus();
       }
       this.orderId = this.localStorageService.getData('anonymusOrderId').orderId;
@@ -255,9 +308,11 @@ export class OrderFirestoreService {
       name: product.name,
       description: product.description,
       price: product.price,
-      image: product.image
+      image: product.image,
+      discountFactor: product.discountFactor ? product.discountFactor : 1
     });
     this.localStorageService.setData('products', this.productsPerOrderLocalStorage);
+    this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorage, this.order);
   }
 
   productExistInScart(product: Product) {
@@ -276,11 +331,13 @@ export class OrderFirestoreService {
       name: productPerOrderLocalStorage.name,
       description: productPerOrderLocalStorage.description,
       price: productPerOrderLocalStorage.price,
-      image: productPerOrderLocalStorage.image
+      image: productPerOrderLocalStorage.image,
+      discountFactor: productPerOrderLocalStorage.discountFactor
     });
 
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
+    this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorageNew, this.order);
     this.saveProductsInFS(this.getOrderId(), this.productsPerOrderLocalStorageNew);
   }
 
@@ -289,14 +346,17 @@ export class OrderFirestoreService {
     this.productsPerOrderLocalStorageNew = this.productsPerOrderLocalStorage.filter(product => product.productId !== productIdToDelete);
     this.localStorageService.destroyLocalStorage('products');
     this.localStorageService.setData('products', this.productsPerOrderLocalStorageNew);
+    this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorageNew, this.order);
     this.deleteProductInFS(this.getOrderId(), productIdToDelete);
   }
 
   clearScart(productsPerOrderLocalStorage: ProductPerOrderLocalStorage[]) {
     this.deleteProductsInFS(this.getOrderId(), productsPerOrderLocalStorage);
     this.localStorageService.destroyLocalStorage('products');
+    this.productsPerOrderLocalStorage = this.localStorageService.getData('products');
+    this.calcOrderTotalValue();
+    this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorage, this.order);
   }
-
 
   updateOrder(order: Order) {
     this.user = this.userService.getCurrentUser();
@@ -311,6 +371,7 @@ export class OrderFirestoreService {
       .catch(function (error) {
         console.error('error updating document: ', error);
       });
+    this.orderFlyoutService.refreshOrderFlyout(this.productsPerOrderLocalStorage, this.order);
   }
 
   resetUserOrder(order: Order) {
@@ -323,12 +384,33 @@ export class OrderFirestoreService {
     });
   }
 
-  deleteOrderAnonymus(order: Order) {
-    this.orderDoc = this.afs.doc(`orders_anonymus/${order.key}`);
+  deleteOrderAnonymusComplete(orderId) {
+    this.deleteOrderAnonymus(orderId);
+    this.deleteProductsInFSAnonymus(orderId);
+
+  }
+
+  deleteOrderAnonymus(orderId: string) {
+    this.orderDoc = this.afs.doc(`orders_anonymus/${orderId}`);
     this.orderDoc.delete()
       .catch(function (error) {
         console.error('Error removing anonymus order: ', error);
       });
+  }
+
+  deleteProductsInFSAnonymus(userId: string) {
+    this.afs.doc(`productsPerOrder_anonymus/${userId}`).collection('products').snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Order;
+        const key = a.payload.doc.id;
+        return {key, ...data};
+      }))).subscribe(res => {
+      res.forEach(product => {
+        this.afs.doc(`productsPerOrder_anonymus/${userId}`).collection('products').doc(product.key).delete();
+      });
+    });
+
+
   }
 
   completeUserOrder(order: Order) {
@@ -354,12 +436,6 @@ export class OrderFirestoreService {
     });
   }
 
-  // todo:
-  generateShopOrderId(): string {
-    return 'XXX-001';
-
-  }
-
   getOrderId() {
     this.user = this.userService.getCurrentUser();
     if (this.user) {
@@ -369,4 +445,8 @@ export class OrderFirestoreService {
     }
   }
 
+
+  getAnonymusOrderId() {
+    return this.localStorageService.getData('anonymusOrderId').orderId;
+  }
 }

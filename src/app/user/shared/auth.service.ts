@@ -44,12 +44,12 @@ export class AuthService {
         }));
   }
 
-  // 1. Register
+  // 1. Register normal, no order login!
   createUserInFirebaseAuthListEmailVerified(email, password, username) {
     console.log('vor createUserInFirebaseAuthList->' + email + ' / ' + password);
 
     const actionCodeSettings = {
-      url: 'http://localhost:4200/user-login-register-slide?orderstep=1&login=1',
+      url: 'http://localhost:4200/user-login-register-slide',
       handleCodeInApp: true
     };
 
@@ -65,14 +65,12 @@ export class AuthService {
           id: userData.user.uid,
           username: username,
           email: email,
-          anonymous: userData.user.isAnonymous,
           roles: {
             authuser: true,
             admin: false
           },
           registrationDate: new Date(),
         };
-        // this.userService.setUserToLocalStorage(user);
         this.userService.setUser(user)
           .then(() => {
             this.afAuth.auth.signOut();  // erst wenn der Benutzer erfasst wird aus Firebase ausloggen!
@@ -85,7 +83,7 @@ export class AuthService {
       });
   }
 
-  // 1. Register for Order
+  // 1. Register for order, not normal login!
   createUserInFirebaseAuthListEmailVerifiedOrder(email, password, username) {
     console.log('vor createUserInFirebaseAuthList Order->' + email + ' / ' + password);
 
@@ -106,14 +104,12 @@ export class AuthService {
           id: userData.user.uid,
           username: username,
           email: email,
-          anonymous: userData.user.isAnonymous,
           roles: {
             authuser: true,
             admin: false
           },
           registrationDate: new Date(),
         };
-        // this.userService.setUserToLocalStorage(user);
         this.userService.setUser(user)
           .then(() => {
             this.afAuth.auth.signOut();  // erst wenn der Benutzer erfasst wird aus Firebase ausloggen!

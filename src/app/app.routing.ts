@@ -18,6 +18,8 @@ import { CHECKOUT_ROUTES } from './checkout/checkout.routing';
 import { UserLoginRegisterSlideComponent } from './user/user-login-register-slide/user-login-register-slide.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { UserComponent } from './user/user.component';
+import { CheckoutCustomerdataComponent } from './checkout/checkout-customerdata/checkout-customerdata.component';
+import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login.component';
 
 
 const APP_ROUTES: Routes = [
@@ -25,6 +27,7 @@ const APP_ROUTES: Routes = [
   {path: 'admin', component: AdminComponent, children: ADMIN_ROUTES, canActivate: [AdminGuard]},
   {path: 'produkte', component: ProductComponent, children: PRODUCT_ROUTES},
   {path: 'bestellung', component: OrderDetailComponent},
+  {path: 'checkout-login', component: CheckoutLoginComponent},
   {path: 'checkout', component: CheckoutComponent, children: CHECKOUT_ROUTES},
   {path: 'users', component: UserComponent, children: USER_ROUTES, canActivate: [Auth2Guard]}, // Router Outlet auf UserComponent nicht vergessen!
   {path: 'login', component: UserLoginComponent},
@@ -38,7 +41,8 @@ const APP_ROUTES: Routes = [
 
 
 @NgModule({
-  imports: [RouterModule.forRoot(APP_ROUTES)],
+  // https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change
+  imports: [RouterModule.forRoot(APP_ROUTES, {scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule],
   providers: [
     // AdminGuard,

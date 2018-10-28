@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, Query } from 'angularfire2/firestore';
-import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { map } from 'rxjs/operators';
 import { Product } from '../../models/product.model';
 
 
@@ -22,13 +22,9 @@ export class ProductFirestoreService {
   currentMessage = this.messageSource.asObservable();
   // RxJS BehaviorSubject end
 
-
-  constructor(public afs: AngularFirestore) {
-
-    // const pushkey = this.afs.createId();
-    this.sortProductsByNameAsc();  // Initial sorting List
-
-  }
+  // Service Event zum Suggest start
+  searchCloseClicked = new EventEmitter<boolean>();
+  // Service Event zum Suggest end
 
   // RxJS BehaviorSubject start
   changeMessage(message) {
@@ -36,40 +32,13 @@ export class ProductFirestoreService {
   }
   // RxJS BehaviorSubject end
 
-  getData() {
-    this.products = this.productCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Product;
-        const key = a.payload.doc.id;
-        return {key, ...data};
-      }))
-    );
+  constructor(public afs: AngularFirestore) {
+    // const pushkey = this.afs.createId();
+    this.sortProductsByNameAsc();  // Initial sorting List
   }
 
-  // https://stackoverflow.com/questions/48751908/filtering-firestore-observable-against-javascript-object-values
-  /*
-  loadData() {
-    this.productCollection = this.afs.collection<any>('products', ref => ref.orderBy('name', 'asc'));
+  getProductDataWithKey() {
     return this.productCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const id = a.payload.doc.id;
-          const data = a.payload.doc.data();
-          // data.id = id;
-
-          return { id, data };
-        });
-      })
-    );
-  }
-  */
-
-  /*
-  getAllSearch(searchTerm: string) {
-    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
-    this.products = this.productCollection.snapshotChanges().pipe(
-      map(val => val.filter( fil => fil.payload.doc.name === searchTerm) ),
-      // f.payload.doc.data.name
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Product;
         const key = a.payload.doc.id;
@@ -77,30 +46,11 @@ export class ProductFirestoreService {
       }))
     );
   }
-  */
 
   getDataToSearch(): Observable<Product[]> {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
-    return this.products = this.productCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Product;
-        const key = a.payload.doc.id;
-        return {key, ...data};
-      }))
-    );
-  }
-
-  getDataToSearch2(terms: Observable<any>): Observable<any> {
-    return terms.pipe(
-      debounceTime(400),
-      distinctUntilChanged(),
-      switchMap(term => this.searchEntries(term))
-    );
-  }
-
-  searchEntries(term) {
-    this.productCollection = this.afs.collection('products', ref => ref.where('name', '==', term).limit(10));
-    return this.products = this.productCollection.snapshotChanges().pipe(
+    // return this.products = this.productCollection.snapshotChanges().pipe(  // Fehler weil this.produkts überschrieben nach Fulltext Search wurde!!!
+    return this.productCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Product;
         const key = a.payload.doc.id;
@@ -119,7 +69,6 @@ export class ProductFirestoreService {
       }))
     );
   }
-
 
   getNewProductsWithLimit(limit: number) {
     this.productCollection = this.afs.collection('products', ref => ref.where('newProduct', '==', true).limit(limit));
@@ -144,37 +93,50 @@ export class ProductFirestoreService {
     );
   }
 
+  filterProductsByCategoryAndField(category: string, field: string) {
+    if ((category !== undefined && category !== '/') && field !== undefined) {
+      if (field === 'a-z') {
+        this.productCollection = this.afs.collection('products', ref => ref.where('productCategory', '==', category).orderBy('name', 'asc'));
+      } else if (field === 'z-a') {
+        this.productCollection = this.afs.collection('products', ref => ref.where('productCategory', '==', category).orderBy('name', 'desc'));
+      } else if (field === 'low-high') {
+        this.productCollection = this.afs.collection('products', ref => ref.where('productCategory', '==', category).orderBy('price', 'asc'));
+      } else if (field === 'high-low') {
+        this.productCollection = this.afs.collection('products', ref => ref.where('productCategory', '==', category).orderBy('price', 'desc'));
+      } else {
+        console.log('not defined sort option1: ', field);
+      }
+    } else if (category !== undefined && field === undefined) {
+      if (category !== '/') {
+        // console.log('aktuelle Kategorie gewählt: ', category);
+        this.productCollection = this.afs.collection('products', ref => ref.where('productCategory', '==', category).orderBy('name', 'asc'));
+      } else {
+        // console.log('alle Kategorien gewählt');
+        this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+      }
+    } else if ((category === undefined || category === '/') && field !== undefined) {
+      if (field === 'a-z') {
+        this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+      } else if (field === 'z-a') {
+        this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'desc'));
+      } else if (field === 'low-high') {
+        this.productCollection = this.afs.collection('products', ref => ref.orderBy('price', 'asc'));
+      } else if (field === 'high-low') {
+        this.productCollection = this.afs.collection('products', ref => ref.orderBy('price', 'desc'));
+      } else {
+        console.log('not defined sort option2: ', field);
+      }
+    } else if (category === '/' && field === undefined) {
+      this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
+    } else {
+      console.log('not defined option filter');
+    }
+    return this.getProductDataWithKey();
+  }
 
   sortProductsByNameAsc() {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
-    this.getData();
-  }
-
-  sortProductsByNameDesc() {
-    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'desc'));
-    this.getData();
-  }
-
-  sortProductsByPriceAsc() {
-    this.productCollection = this.afs.collection('products', ref => ref.orderBy('price', 'asc'));
-    this.getData();
-  }
-
-  sortProductsByPriceDesc() {
-    this.productCollection = this.afs.collection('products', ref => ref.orderBy('price', 'desc'));
-    this.getData();
-  }
-
-  sortProductsByCreatedDateAsc() { // Test Fail
-    this.productCollection = this.afs.collection('products', ref => ref.where('createdDate', '>', '0'));
-    this.getData();
-  }
-
-  sortProductsByCreatedDateDesc() {  // Test Fail
-    // Do 01 Jan 2037 00:00:00 UTC  --> 2114380800
-    // https://www.unixtimeconverter.io/2114380800
-    this.productCollection = this.afs.collection('products', ref => ref.where('createdDate', '<', 'toDay'));
-    this.getData();
+    this.products = this.getProductDataWithKey();
   }
 
   getProducts() {
@@ -209,16 +171,19 @@ export class ProductFirestoreService {
     return this.productDoc.set(product, {merge: true});
   }
 
-  /*
-  updateProduct(product: Product) {
-    this.productDoc = this.afs.doc(`products/${product.key}`);
-    this.productDoc.update(product);
-  }
-  */
-
-  updateProduct(productKey, product: Product) {
+  updateProduct(productKey, product: Product, image?: string, category?: string) {  // image?, category? ist optional und für Admin Edit Only
+    if (image) {
+      product.image = image;
+    }
+    if (category) {
+      product.productCategory = category;
+    }
     this.productDoc = this.afs.doc(`products/${productKey}`);
     this.productDoc.update(product);
+  }
+
+  getPushKey() {
+    return this.afs.createId();  // https://stackoverrun.com/de/q/12841034  (internal pushkey from firestore)
   }
 
   // https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
@@ -227,10 +192,6 @@ export class ProductFirestoreService {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
-  }
-
-  getPushKey() {
-    return this.afs.createId();  // https://stackoverrun.com/de/q/12841034  (internal pushkey from firestore)
   }
 
   getCategory(productCategory: Product) {
@@ -252,7 +213,12 @@ export class ProductFirestoreService {
 
     this.filteredProducts = productsArrayFiltered;
     return this.filteredProducts;
-
   }
 
+  /*
+  updateProduct(product: Product) {
+    this.productDoc = this.afs.doc(`products/${product.key}`);
+    this.productDoc.update(product);
+  }
+  */
 }

@@ -1,12 +1,12 @@
 <div class="container-fluid">
-
+  <app-page-title title="Homepage" [children]="[{title: 'Homepage'}]" [homepage]="true"></app-page-title>
   <app-home-slider-ngcarousel></app-home-slider-ngcarousel>
 
   <div class="container mt-5">
     <div class="card-deck mb-3 text-center">
-      <div *ngIf="(productsDiscounts$ | async | arraySort: 'price') as discount" class="card mb-4 shadow-sm">
+      <div *ngIf="(productsDiscounts$ | async | checkStatus | arraySort: 'price') as discount" class="card mb-4 shadow-sm">
         <div class="card-header">
-          <!--<h4 class="my-0 font-weight-normal">Aktionen ({{100 - (rabattFactorDiscount * 100)}} % Rabatt)</h4>-->
+          <!--<h4 class="my-0 font-weight-normal">Aktionen ({{100 - (discountFactor * 100)}} % Rabatt)</h4>-->
           <h4 class="my-0 font-weight-normal">Aktionen</h4>
         </div>
         <div class="card-body">
@@ -22,15 +22,15 @@
                   <a routerLink="/produkte/detail/{{item.key}}">
                     <p>{{item.name}}</p>
                   </a>
-                  <p style="text-decoration:line-through;">CHF {{item.price}}</p>
-                  <p>CHF {{item.price * rabattFactorDiscount | number}}</p>
+                  <p *ngIf="item.discountFactor !== 1" style="text-decoration:line-through;">CHF {{item.price}}</p>
+                  <p>CHF {{item.price * item.discountFactor | number : '1.2-2'}}</p>
                 </div>
               </div>
             </li>
           </ul>
         </div>
       </div>
-      <div *ngIf="(productsNew$ | async | arraySortDesc: 'createdDate') as np" class="card mb-4 shadow-sm">
+      <div *ngIf="(productsNew$ | async | checkStatus | arraySortDesc: 'createdDate') as np" class="card mb-4 shadow-sm">
         <div class="card-header">
           <h4 class="my-0 font-weight-normal">Neue Produkte</h4>
         </div>
@@ -47,15 +47,15 @@
                   <a routerLink="/produkte/detail/{{item.key}}">
                     <p>{{item.name}}</p>
                   </a>
-                  <p style="text-decoration:line-through;">CHF {{item.price}}</p>
-                  <p>CHF {{item.price * rabattFactorNew | number}}</p>
+                  <p *ngIf="item.discountFactor !== 1" style="text-decoration:line-through;">CHF {{item.price}}</p>
+                  <p>CHF {{item.price * item.discountFactor | number : '1.2-2'}}</p>
                 </div>
               </div>
             </li>
           </ul>
         </div>
       </div>
-      <div *ngIf="(productsBestRated$ | async | arraySortDesc: 'bestRatedNumber') as best" class="card mb-4 shadow-sm">
+      <div *ngIf="(productsBestRated$ | async | checkStatus | arraySortDesc: 'bestRatedNumber') as best" class="card mb-4 shadow-sm">
         <div class="card-header">
           <h4 class="my-0 font-weight-normal">Best Rated</h4>
         </div>
@@ -73,8 +73,8 @@
                     <a routerLink="/produkte/detail/{{item.key}}">
                      <p>{{item.name}}</p>
                     </a>
-                    <p style="text-decoration:line-through;">CHF {{item.price}}</p>
-                    <p>CHF {{item.price * rabattFactorBestRate | number}}</p>
+                    <p *ngIf="item.discountFactor !== 1" style="text-decoration:line-through;">CHF {{item.price}}</p>
+                    <p>CHF {{item.price * item.discountFactor | number : '1.2-2'}}</p>
                   </div>
                 </div>
                 <!--<div class="featured-product">-->

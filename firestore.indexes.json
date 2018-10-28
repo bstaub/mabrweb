@@ -1,0 +1,46 @@
+{
+  "indexes": [
+    {
+      "collectionId": "products",
+      "state": "READY",
+      "fields": [
+        {
+          "fieldPath": "name",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "description",
+          "mode": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionId": "products",
+      "state": "READY",
+      "fields": [
+        {
+          "fieldPath": "name",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "price",
+          "mode": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionId": "products",
+      "state": "READY",
+      "fields": [
+        {
+          "fieldPath": "name",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "description",
+          "mode": "DESCENDING"
+        }
+      ]
+    }
+  ]
+}

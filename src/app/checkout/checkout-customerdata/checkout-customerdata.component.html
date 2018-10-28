@@ -1,89 +1,150 @@
 <div class="container">
 
-  <h1>Address</h1>
+
+      <h1>Billing address</h1>
+
 
   <form [formGroup]="CustomerAddressForm" (ngSubmit)="onSubmit()">
 
-    <div class="row">
-      <div class="col-md-8 offset-2">
+  <div formGroupName="customerBillingAddress">
+
+    <div class="form-group">
+      <label for="firstname_b">First Name</label>
+      <input class="form-control" type="text" id="firstname_b" name="firstname_b" formControlName="firstname_b">
+    </div>
+
+
+    <div class="form-group">
+      <label for="lastname_b">Last Name</label>
+      <input class="form-control" type="text" id="lastname_b" name="lastname_b" formControlName="lastname_b">
+    </div>
+
+
+
         <div class="form-group">
-          <label for="firstname">First Name</label>
-          <input class="form-control" type="text" id="firstname" name="firstname" formControlName="firstname">
-          <div class="form-control-feedback" *ngIf="(!CustomerAddressForm.get('firstname').valid) && (CustomerAddressForm.get('firstname').touched)">Please enter your firstname!</div>
+          <label for="address_b">Address</label>
+          <input class="form-control" type="text" id="address_b" name="address_b" formControlName="address_b">
+        </div>
+
+
+
+        <div class="form-group">
+          <label for="zip_b">Zip</label>
+          <input class="form-control" type="text" id="zip_b" name="zip_b" formControlName="zip_b">
+        </div>
+
+
+
+        <div class="form-group">
+          <label for="city_b">City</label>
+          <input class="form-control" type="text" id="city_b" name="city_b" formControlName="city_b">
+        </div>
+
+
+
+        <div class="form-group">
+          <label for="country_b">Country</label>
+          <input class="form-control" type="text" id="country_b" name="country_b" formControlName="country_b">
+        </div>
+
+
+
+        <div class="form-group">
+          <label for="phone_b">Phone</label>
+          <input class="form-control" type="text" id="phone_b" name="phone_b" formControlName="phone_b">
+        </div>
+
+
+    <div *ngIf="!user">
+        <div class="form-group">
+          <label for="mail_b">Mail</label>
+          <input class="form-control" type="text" id="mail_b" name="mail_b" formControlName="mail_b">
         </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-8 offset-2">
-        <div class="form-group">
-          <label for="lastname">Last Name</label>
-          <input class="form-control" type="text" id="lastname" name="lastname" formControlName="lastname">
-          <div class="form-control-feedback" *ngIf="(!CustomerAddressForm.get('lastname').valid) && (CustomerAddressForm.get('lastname').touched)">Please enter your lasttname!</div>
+  </div>
+    <br>
 
+    <br>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="shipqingEqualsBillingAddress" [(ngModel)]="shipqingEqualsBillingAddress"  [ngModelOptions]="{standalone: true}" (change)="setValidation($event)">
+        <label class="form-check-label" for="shipqingEqualsBillingAddress">Shipping address equals invoice address</label>
+      </div>
+      <p></p>
+
+
+
+
+    <div *ngIf="!shipqingEqualsBillingAddress" formGroupName="customerShippingAddress">
+
+
+          <h1>Shipping address</h1>
+
+
+
+
+          <div class="form-group">
+            <label for="firstname_s">First Name</label>
+            <input class="form-control" type="text" id="firstname_s" name="firstname_s" formControlName="firstname_s">
+          </div>
+
+
+
+
+
+          <div class="form-group">
+            <label for="lastname_s">Last Name</label>
+            <input class="form-control" type="text" id="lastname_s" name="lastname_s" formControlName="lastname_s">
+          </div>
+
+
+
+          <div class="form-group">
+            <label for="address_s">Address</label>
+            <input class="form-control" type="text" id="address_s" name="address_s" formControlName="address_s">
+          </div>
+
+
+
+          <div class="form-group">
+            <label for="zip_s">Zip</label>
+            <input class="form-control" type="text" id="zip_s" name="zip_s" formControlName="zip_s">
+          </div>
+
+
+
+          <div class="form-group">
+            <label for="city_s">City</label>
+            <input class="form-control" type="text" id="city_s" name="city_s" formControlName="city_s">
+          </div>
+
+
+
+          <div class="form-group">
+            <label for="country_s">Country</label>
+            <input class="form-control" type="text" id="country_s" name="country_s" formControlName="country_s">
+          </div>
+
+
+
+          <div class="form-group">
+            <label for="phone_s">Phone</label>
+            <input class="form-control" type="text" id="phone_s" name="phone_s" formControlName="phone_s">
+          </div>
+
+
+        <div>
+          <div class="form-group">
+            <label for="mail_s">Mail</label>
+            <input class="form-control" type="text" id="mail_s" name="mail_s" formControlName="mail_s">
+          </div>
         </div>
-      </div>
+
     </div>
 
-    <div class="row">
-      <div class="col-md-8 offset-2">
-        <div class="form-group">
-          <label for="address">Address</label>
-          <input class="form-control" type="text" id="address" name="address" formControlName="address">
-        </div>
-      </div>
-    </div>
+        <button  type="button" class="btn btn-primary pull-left" (click)="goBack()">zurück</button>
+        <button [disabled]="!formIsValid" type="submit" class="btn btn-primary pull-right">weiter zur Versandart</button>
 
-    <div class="row">
-      <div class="col-md-8 offset-2">
-        <div class="form-group">
-          <label for="zip">Zip</label>
-          <input class="form-control" type="text" id="zip" name="zip" formControlName="zip">
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-8 offset-2">
-        <div class="form-group">
-          <label for="city">City</label>
-          <input class="form-control" type="text" id="city" name="city" formControlName="city">
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-8 offset-2">
-        <div class="form-group">
-          <label for="country">Country</label>
-          <input class="form-control" type="text" id="country" name="country" formControlName="country">
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-8 offset-2">
-        <div class="form-group">
-          <label for="phone">Phone</label>
-          <input class="form-control" type="text" id="phone" name="phone" formControlName="phone">
-        </div>
-      </div>
-    </div>
-
-    <div *ngIf="!user"  class="row">
-      <div class="col-md-8 offset-2">
-        <div class="form-group">
-          <label for="mail">Mail</label>
-          <input class="form-control" type="text" id="mail" name="mail" formControlName="mail">
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="offset-8">
-        <button type="submit" class="btn btn-primary" >Versandart wählen</button>
-      </div>
-    </div>
 
 
 

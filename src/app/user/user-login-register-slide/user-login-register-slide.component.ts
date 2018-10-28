@@ -1,18 +1,17 @@
-import { AfterContentChecked, Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../shared/auth.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NotificationService } from '../../shared/notification.service';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
-import { QueryParamsHandling } from '@angular/router/src/config';
-import { SettingsService } from '../../shared/settings.service';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 @Component({
   selector: 'app-user-login-register-slide',
   templateUrl: './user-login-register-slide.component.html',
   styleUrls: ['./user-login-register-slide.component.scss']
 })
-export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, AfterContentChecked {
+export class UserLoginRegisterSlideComponent implements OnInit {
 
   status: boolean = false;
   queryParams: Params;
@@ -22,28 +21,16 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
               private activeRoute: ActivatedRoute,
               private notifier: NotificationService,
               private orderFirestoreService: OrderFirestoreService,
+              private localStorageService: LocalStorageService,
   ) {
   }
 
   ngOnInit() {
-    // this.settingsService.changeSettings({orderRegister: false});
-    // this.settingsService.changeSettings({orderLogin: true});
-
     this.queryParams = this.activeRoute.snapshot.queryParams;
     if (this.queryParams.register === '1') {
       this.clickToggle();
     }
   }
-
-  ngOnChanges() {
-
-  }
-
-  ngAfterContentChecked() {
-
-  }
-
-
 
   clickToggle() {
     this.status = !this.status;
@@ -58,18 +45,16 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
 
           setTimeout(() => {
 
-            this.orderFirestoreService.creatNewUserOrder(userData.user.uid);
-            this.orderFirestoreService.loadProducts(userData.user.uid);
+            this.orderFirestoreService.loadOrderAfterLogin(userData.user.uid)
+            this.orderFirestoreService.deleteOrderAnonymusComplete(this.orderFirestoreService.getAnonymusOrderId());
+            this.localStorageService.destroyLocalStorage('anonymusOrderId');
 
             if (this.queryParams.orderstep === '1' && this.queryParams.login === '1') {
-              // this.settingsService.changeSettings({orderLogin: false});
-              this.router.navigateByUrl('checkout/customerdata');
+              this.router.navigateByUrl('bestellung');
             } else {
               this.router.navigateByUrl('');  // Default Login geht zur Homepage!
+              // this.router.navigate(['/login']);
             }
-
-
-            // this.router.navigate(['/login']);
           }, 2000);
         } else {
           this.notifier.display('error', 'Loginfehler: Sie müssen zuerst die Email Adresse verifizieren');
@@ -82,15 +67,12 @@ export class UserLoginRegisterSlideComponent implements OnInit, OnChanges, After
       });
   }
 
-
   onSubmitRegister(form: NgForm) {
     if (this.queryParams.orderstep === '1' && this.queryParams.register === '1') {
       this.authService.createUserInFirebaseAuthListEmailVerifiedOrder(form.value.email, form.value.password, form.value.fullname);
     } else {
       this.authService.createUserInFirebaseAuthListEmailVerified(form.value.email, form.value.password, form.value.fullname);
     }
-
   }
-
 
 }

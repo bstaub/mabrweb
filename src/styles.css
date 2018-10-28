@@ -5,9 +5,13 @@
 /* 16.09.2018, BS */
 
 body {
-  padding-top: 80px;
+  /* padding-top: 80px;  */
 }
 
-nav a{
+nav a {
   /* margin-right: 5px;  */
+}
+
+.ngx-pagination {
+  margin-top: 40px;
 }

@@ -1,14 +1,46 @@
 <div class="container-fluid">
 
+  <nav class="product-filter">
+    <h1><span *ngIf="selectedCategory === '/'">Alle Kategorien</span><span *ngIf="selectedCategory !== '/'">{{selectedCategory}}</span></h1>
+
+    <div class="sort">
+      <div class="collection-sort">
+        <label>Filter nach:</label>
+        <select [(ngModel)]="selectedCategory" (change)="selectedOption()">
+          <option disabled hidden [value]="selectUndefinedOptionValue">-alle Kategorien-</option>
+          <option value="/">-alle Kategorien-</option>
+          <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
+        </select>
+      </div>
+
+      <div class="collection-sort">
+        <label>Sortieren nach:</label>
+        <select [(ngModel)]="selectedSort" (change)="selectedOption()">
+          <option disabled hidden [value]="selectUndefinedOptionValue">alphabetisch, A-Z</option>
+          <option value="a-z">alphabetisch, A-Z</option>
+          <option value="z-a">alphabetisch, Z-A</option>
+          <option value="low-high">Preis, tief nach hoch</option>
+          <option value="high-low">Price, hoch nach tief</option>
+        </select>
+      </div>
+    </div>
+  </nav>
+
   <div *ngIf="products" class="product-list">
-    <!-- <div class="media" *ngFor="let product of products | async" style="width: 300px;"> -->
-    <!--<div class="media" *ngFor="let product of products; let i = index">-->
-    <div *ngFor="let product of products | async; let i = index">
+    <div *ngFor="let product of products | async | checkStatus | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
       <app-product-item [product]='product' [count]='i'></app-product-item>
     </div>
   </div>
 </div>
 
-
-
-
+<pagination-controls (pageChange)="p = $event"
+                     maxSize="9"
+                     directionLinks="true"
+                     autoHide="true"
+                     responsive="true"
+                     previousLabel="Zurück"
+                     nextLabel="Vor"
+                     screenReaderPaginationLabel="Pagination"
+                     screenReaderPageLabel="Seite"
+                     screenReaderCurrentLabel="Du bist auf Seite">
+</pagination-controls>

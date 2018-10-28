@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProductService } from '../shared/product.service';
 import { Product } from '../../models/product.model';
 import { ProductFirestoreService } from '../shared/product-firestore.service';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
@@ -9,7 +8,7 @@ import { UserService } from '../../user/shared/user.service';
 @Component({
   selector: 'app-product-item',
   templateUrl: './product-item.component.html',
-  styleUrls: ['./product-item.component.css']
+  styleUrls: ['./product-item.component.scss']
 })
 export class ProductItemComponent implements OnInit {
 

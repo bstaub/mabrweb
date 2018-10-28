@@ -19,9 +19,7 @@ export class HomeComponent implements OnInit, AfterContentChecked {
   productsDiscounts$: Observable<Product[]>;
   productsNew$: Observable<Product[]>;
   productsBestRated$:  Observable<Product[]>;
-  rabattFactorDiscount: number = 0.8;
-  rabattFactorNew: number = 0.9;
-  rabattFactorBestRate: number = 0.7;
+  // public discountFactor: number = 0.9;  //kommt neu aus Datenbank!
 
   constructor(private authService: AuthService,
               private userService: UserService,

@@ -21,8 +21,6 @@ export class UserRegisterComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    // const fullname = form.value.fullname;
-    // this.authService.createUserInFirebaseAuthList(form.value.email, form.value.password);
     this.authService.createUserInFirebaseAuthListEmailVerified(form.value.email, form.value.password, form.value.fullname);
   }
 

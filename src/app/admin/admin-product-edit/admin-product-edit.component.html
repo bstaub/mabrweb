@@ -1,4 +1,3 @@
-
 <form (ngSubmit)="onSubmit()">
   <input type="hidden" id="createdDate" [(ngModel)]="product.createdDate" name="createdDate">
   <div class="ui-inputgroup">
@@ -7,15 +6,16 @@
   <br>
 
   <div class="ui-inputgroup">
-    <input type="text" pInputText placeholder="Beschreibung" required [(ngModel)]="product.description" name="beschreibung">
+    <input type="text" pInputText placeholder="Beschreibung" required [(ngModel)]="product.description"
+           name="beschreibung">
   </div>
   <br>
 
   <div class="ui-inputgroup">
-    <input type="text" pInputText placeholder="Preis" required [(ngModel)]="product.price" name="price">
+    <input type="number" placeholder="Preis" required [(ngModel)]="product.price" name="price">
   </div>
   <br>
-
+  <br>
 
   <p>Bildname</p>
   <p-fileUpload
@@ -30,18 +30,24 @@
 
   <br>
   <div *ngIf="(categories$ | async) as Cat">
-  <p-dropdown [options]="Cat" [(ngModel)]="selectedCategory" name="selectedCategory" placeholder="Wähle eine Kategorie" optionLabel="name" [showClear]="true" filter="true"></p-dropdown>
-  <p>Gewählte Kategorie: {{selectedCategory ? selectedCategory.name : 'none'}}</p>
+    <p-dropdown [options]="Cat" [(ngModel)]="selectedCategory" name="selectedCategory"
+                placeholder="Wähle eine Kategorie" optionLabel="name" [showClear]="true" filter="true"></p-dropdown>
+    <p>Gewählte Kategorie: {{selectedCategory ? selectedCategory.name : 'none'}}</p>
   </div>
 
-  <!--<p-checkbox name="groupname" value="discount" label="Aktion" [(ngModel)]="selectedValues"></p-checkbox><br>-->
-  <!--<p-checkbox name="groupname" value="newProduct" label="Neuheit" [(ngModel)]="selectedValues"></p-checkbox><br>-->
-  <!--<p-checkbox name="groupname" value="bestRated" label="Beste Bewertung" [(ngModel)]="selectedValues"></p-checkbox><br>-->
+  <p-checkbox binary="true" value="discount" label="Aktion" [(ngModel)]="discount" name="discount"></p-checkbox>
+  <br>
 
-  <p-checkbox binary="true" value="discount" label="Aktion" [(ngModel)]="discount" name="discount"></p-checkbox><br>
-  <p-checkbox binary="true" value="newProduct" label="Neuheit" [(ngModel)]="newProduct" name="newProduct"></p-checkbox><br>
-  <p-checkbox binary="true" value="bestRated" label="Beste Bewertung" [(ngModel)]="bestRated" name="bestRated"></p-checkbox><br><br>
+  <div class="ui-inputgroup" *ngIf="discount">
+    <input type="number" placeholder="1" required [(ngModel)]="product.discountFactor" name="discountFactor"> (Rabatt
+    Default 1=kein Rabatt, Bereich: 0.00-1)
+  </div>
 
+  <p-checkbox binary="true" value="newProduct" label="Neuheit" [(ngModel)]="newProduct" name="newProduct"></p-checkbox>
+  <br>
+  <p-checkbox binary="true" value="bestRated" label="Beste Bewertung" [(ngModel)]="bestRated"
+              name="bestRated"></p-checkbox>
+  <br><br>
 
   <button type="submit" class="btn btn-secondary">Eingabe bestätigen</button>
 </form>

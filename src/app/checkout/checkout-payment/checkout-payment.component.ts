@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Order } from '../../models/order.model';
 import { Router } from '@angular/router';
 import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
 import { UserService } from '../../user/shared/user.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { AuthService } from '../../user/shared/auth.service';
+import { Subscription } from 'rxjs-compat/Subscription';
 
 
 @Component({
   selector: 'app-checkout-payment',
   templateUrl: './checkout-payment.component.html',
-  styles: [``]
+  styles: [`
+  `]
 })
-export class CheckoutPaymentComponent implements OnInit {
+export class CheckoutPaymentComponent implements OnInit, OnDestroy {
 
   PaymentForm: FormGroup;
   user: any;
@@ -20,83 +23,79 @@ export class CheckoutPaymentComponent implements OnInit {
   orderId: string;
   order: Order;
   closingOrderId: string;
+  nextShopOrderId: number;
+  authSubscription: Subscription;
+  nextOrderIdSubscription: Subscription;
+  orderSubscription: Subscription;
 
 
   constructor(private orderFirestoreService: OrderFirestoreService,
               private userService: UserService,
               private router: Router,
               private localStorageService: LocalStorageService,
+              private authService: AuthService,
   ) {
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.user = this.userService.getCurrentUser();
-      this.getOrderData();
-
-    }, 1000);
-
 
     this.initPaymentFormGroup();
+    this.authSubscription = this.authService.user$.subscribe((user) => {
+      if (user && user.emailVerified) {
+        this.user = user;
+        this.getOrderData(user.id);
+      } else {
+        this.user = '0';
+        this.getOrderData(this.localStorageService.getData('anonymusOrderId').orderId);
+      }
+    });
+
   }
 
   onSubmit() {
     this.order = new Order();
     this.order.key = this.orderFirestoreService.getOrderId();
-    this.order.shopOrderId = this.orderFirestoreService.generateShopOrderId();
-    this.order.orderDate = new Date();
-    this.order.status = 'done';
-    this.order.totalValue = this.orderData.totalValue;
-    this.order.userId = this.user.uid;
-    this.order.customerAddress = this.orderData.customerAddress;
-    this.order.shippingMethod = this.orderData.shippingMethod;
-    this.order.paymentMethod = this.PaymentForm.value.paymentmethod;
+    this.order.paymentMethod = this.PaymentForm.value.paymentMethod;
     this.orderFirestoreService.updateOrder(this.order);
-
-    this.closingOrderId = this.orderFirestoreService.completeUserOrder(this.order);
-    this.orderFirestoreService.completeProductsPerOrder(this.closingOrderId, this.localStorageService.getData('products'));
-
-    if (this.user) {
-      this.orderFirestoreService.resetUserOrder(this.order);
-      this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
-    } else {
-      this.orderFirestoreService.deleteOrderAnonymus(this.order);
-      this.orderFirestoreService.clearScart(this.localStorageService.getData('products'));
-      this.localStorageService.destroyLocalStorage('anonymusOrderId');
-    }
-
-
-    this.router.navigate(['/checkout/thx']);
+    this.router.navigate(['/checkout/overview'], {queryParams: {shopOrderId: this.nextShopOrderId}});
   }
 
 
-  getOrderData() {
-    this.orderFirestoreService.getUserOrder(this.orderFirestoreService.getOrderId()).subscribe((res) => {
+  getOrderData(userId) {
+    this.orderSubscription = this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
+      this.setOrderData();
     });
+
+
+    this.nextOrderIdSubscription = this.orderFirestoreService.getLatestOrder().subscribe((res) => {
+      this.nextShopOrderId = res[0].shopOrderId + 1;
+    });
+
   }
+
 
   initPaymentFormGroup() {
     this.PaymentForm = new FormGroup({
       paymentMethod: new FormControl()
-
     });
-
-    setTimeout(() => {
-
-      if (this.orderData) {
-        this.setOrderData();
-      }
-    }, 1300);
-
   }
 
   setOrderData() {
     this.PaymentForm.patchValue({
       paymentMethod: this.orderData.paymentMethod
-
     });
-
   }
+
+  goBack() {
+    this.router.navigate(['/checkout/shipmentdata']);
+  }
+
+  ngOnDestroy() {
+    this.authSubscription.unsubscribe();
+    this.nextOrderIdSubscription.unsubscribe();
+    this.orderSubscription.unsubscribe();
+  }
+
 }
 

@@ -14,8 +14,8 @@ export class PageTitleComponent implements OnInit, OnDestroy {
 
   @Input() public title: string;
   @Input() public children: {title: string, link: string}[];
-  @Input() public homepage: boolean = false;
-  @Input() public searchCloseClicked: boolean = true; // default open true, when clicked false for closing!
+  @Input() public homepage = false;
+  @Input() public searchCloseClicked = true; // default open true, when clicked false for closing!
 
   constructor(private productFireStoreService: ProductFirestoreService) {
   }
@@ -37,7 +37,6 @@ export class PageTitleComponent implements OnInit, OnDestroy {
         this.searchCloseClicked = !value; // when clicked true auf false negieren!
       }
     );
-
   }
 
   closeSuggest() {

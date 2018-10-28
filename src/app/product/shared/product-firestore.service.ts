@@ -10,7 +10,7 @@ import { Product } from '../../models/product.model';
 })
 export class ProductFirestoreService {
   productCollection: AngularFirestoreCollection<Product>;
-  products: Observable<Product[]>;
+  products$: Observable<Product[]>;
   productsDiscount$: Observable<Product[]>;
   productsNew$: Observable<Product[]>;
   productsBestRated$: Observable<Product[]>;
@@ -49,7 +49,7 @@ export class ProductFirestoreService {
 
   getDataToSearch(): Observable<Product[]> {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
-    // return this.products = this.productCollection.snapshotChanges().pipe(  // Fehler weil this.produkts überschrieben nach Fulltext Search wurde!!!
+    // return this.products$ = this.productCollection.snapshotChanges().pipe(  // Fehler weil this.produkts überschrieben nach Fulltext Search wurde!!!
     return this.productCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Product;
@@ -136,11 +136,11 @@ export class ProductFirestoreService {
 
   sortProductsByNameAsc() {
     this.productCollection = this.afs.collection('products', ref => ref.orderBy('name', 'asc'));
-    this.products = this.getProductDataWithKey();
+    this.products$ = this.getProductDataWithKey();
   }
 
   getProducts() {
-    return this.products;
+    return this.products$;
   }
 
   getProduct(key: string) {

@@ -11,15 +11,15 @@ import { AlertifyService } from '../../shared/alertify.service';
 })
 export class AdminProductEditCategoryComponent implements OnInit {
 
-  categories: Observable<ProductCategory[]>;
+  categories$: Observable<ProductCategory[]>;
 
   constructor(private productCategoryService: ProductCategoryService,
-              private alertifyService: AlertifyService
+              private alertifyService: AlertifyService,
   ) {
   }
 
   ngOnInit() {
-    this.categories = this.productCategoryService.getCategories();
+    this.categories$ = this.productCategoryService.getCategories();
   }
 
   onDeletItem(id: string) {

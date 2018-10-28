@@ -18,7 +18,6 @@ import { CHECKOUT_ROUTES } from './checkout/checkout.routing';
 import { UserLoginRegisterSlideComponent } from './user/user-login-register-slide/user-login-register-slide.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { UserComponent } from './user/user.component';
-import { CheckoutCustomerdataComponent } from './checkout/checkout-customerdata/checkout-customerdata.component';
 import { CheckoutLoginComponent } from './checkout/checkout-login/checkout-login.component';
 
 

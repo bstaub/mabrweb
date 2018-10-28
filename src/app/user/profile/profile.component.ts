@@ -12,7 +12,10 @@ import { User } from '../../models/user';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private authService: AuthService, private userService: UserService, private storageService: StorageService) {
+  constructor(private authService: AuthService,
+              private userService: UserService,
+              private storageService: StorageService,
+  ) {
   }
 
   uid: string;

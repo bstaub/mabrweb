@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 })
 export class UserService {
   usersCollection: AngularFirestoreCollection<User>;
-  users: Observable<User[]>;
+  users$: Observable<User[]>;
   userDoc: AngularFirestoreDocument<User>;
 
   constructor(public  afs: AngularFirestore,
@@ -21,7 +21,7 @@ export class UserService {
     // this.users = this.afs.collection('users').valueChanges();
     this.usersCollection = this.afs.collection('users', ref => ref.orderBy('email', 'asc'));
 
-    this.users = this.usersCollection.snapshotChanges().pipe(
+    this.users$ = this.usersCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as User;
         const id = a.payload.doc.id;

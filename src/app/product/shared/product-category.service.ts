@@ -9,15 +9,15 @@ import { ProductCategory } from '../../models/product-category.model';
 })
 export class ProductCategoryService {
   productCategoryCollection: AngularFirestoreCollection<ProductCategory>;
-  categories: Observable<ProductCategory[]>;
+  categories$: Observable<ProductCategory[]>;
   categoryDoc: AngularFirestoreDocument<ProductCategory>;
 
   constructor(public afs: AngularFirestore) {
-    // this.categories = this.afs.collection('categories').valueChanges();
+    // this.categories$ = this.afs.collection('categories').valueChanges();
 
     this.productCategoryCollection = this.afs.collection('categories', ref => ref.orderBy('name', 'asc'));
 
-    this.categories = this.productCategoryCollection.snapshotChanges().pipe(
+    this.categories$ = this.productCategoryCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as ProductCategory;
         const key = a.payload.doc.id;
@@ -27,7 +27,7 @@ export class ProductCategoryService {
   }
 
   getCategories() {
-    return this.categories;
+    return this.categories$;
   }
 
   addCategory(category: ProductCategory) {

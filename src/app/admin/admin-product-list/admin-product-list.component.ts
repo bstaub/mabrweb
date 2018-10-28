@@ -11,7 +11,7 @@ import { SettingsService } from '../../shared/settings.service';
 })
 export class AdminProductListComponent implements OnInit {
 
-  products: Observable<Product[]>;
+  products$: Observable<Product[]>;
   p = 1;
 
   constructor( private productFireStoreService: ProductFirestoreService,
@@ -24,7 +24,7 @@ export class AdminProductListComponent implements OnInit {
   }
 
   getProductList() {
-    this.products = this.productFireStoreService.getProducts();
+    this.products$ = this.productFireStoreService.getProducts();
 
   }
 

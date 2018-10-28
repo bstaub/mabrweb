@@ -14,8 +14,8 @@ import { SettingsService } from '../../shared/settings.service';
 })
 export class ProductGridComponent implements OnInit, OnDestroy {
 
-  products: Observable<Product[]>;
-  categories: Observable<ProductCategory[]>;
+  products$: Observable<Product[]>;
+  categories$: Observable<ProductCategory[]>;
   selectedCategory: string;
   selectedSort: string;
   p = 1;
@@ -31,16 +31,16 @@ export class ProductGridComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getProductList();
-    this.categories = this.productCategory.getCategories();
+    this.categories$ = this.productCategory.getCategories();
     // https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change  (not needed anymore in angular 7)
   }
 
   getProductList() {
-    this.products = this.productFireStoreService.getProducts();
+    this.products$ = this.productFireStoreService.getProducts();
   }
 
   selectedOption() {
-    this.products = this.productFireStoreService.filterProductsByCategoryAndField(this.selectedCategory, this.selectedSort);
+    this.products$ = this.productFireStoreService.filterProductsByCategoryAndField(this.selectedCategory, this.selectedSort);
   }
 
   get itemsPerPage() {

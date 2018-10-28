@@ -26,8 +26,6 @@ import { HeaderOrderFlyoutComponent } from './header/header-order-flyout/header-
 import { OrderFlyoutService } from './shared/order-flyout-service';
 import {AlertifyService} from '../shared/alertify.service';
 
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -43,7 +41,6 @@ import {AlertifyService} from '../shared/alertify.service';
     CommonModule,
     SharedModule,
     NgxSiemaModule.forRoot(),
-    // NgbModule.forRoot(),
   ],
   exports: [
     CommonModule,

@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
-// import {Observable} from 'rxjs';
-// import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home-slider',
@@ -10,9 +8,8 @@ import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 })
 export class HomeSliderComponent implements OnInit, OnDestroy {
 
-  // private unsubscribeSiema$ = new Subject();
-
-  constructor(private ngxSiemaService: NgxSiemaService) { }
+  constructor(private ngxSiemaService: NgxSiemaService) {
+  }
 
   // https://www.npmjs.com/package/ngx-siema
   public options: NgxSiemaOptions = {

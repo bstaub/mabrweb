@@ -25,9 +25,6 @@ export class AdminProductEditComponent implements OnInit {
   discount = false;
   newProduct = false;
   bestRated =  false;
-  // discountFactor: number = 1;
-  // selectedValues: string[] = [];  // ['discount', 'newProduct', 'bestRated'];
-  // selectedCategory: string = '';
 
   constructor(
     private productService: ProductService,
@@ -61,8 +58,6 @@ export class AdminProductEditComponent implements OnInit {
         newProduct: this.newProduct,
         bestRated: this.bestRated,
         discountFactor : this.product.discountFactor,
-        // productCategory: this.selectedCategory,
-        // discountFactor : parseInt(this.discountFactor, 10),
       },
       this.product);
 

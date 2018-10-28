@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from '../app.routing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
-import { CheckboxModule, DropdownModule, EditorModule, FileUploadModule } from 'primeng/primeng';
+import { CheckboxModule, DropdownModule, FileUploadModule } from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgPrimeModule } from './ng-prime.module';
 import { ArraySortPipe } from './pipe/array-sort.pipe';

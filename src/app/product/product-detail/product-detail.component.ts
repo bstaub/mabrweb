@@ -18,7 +18,7 @@ export class ProductDetailComponent implements OnInit {
   @Input() count: number;
 
   private productId: string;
-  public selectedProduct: Observable<Product>;
+  public selectedProduct$: Observable<Product>;
   user: any;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -34,7 +34,7 @@ export class ProductDetailComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       params => {
         this.productId = params['id'];  // (+) +params['id'] would converts string 'id' to a number
-        this.selectedProduct = this.productFirestoreService.getProduct(this.productId).valueChanges();
+        this.selectedProduct$ = this.productFirestoreService.getProduct(this.productId).valueChanges();
       }
     );
 

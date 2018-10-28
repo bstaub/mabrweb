@@ -7,7 +7,7 @@
         <select [(ngModel)]="selectedCategory" (change)="selectedOption()">
         <option disabled hidden [value]="selectUndefinedOptionValue">-alle Kategorien-</option>
         <option value="/">-alle Kategorien-</option>
-        <option *ngFor="let category of categories | async" [value]="category.name">{{category.name}}</option>
+        <option *ngFor="let category of categories$ | async" [value]="category.name">{{category.name}}</option>
       </select>
     </div>
 
@@ -24,11 +24,11 @@
   </div>
 </nav>
 
-<section class="products" *ngIf="products">
+<section class="products" *ngIf="products$">
 
   <ng-container>
     <a routerLink="/produkte/detail/{{product.key}}" class="product-card" class="product-card"
-       *ngFor="let product of products | async | checkStatus | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+       *ngFor="let product of products$ | async | checkStatus | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
       <!--*ngFor="let product of products | async | checkStatus |slice:0:limit; let i = index">-->
       <div class="product-image">
         <img src="{{product.image || '//:0'}}" class="img-fluid" alt="{{product.name}}">

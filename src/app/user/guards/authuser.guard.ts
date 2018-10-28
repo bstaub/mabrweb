@@ -4,7 +4,6 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { UserService } from '../shared/user.service';
 import { Observable } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
-import * as firebase from 'firebase';
 
 @Injectable()
 export class AuthuserGuard implements CanActivate {

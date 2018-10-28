@@ -5,11 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ArraySortPipe implements PipeTransform {
 
-  /*
-  transform(value: any, args?: any): any {
-    return null;
-  }
-  */
+
 
   // in Tempalte use: | arraySort: 'FieldName' or Default | arraySort for sortBy JobTitle
   transform(array: Array<any>, field: string = 'name'): Array<string> {

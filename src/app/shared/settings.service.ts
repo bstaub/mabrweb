@@ -9,7 +9,7 @@ export class SettingsService {
     allowRegistration: true,
     allowAdministration: true,
     itemsPerPage: 5,
-  }
+  };
   constructor() {
     if (localStorage.getItem('settings') != null) {
       this.settings = JSON.parse(localStorage.getItem('settings'));  // string nach object umwandeln JSON.parse!

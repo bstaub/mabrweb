@@ -13,7 +13,7 @@ import { LocalStorageService } from '../../shared/local-storage.service';
 })
 export class UserLoginRegisterSlideComponent implements OnInit {
 
-  status: boolean = false;
+  status = false;
   queryParams: Params;
 
   constructor(private authService: AuthService,

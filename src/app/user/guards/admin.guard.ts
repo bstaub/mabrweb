@@ -4,14 +4,12 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { UserService } from '../shared/user.service';
 import { Observable } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
-import * as firebase from 'firebase';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
 
   constructor(private router: Router,
               private authService: AuthService,
-              private userService: UserService,
   ) {
   }
 

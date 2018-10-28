@@ -16,8 +16,8 @@ import { ProductCategoryService } from '../shared/product-category.service';
 })
 export class ProductListComponent implements OnInit {
 
-  products: Observable<Product[]>;
-  categories: Observable<ProductCategory[]>;
+  products$: Observable<Product[]>;
+  categories$: Observable<ProductCategory[]>;
   selectedCategory: string;
   selectedSort: string;
   p = 1;
@@ -31,15 +31,15 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     this.getProductList();
-    this.categories = this.productCategory.getCategories();
+    this.categories$ = this.productCategory.getCategories();
   }
 
   getProductList() {
-    this.products = this.productFireStoreService.getProducts();
+    this.products$ = this.productFireStoreService.getProducts();
   }
 
   selectedOption() {
-    this.products = this.productFireStoreService.filterProductsByCategoryAndField(this.selectedCategory, this.selectedSort);
+    this.products$ = this.productFireStoreService.filterProductsByCategoryAndField(this.selectedCategory, this.selectedSort);
   }
 
   get itemsPerPage() {

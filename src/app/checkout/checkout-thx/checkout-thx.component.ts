@@ -26,6 +26,15 @@ export class CheckoutThxComponent implements OnInit {
 
   }
 
+
+  compute(number) {
+    if (number < 0) {
+      return 0;
+    }
+
+    return number + 1;
+  }
+
   onBackToShopping() {
     this.router.navigate(['/produkte']);
   }

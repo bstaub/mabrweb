@@ -1,20 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CheckoutThxComponent } from './checkout-thx.component';
 
-import { ProductGridComponent } from './product-grid.component';
+
 
 describe('ProductGridComponent', () => {
-  let component: ProductGridComponent;
-  let fixture: ComponentFixture<ProductGridComponent>;
+  let component: CheckoutThxComponent;
+  let fixture: ComponentFixture<CheckoutThxComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProductGridComponent ]
+      declarations: [ CheckoutThxComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductGridComponent);
+    fixture = TestBed.createComponent(CheckoutThxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -22,4 +23,7 @@ describe('ProductGridComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });
+
+

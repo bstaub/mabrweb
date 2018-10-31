@@ -10,15 +10,15 @@ describe('TestcomponentComponent', () => {
   let de: DebugElement;
 
 
-
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [ TestcomponentComponent ]
+      declarations: [TestcomponentComponent]
     })
       .createComponent(TestcomponentComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     fixture.detectChanges();
+
   });
 
   it('should create', () => {
@@ -43,5 +43,23 @@ describe('TestcomponentComponent', () => {
 
 });
 
+/*
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
+
+describe('$COMPONENT$', () => {
+  let component: $COMPONENT$$END$;
+  let fixture: ComponentFixture<$COMPONENT$>;
+  let de: DebugElement;
+  beforeEach(() => {
+    fixture = TestBed.configureTestingModule({
+      declarations: [$COMPONENT$]
+    }).createComponent($COMPONENT$);
+    component = fixture.componentInstance;
+    de = fixture.debugElement;
+    fixture.detectChanges();
+  });
+});
 
 // https://onehungrymind.com/writing-basic-component-test-angular-testing-utilities/
+*/

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderFirestoreService } from '../../order/shared/order-firestore.service';
-import { UserService } from '../../user/shared/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -12,9 +10,7 @@ export class CheckoutThxComponent implements OnInit {
   shopOrderId: string;
 
 
-  constructor(private orderFirestoreService: OrderFirestoreService,
-              private userService: UserService,
-              private router: Router,
+  constructor(private router: Router,
               private route: ActivatedRoute) {
   }
 
@@ -26,14 +22,6 @@ export class CheckoutThxComponent implements OnInit {
 
   }
 
-
-  compute(number) {
-    if (number < 0) {
-      return 0;
-    }
-
-    return number + 1;
-  }
 
   onBackToShopping() {
     this.router.navigate(['/produkte']);

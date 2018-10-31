@@ -22,7 +22,6 @@ export class CheckoutThxComponent implements OnInit {
 
   }
 
-
   onBackToShopping() {
     this.router.navigate(['/produkte']);
   }

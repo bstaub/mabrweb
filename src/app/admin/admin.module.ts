@@ -9,6 +9,7 @@ import { AdminProductAddCategoryComponent } from './admin-product-add-category/a
 import { SharedModule } from '../shared/shared.module';
 import { AdminBilduploadComponent } from './admin-bildupload/admin-bildupload.component';
 import { AdminProductEditCategoryComponent } from './admin-product-edit-category/admin-product-edit-category.component';
+import { Testcomponent2Component } from './testcomponent2/testcomponent2.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AdminProductEditCategoryComponent } from './admin-product-edit-category
     AdminProductAddCategoryComponent,
     AdminBilduploadComponent,
     AdminProductEditCategoryComponent,
+    Testcomponent2Component,
   ],
   imports: [
     SharedModule

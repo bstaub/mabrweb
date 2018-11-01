@@ -1,0 +1,43 @@
+.img-thumbnail {
+  max-width: 100px;
+  height: auto;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  tbody, thead {
+    float: left;
+    width: 100%;}
+
+  thead, tfoot { display: none }
+  td,th { display: block }
+
+  .table td:before {
+    content: attr(data-title)" ";
+    float: left;
+  }
+  .table tr{
+    border: 1px solid #dee2e6;
+    width: 100%;
+    display: block;
+  }
+  .table td.text{
+    height: 35px;
+    padding: 0.50rem;
+  }
+
+  .table p {
+    margin-bottom: 0;
+  }
+
+  .table .btn-sm, .btn-group-sm > .btn {
+    width: 100%;
+  }
+}
+

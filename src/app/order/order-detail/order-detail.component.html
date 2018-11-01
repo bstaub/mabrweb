@@ -3,7 +3,7 @@
 
 
   <div class="row">
-    <div class="col-md-10 offset-1">
+    <div class="col-md-12">
       <h1>Warenkorb</h1>
 
       <div class="table-responsive">
@@ -12,10 +12,10 @@
           <tr>
             <th>Artikel</th>
             <th>Menge</th>
-            <th class="text-right">Preis CHF</th>
-            <th class="text-right">Rabatt %</th>
-            <th class="text-right">Total CHF</th>
-            <th></th>
+            <th class="text text-right">Preis CHF</th>
+            <th class="text text-right">Rabatt %</th>
+            <th class="text text-right">Total CHF</th>
+            <th ></th>
           </tr>
           </thead>
           <tbody>
@@ -33,12 +33,12 @@
               </figure>
 
             </td>
-            <td>
+            <td class="orderinput">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <button class="btn btn-outline-secondary" type="button" (click)="onDecreaseQty(product)">-</button>
                 </div>
-                <input type="text" class="form-control text-center w-25" [(ngModel)]="product.qty"
+                <input type="text" class="form-control text-center" [(ngModel)]="product.qty"
                        (blur)="onChangeQty(product)">
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" type="button" (click)="onIncreaseQty(product)">+</button>
@@ -47,10 +47,10 @@
             </td>
 
 
-            <td class="text-right">{{product.price  | number : '1.2-2'}}</td>
-            <td  class="text-right"><p *ngIf="product.discountFactor != 1">{{(1- product.discountFactor) *100 | number : '1.0'}}</p></td>
-            <td class="text-right">{{product.price * product.qty * product.discountFactor | number : '1.2-2'}}</td>
-            <td>
+            <td data-title="Preis CHF" class="text text-right">{{product.price  | number : '1.2-2'}}</td>
+            <td data-title="Rabatt %" class="text text-right"><p *ngIf="product.discountFactor != 1">{{(1- product.discountFactor) *100 | number : '1.0'}}</p></td>
+            <td data-title="Total CHF" class="text text-right">{{product.price * product.qty * product.discountFactor | number : '1.2-2'}}</td>
+            <td align="rigth">
 
               <button class="btn btn-sm btn-danger" (click)="onDeletItem(product.productId)">
                 <fa name="trash"></fa>
@@ -92,7 +92,7 @@
   </pagination-controls>
 
   <div class="row">
-    <div class="col-md-10 offset-1">
+    <div class="col-md-12">
       <button class="btn btn-primary" (click)="onDeleteScart()">Warenkorb Löschen</button>&nbsp;
     </div>
   </div>
@@ -101,7 +101,7 @@
   <br>
 
   <div class="row">
-    <div class="col-md-8 offset-2">
+    <div class="col-md-12">
       <button class="btn btn-primary" (click)="onEnterOrderData()">Bestellen</button>
     </div>
   </div>

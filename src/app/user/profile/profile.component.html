@@ -5,42 +5,21 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 text-center">
       <h1>User Profile</h1>
       <br>
-      <img *ngIf="user" src="{{ user?.downloadUrl }}" alt="">
+      <img class="imgProfil" *ngIf="user" src="{{ user?.downloadUrl }}" alt="">
       <br>
       <p>Benutzername: {{ user?.username }}</p>
       <p>Email: {{ currentUser?.email }}</p>
-    </div>
-  </div>
-</div>
 
-
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8">
-
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <input type="file" (change)="onFileSelection($event)" placeholder="Upload a file" accept=".gif, .png, .jpeg, .jpg">
-        </div>
-      </div>
+      <span class="uploadIcon">
+        <input type="file" id="file" (change)="onFileSelection($event)" placeholder="Upload a file" accept=".gif, .png, .jpeg, .jpg" class="inputFile" >
+        <label for="file"><i class="fa fa-file-image-o" aria-hidden="true"></i></label>
+      </span>
 
     </div>
   </div>
 </div>
-
-
-<!--&lt;!&ndash;<div class="container" *ngIf="imageUrl">&ndash;&gt;-->
-<!--<div class="container" *ngIf="user2">-->
-  <!--<div class="row">-->
-    <!--<div class="col-lg-8">-->
-
-      <!--&lt;!&ndash;<img src="{{ imageUrl }}" alt="">&ndash;&gt;-->
-      <!--<img src="{{ user2.downloadUrl }}" alt="">-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
 
 

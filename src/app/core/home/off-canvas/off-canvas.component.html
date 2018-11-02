@@ -1,7 +1,10 @@
 <div id="mySidenav" class="sidenav">
   <a class="closebtn" (click)="closeNav()">&times;</a>
-  <a [routerLink]="['user-login-register-slide']" (click)="closeNav()">Register/Login</a>
+  <a [routerLink]="['user-login-register-slide']" (click)="closeNav()">Login/Register</a>
   <a [routerLink]="['']" (click)="closeNav()">Home</a>
   <a [routerLink]="['produkte']" (click)="closeNav()">Products</a>
   <a [routerLink]="['bestellung']" (click)="closeNav()">Bestellung</a>
+  <a *ngIf="isLoggedIn" [routerLink]="['profile']" (click)="closeNav()">Ihr Konto</a>
+  <a *ngIf="isLoggedIn && isAdmin" [routerLink]="['admin']" (click)="closeNav()">Admin</a>
+  <a *ngIf="isLoggedIn" (click)="logout()">Logout</a>
 </div>

@@ -14,43 +14,33 @@
       <li class="nav-item active">
         <a class="nav-link" [routerLink]="['produkte']" routerLinkActive="active">Products <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" [routerLink]="['bestellung']" routerLinkActive="active">Bestellung <span class="sr-only">(current)</span></a>
-      </li>
-      <!--<li class="nav-item dropdown" ngbDropdown>-->
-        <!--<a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle>User</a>-->
-        <!--<div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>-->
-          <!--<a *ngIf="!isLoggedIn && showRegister" class="dropdown-item" [routerLink]="['login']">Login</a>-->
-          <!--<a *ngIf="!isLoggedIn && showRegister" class="dropdown-item" [routerLink]="['register']">Register</a>-->
-          <!--<a *ngIf="isLoggedIn" class="dropdown-item" [routerLink]="['profile']">Profil</a>-->
-          <!--<a *ngIf="isLoggedIn && showAdmin" class="dropdown-item" [routerLink]="['admin']">Admin</a>-->
-          <!--<a routerLinkActive="active" class="dropdown-item" href="#" (click)="logout()" *ngIf="isLoggedIn">Logout</a>-->
-        <!--</div>-->
-      <!--</li>-->
     </ul>
-
-    <a class="navbar-brand" [routerLink]="['']">#mabr</a>
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a *ngIf="isLoggedIn" class="nav-link" [routerLink]="['profile']" routerLinkActive="active">Profile</a>
       </li>
       <li class="nav-item">
-        <a (click)="logout()" *ngIf="isLoggedIn" class="nav-link" routerLinkActive="active">Logout</a>
+        <a [routerLink]="['user-login-register-slide']" *ngIf="!isLoggedIn" class="nav-link" routerLinkActive="active">Login/Register</a>
+      </li>
+      <li class="nav-item">
+      <a (click)="logout()" *ngIf="isLoggedIn" class="nav-link" routerLinkActive="active">Logout</a>
       </li>
     </ul>
 
-    <button style="margin-left: 7px;" [routerLink]="['user-login-register-slide']" class="btn btn-secondary btn-circle">
-      <i class="fa fa-user-circle" aria-hidden="true"></i>
-    </button>
 
-    <button style="margin-left: 7px;" [routerLink]="['admin']" class="btn btn-secondary btn-circle" *ngIf="isLoggedIn && showAdmin">
-      <i class="fa fa-lock" aria-hidden="true"></i>
-    </button>
 
-    <button style="margin-left: 7px;" (click)="logout()" class="btn btn-secondary btn-circle" *ngIf="isLoggedIn">
-      <i class="fa fa-sign-out" aria-hidden="true"></i>
-    </button>
+    <!--<button style="margin-left: 7px;" [routerLink]="['user-login-register-slide']" class="btn btn-secondary btn-circle">-->
+      <!--<i class="fa fa-user-circle" aria-hidden="true"></i>-->
+    <!--</button>-->
+
+    <!--<button style="margin-left: 7px;" [routerLink]="['admin']" class="btn btn-secondary btn-circle" *ngIf="isLoggedIn && showAdmin">-->
+      <!--<i class="fa fa-sign-in" aria-hidden="true"></i>-->
+    <!--</button>-->
+
+    <!--<button style="margin-left: 7px;" (click)="logout()" class="btn btn-secondary btn-circle" *ngIf="isLoggedIn">-->
+      <!--<i class="fa fa-sign-out" aria-hidden="true"></i>-->
+    <!--</button>-->
 
 
   </div>

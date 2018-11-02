@@ -1,0 +1,38 @@
+.imgProfil{
+  max-width: 200px;
+  border-radius: 50%;
+  margin-bottom: 50px;
+
+  &:hover{
+    // opacity: 0.8;
+  }
+}
+
+
+/* https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/ */
+.inputFile{
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputFile[_ngcontent-c7] + label {
+  font-size: 1em;
+  font-weight: 700;
+  color: white;
+  padding:5px;
+  background-color: dimgrey;
+  display: inline-block;
+}
+
+.inputFile[_ngcontent-c7]:focus + label,
+.inputFile[_ngcontent-c7]+ label:hover {
+  background-color: #dcd7d7;
+  cursor: pointer;
+
+}
+
+

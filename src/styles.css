@@ -4,6 +4,10 @@
 /* bin am Flex Grid Layout für Produkte am testen, damit ich eine etwas besser Vorstellumg vom Endprodukt habe */
 /* 16.09.2018, BS */
 
+html, body {
+  min-width: 360px;
+}
+
 body {
   /* padding-top: 80px;  */
 }

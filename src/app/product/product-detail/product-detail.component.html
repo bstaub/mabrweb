@@ -2,7 +2,7 @@
 
   <h2>Detail Ansicht</h2>
   <div *ngIf="selectedProduct$ | async as product; else loading" class="row mb-3">
-    <div class="col-xs-12 col-md-6">
+    <div class="col-12 col-sm-6">
       <div>
         <label>Name: </label>
         <p>{{product.name}}</p>
@@ -26,11 +26,14 @@
       </button>
 
     </div>
-    <div class="col-xs-12 col-md-6">
+    <div class="col-12 col-sm-6">
       <img src="{{product.image || '//:0'}}" class="img-fluid" alt="Dummy Images">
     </div>
 
-    <button appBackButton>Zurück</button>
+
+    <div class="col-12">
+      <button class="btn btn-primary btn-detail" appBackButton>Zurück</button>
+    </div>
 
   </div>
 
@@ -39,3 +42,4 @@
   </ng-template>
 
 </div>
+

@@ -101,7 +101,7 @@ button {
     width: $contW;
     height: 100%;
     // background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg');
-    background-image: url('http://localhost:4200/assets/bettbild.jpeg');
+    background-image: url('../../../assets/bettbild.jpeg');
     background-size: cover;
     transition: transform $switchAT ease-in-out;
   }

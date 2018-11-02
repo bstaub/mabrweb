@@ -124,7 +124,6 @@ export class OrderFirestoreService {
 
 
   loadOrderAfterLogin(userId: string) {
-    console.log(userId);
     this.orderCollection.doc(userId).ref.get()
       .then((docSnapshot) => {
         if (!docSnapshot.exists) {

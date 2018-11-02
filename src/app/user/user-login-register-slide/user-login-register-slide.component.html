@@ -1,3 +1,4 @@
+<app-page-title title="Login/Register" [children]="[{title: 'Login/Register'}]"></app-page-title>
 <p class="tip"></p>
 <div class="cont" [ngClass]="{'s--signup': status }" *ngIf="!ifMobile">
   <form id="login" class="form sign-in" (ngSubmit)="onSubmitLogin(fl)" #fl="ngForm">

@@ -16,14 +16,15 @@ thead {
   border-bottom: 1px solid black;
 }
 
-.burgerMenu {
-  font-size: 30px;
-  cursor: pointer;
-  color: yellow;
-  margin-right: 50px;
 
-  @media (max-width: 580px) {
-    margin-right: 0;
+.burgerMenu {
+  margin-right: 35px;
+  cursor: pointer;
+  div {
+    width: 35px;
+    height: 5px;
+    background-color: yellow;
+    margin: 6px 0;
   }
 }
 

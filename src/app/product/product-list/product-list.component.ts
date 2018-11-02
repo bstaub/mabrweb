@@ -11,7 +11,51 @@ import { ProductCategoryService } from '../shared/product-category.service';
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styles: [`
+    .product-filter {
+      display: flex;
+      padding: 30px 0;
+    }
 
+    .sort {
+      display: flex;
+      width: 100%;
+      justify-content: flex-end;
+      align-self: flex-end;
+    }
+
+    .collection-sort {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .collection-sort:first-child {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .collection-sort:last-child {
+      padding-right: 20px;
+    }
+
+    label {
+      color: #666;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1em;
+      text-transform: uppercase;
+    }
+
+    @media ( max-width: 480px ) {
+
+      .product-filter {
+        flex-direction: column;
+      }
+
+      .sort {
+        align-self: center;
+      }
+
+    }
   `]
 })
 export class ProductListComponent implements OnInit {

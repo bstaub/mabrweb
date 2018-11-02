@@ -179,16 +179,11 @@ label {
 
 @media ( max-width: 480px ) {
 
-  h1 {
-
-  }
-
   .product-filter {
     flex-direction: column;
   }
 
   .sort {
-    // align-self: flex-start;
     align-self: center;
   }
 

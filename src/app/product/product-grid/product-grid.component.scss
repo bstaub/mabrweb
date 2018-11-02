@@ -83,6 +83,7 @@ h1 {
   font-size: 28px;
   font-weight: 300;
   flex: 1;
+  margin: 0 20px 40px;
 }
 
 h5 {
@@ -113,6 +114,11 @@ h6 {
 }
 
 .collection-sort:first-child {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.collection-sort:last-child {
   padding-right: 20px;
 }
 
@@ -174,7 +180,7 @@ label {
 @media ( max-width: 480px ) {
 
   h1 {
-    margin-bottom: 20px;
+
   }
 
   .product-filter {
@@ -182,7 +188,8 @@ label {
   }
 
   .sort {
-    align-self: flex-start;
+    // align-self: flex-start;
+    align-self: center;
   }
 
 }

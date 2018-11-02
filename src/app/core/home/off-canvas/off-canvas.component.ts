@@ -1,20 +1,22 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../../user/shared/auth.service';
 import { Order } from '../../../models/order.model';
 import { LocalStorageService } from '../../../shared/local-storage.service';
 import { OrderFlyoutService } from '../../shared/order-flyout-service';
 import { AdminGuard } from '../../../user/guards/admin.guard';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-off-canvas',
   templateUrl: './off-canvas.component.html',
   styleUrls: ['./off-canvas.component.scss']
 })
-export class OffCanvasComponent implements OnInit, OnChanges {
+export class OffCanvasComponent implements OnInit, OnChanges, OnDestroy {
 
   isLoggedIn: boolean;
   isAdmin = false;
   loggedInUser: string;
+  authServiceSubscription: Subscription;
   @Input() changeCanvasState;  // get open click state from navbar
   @Output() closeNavState = new EventEmitter();
 
@@ -25,7 +27,7 @@ export class OffCanvasComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.authService.user$.subscribe(
+    this.authServiceSubscription = this.authService.user$.subscribe(
       auth => {
         if (auth && auth.emailVerified) {
           this.isLoggedIn = true;
@@ -65,6 +67,10 @@ export class OffCanvasComponent implements OnInit, OnChanges {
     this.isLoggedIn = false;
     this.localStorageService.destroyLocalStorage('products');
     this.orderFlyoutService.refreshOrderFlyout(this.localStorageService.getData('products'), new Order());
+  }
+
+  ngOnDestroy() {
+    this.authServiceSubscription.unsubscribe();
   }
 
 }

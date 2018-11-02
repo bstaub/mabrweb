@@ -15,6 +15,8 @@ export class UserLoginRegisterSlideComponent implements OnInit {
 
   status = false;
   queryParams: Params;
+  ifMobile = false;
+
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -30,6 +32,12 @@ export class UserLoginRegisterSlideComponent implements OnInit {
     if (this.queryParams.register === '1') {
       this.clickToggle();
     }
+
+    const mq = window.matchMedia('(max-width: 767px)');
+    if (mq.matches) {
+      this.ifMobile = true;
+    }
+
   }
 
   clickToggle() {
@@ -45,7 +53,7 @@ export class UserLoginRegisterSlideComponent implements OnInit {
 
           setTimeout(() => {
 
-            this.orderFirestoreService.loadOrderAfterLogin(userData.user.uid)
+            this.orderFirestoreService.loadOrderAfterLogin(userData.user.uid);
             this.orderFirestoreService.deleteOrderAnonymusComplete(this.orderFirestoreService.getAnonymusOrderId());
             this.localStorageService.destroyLocalStorage('anonymusOrderId');
 
@@ -72,6 +80,16 @@ export class UserLoginRegisterSlideComponent implements OnInit {
       this.authService.createUserInFirebaseAuthListEmailVerifiedOrder(form.value.email, form.value.password, form.value.fullname);
     } else {
       this.authService.createUserInFirebaseAuthListEmailVerified(form.value.email, form.value.password, form.value.fullname);
+    }
+  }
+
+  onResize(event) {
+    // console.log(event.target.innerWidth);
+    // https://stackoverflow.com/questions/35527456/angular-window-resize-event
+    if (event.target.innerWidth > 768) {
+      this.ifMobile = false;
+    } else {
+      this.ifMobile = true;
     }
   }
 

@@ -34,7 +34,7 @@ import { ProductCategoryService } from '../shared/product-category.service';
     }
 
     .collection-sort:last-child {
-      padding-right: 20px;
+      // padding-right: 20px;
     }
 
     label {

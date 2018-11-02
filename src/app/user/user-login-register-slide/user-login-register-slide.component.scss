@@ -16,7 +16,8 @@ input, button {
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
-$contW: 900px;
+
+$contW: 700px;
 $imgW: 260px;
 $formW: $contW - $imgW;
 $switchAT: 1.2s;
@@ -299,3 +300,26 @@ input {
     right: 5px;
   }
 }
+
+
+@media( min-width: 768px ) {
+  .mobileOnly {
+    display: none;
+    visibility: hidden;
+  }
+}
+
+
+
+@media( max-width: 767px ) {
+  .cont {
+    display: none;
+  }
+  .mobileOnly{
+    text-align: center;
+  }
+  form{
+    width: 100%!important;
+  }
+}
+

@@ -1,5 +1,5 @@
 <p class="tip"></p>
-<div class="cont" [ngClass]="{'s--signup': status }">
+<div class="cont" [ngClass]="{'s--signup': status }" *ngIf="!ifMobile">
   <form id="login" class="form sign-in" (ngSubmit)="onSubmitLogin(fl)" #fl="ngForm">
     <h2>Willkommen zurück,</h2>
     <label>
@@ -48,3 +48,47 @@
     </form>
   </div>
 </div>
+
+<div class="mobileOnly" *ngIf="ifMobile">
+  <div class="container">
+    <div class="row col-12">
+      <form id="loginM" class="form sign-inM" (ngSubmit)="onSubmitLogin(fl)" #fl="ngForm">
+        <h2>Login</h2>
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" class="form-control" ngModel required />
+        </label>
+        <label>
+          <span>Passwort</span>
+          <input type="password" name="password" class="form-control" ngModel required />
+        </label>
+        <p class="forgot-pass" routerLink="/resetpw">Passwort vergessen?</p>
+        <button type="submit" class="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row col-12"></div>
+      <form id="registerM" class="form sign-upM" (ngSubmit)="onSubmitRegister(fr)" #fr="ngForm">
+        <h2>Register</h2>
+        <label>
+          <span>Name</span>
+          <input type="text" name="fullname" class="form-control" ngModel required />
+        </label>
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" class="form-control" ngModel required />
+        </label>
+        <label>
+          <span>Passwort</span>
+          <input type="password" name="password" class="form-control" ngModel required />
+        </label>
+        <button type="submit" class="submit">Bestätigen</button>
+      </form>
+  </div>
+</div>
+
+
+<div (window:resize)="onResize($event)"></div>

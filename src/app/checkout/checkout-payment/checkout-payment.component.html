@@ -1,22 +1,22 @@
 <div class="container">
 
-  <h1>Payment</h1>
+  <h1>Zahlart</h1>
 
   <form [formGroup]="PaymentForm" (ngSubmit)="onSubmit()">
 
 
     <label>
-      <input type="radio" value="invoice" name="paymentMethod" formControlName="paymentMethod"> Invoice
+      <input type="radio" value="invoice" name="paymentMethod" formControlName="paymentMethod"> Rechnung
     </label>
 
     <br>
     <label>
-      <input type="radio" value="prepayment" name="paymentMethod"  formControlName="paymentMethod">  Pre-Payment
+      <input type="radio" value="prepayment" name="paymentMethod"  formControlName="paymentMethod"> Vorkasse
     </label>
 
     <br>
     <label>
-      <input type="radio" value="creditcard" name="paymentMethod"  formControlName="paymentMethod">  CreditdCard
+      <input type="radio" value="creditcard" name="paymentMethod"  formControlName="paymentMethod"> Kreditkarte
     </label>
 
 

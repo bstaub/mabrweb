@@ -1,7 +1,7 @@
 <div class="container">
 
 
-      <h1>Billing address</h1>
+      <h1>Rechnungsadresse</h1>
 
 
   <form [formGroup]="CustomerAddressForm" (ngSubmit)="onSubmit()">
@@ -9,55 +9,55 @@
   <div formGroupName="customerBillingAddress">
 
     <div class="form-group">
-      <label for="firstname_b">First Name</label>
+      <label for="firstname_b">Vorname</label>
       <input class="form-control" type="text" id="firstname_b" name="firstname_b" formControlName="firstname_b">
     </div>
 
 
     <div class="form-group">
-      <label for="lastname_b">Last Name</label>
+      <label for="lastname_b">Nachname</label>
       <input class="form-control" type="text" id="lastname_b" name="lastname_b" formControlName="lastname_b">
     </div>
 
 
 
         <div class="form-group">
-          <label for="address_b">Address</label>
+          <label for="address_b">Strasse</label>
           <input class="form-control" type="text" id="address_b" name="address_b" formControlName="address_b">
         </div>
 
 
 
         <div class="form-group">
-          <label for="zip_b">Zip</label>
+          <label for="zip_b">PLZ</label>
           <input class="form-control" type="text" id="zip_b" name="zip_b" formControlName="zip_b">
         </div>
 
 
 
         <div class="form-group">
-          <label for="city_b">City</label>
+          <label for="city_b">Ort</label>
           <input class="form-control" type="text" id="city_b" name="city_b" formControlName="city_b">
         </div>
 
 
 
         <div class="form-group">
-          <label for="country_b">Country</label>
+          <label for="country_b">Land</label>
           <input class="form-control" type="text" id="country_b" name="country_b" formControlName="country_b">
         </div>
 
 
 
         <div class="form-group">
-          <label for="phone_b">Phone</label>
+          <label for="phone_b">Telefon</label>
           <input class="form-control" type="text" id="phone_b" name="phone_b" formControlName="phone_b">
         </div>
 
 
     <div *ngIf="!user">
         <div class="form-group">
-          <label for="mail_b">Mail</label>
+          <label for="mail_b">E-Mail</label>
           <input class="form-control" type="text" id="mail_b" name="mail_b" formControlName="mail_b">
         </div>
       </div>
@@ -68,7 +68,7 @@
     <br>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="shipqingEqualsBillingAddress" [(ngModel)]="shipqingEqualsBillingAddress"  [ngModelOptions]="{standalone: true}" (change)="setValidation($event)">
-        <label class="form-check-label" for="shipqingEqualsBillingAddress">Shipping address equals invoice address</label>
+        <label class="form-check-label" for="shipqingEqualsBillingAddress">Lieferadresse gleich wie Rechnungsadresse</label>
       </div>
       <p></p>
 
@@ -78,13 +78,13 @@
     <div *ngIf="!shipqingEqualsBillingAddress" formGroupName="customerShippingAddress">
 
 
-          <h1>Shipping address</h1>
+          <h1>Lieferadresse</h1>
 
 
 
 
           <div class="form-group">
-            <label for="firstname_s">First Name</label>
+            <label for="firstname_s">Vorname</label>
             <input class="form-control" type="text" id="firstname_s" name="firstname_s" formControlName="firstname_s">
           </div>
 
@@ -93,49 +93,49 @@
 
 
           <div class="form-group">
-            <label for="lastname_s">Last Name</label>
+            <label for="lastname_s">Nachname</label>
             <input class="form-control" type="text" id="lastname_s" name="lastname_s" formControlName="lastname_s">
           </div>
 
 
 
           <div class="form-group">
-            <label for="address_s">Address</label>
+            <label for="address_s">Strasse</label>
             <input class="form-control" type="text" id="address_s" name="address_s" formControlName="address_s">
           </div>
 
 
 
           <div class="form-group">
-            <label for="zip_s">Zip</label>
+            <label for="zip_s">PLZ</label>
             <input class="form-control" type="text" id="zip_s" name="zip_s" formControlName="zip_s">
           </div>
 
 
 
           <div class="form-group">
-            <label for="city_s">City</label>
+            <label for="city_s">Ort</label>
             <input class="form-control" type="text" id="city_s" name="city_s" formControlName="city_s">
           </div>
 
 
 
           <div class="form-group">
-            <label for="country_s">Country</label>
+            <label for="country_s">Land</label>
             <input class="form-control" type="text" id="country_s" name="country_s" formControlName="country_s">
           </div>
 
 
 
           <div class="form-group">
-            <label for="phone_s">Phone</label>
+            <label for="phone_s">Telefon</label>
             <input class="form-control" type="text" id="phone_s" name="phone_s" formControlName="phone_s">
           </div>
 
 
         <div>
           <div class="form-group">
-            <label for="mail_s">Mail</label>
+            <label for="mail_s">E-Mail</label>
             <input class="form-control" type="text" id="mail_s" name="mail_s" formControlName="mail_s">
           </div>
         </div>

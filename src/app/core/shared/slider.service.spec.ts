@@ -1,12 +1,15 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
 import { SliderService } from './slider.service';
 
 describe('SliderService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
-
-  it('should be created', () => {
-    const service: SliderService = TestBed.get(SliderService);
-    expect(service).toBeTruthy();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [SliderService]
+    });
   });
+
+  it('should be created', inject([SliderService], (service: SliderService) => {
+    expect(service).toBeTruthy();
+  }));
 });

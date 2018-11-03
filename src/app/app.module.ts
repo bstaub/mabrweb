@@ -17,6 +17,7 @@ import { AdminModule } from './admin/admin.module';
 import { OrderModule } from './order/order.module';
 import { CheckoutModule } from './checkout/checkout.module';
 import { UserModule } from './user/user.module';
+import { ComptestComponent } from './testing/comptest/comptest.component';
 
 
 
@@ -26,6 +27,7 @@ import { UserModule } from './user/user.module';
     NotificationComponent,
     SortPipe,
     MdToHtmlPipe,
+    ComptestComponent,
   ],
   imports: [
     BrowserModule,

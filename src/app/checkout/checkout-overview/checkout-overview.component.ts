@@ -6,6 +6,8 @@ import { OrderFirestoreService } from '../../order/shared/order-firestore.servic
 import { UserService } from '../../user/shared/user.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { AuthService } from '../../user/shared/auth.service';
+import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
+import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalStorage.model';
 
 @Component({
   selector: 'app-checkout-overview',
@@ -13,6 +15,7 @@ import { AuthService } from '../../user/shared/auth.service';
   styleUrls: ['./checkout-overview.component.scss']
 })
 export class CheckoutOverviewComponent implements OnInit {
+  productPerOrderLocalStorage: ProductPerOrderLocalStorage[];
   user: any;
   orderData: any;
   orderId: string;
@@ -22,6 +25,7 @@ export class CheckoutOverviewComponent implements OnInit {
   authSubscription: Subscription;
   nextOrderIdSubscription: Subscription;
   orderSubscription: Subscription;
+  productsSubscription: Subscription;
 
 
   constructor(private orderFirestoreService: OrderFirestoreService,
@@ -29,6 +33,7 @@ export class CheckoutOverviewComponent implements OnInit {
               private router: Router,
               private localStorageService: LocalStorageService,
               private authService: AuthService,
+              private orderFlyoutService: OrderFlyoutService,
   ) {
   }
 
@@ -42,6 +47,10 @@ export class CheckoutOverviewComponent implements OnInit {
         this.getOrderData(this.localStorageService.getData('anonymusOrderId').orderId);
       }
     });
+
+    this.productsSubscription = this.orderFlyoutService.currentProductsPerOrderLocalStorage.subscribe(
+      (data: ProductPerOrderLocalStorage[]) => this.productPerOrderLocalStorage = data
+    );
   }
 
   orderNow() {
@@ -77,7 +86,7 @@ export class CheckoutOverviewComponent implements OnInit {
   getOrderData(userId) {
     this.orderSubscription = this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
-      this.setOrderData();
+      this.orderFlyoutService.refreshOrderFlyout(this.localStorageService.getData('products'), this.orderData);
     });
 
     this.nextOrderIdSubscription = this.orderFirestoreService.getLatestOrder().subscribe((res) => {
@@ -86,9 +95,7 @@ export class CheckoutOverviewComponent implements OnInit {
 
   }
 
-  setOrderData() {
-    // todo stuff
-  }
+
 
 
   goBack() {

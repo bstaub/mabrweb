@@ -7,6 +7,7 @@ import { Order } from '../../models/order.model';
 import { AuthService } from '../../user/shared/auth.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { Subscription } from 'rxjs';
+import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
 
 
 
@@ -30,6 +31,7 @@ export class CheckoutShipmentdataComponent implements OnInit, OnDestroy {
               private router: Router,
               private authService: AuthService,
               private localStorageService: LocalStorageService,
+              private orderFlyoutService: OrderFlyoutService,
   ) {
   }
 
@@ -57,6 +59,7 @@ export class CheckoutShipmentdataComponent implements OnInit, OnDestroy {
     this.orderSubscription = this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
       this.setOrderData();
+      this.orderFlyoutService.refreshOrderFlyout(this.localStorageService.getData('products'), this.orderData);
     });
 
   }

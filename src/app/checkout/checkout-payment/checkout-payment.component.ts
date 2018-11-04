@@ -7,6 +7,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { AuthService } from '../../user/shared/auth.service';
 import { Subscription } from 'rxjs';
+import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
               private router: Router,
               private localStorageService: LocalStorageService,
               private authService: AuthService,
+              private orderFlyoutService: OrderFlyoutService,
   ) {
   }
 
@@ -65,6 +67,7 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
     this.orderSubscription = this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
       this.setOrderData();
+      this.orderFlyoutService.refreshOrderFlyout(this.localStorageService.getData('products'), this.orderData);
     });
 
 

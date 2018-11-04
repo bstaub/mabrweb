@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../user/shared/auth.service';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { Subscription } from 'rxjs';
+import { ProductPerOrderLocalStorage } from '../../models/productPerOrderLocalStorage.model';
+import { OrderFlyoutService } from '../../core/shared/order-flyout-service';
 
 
 
@@ -42,6 +44,7 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
               private router: Router,
               private authService: AuthService,
               private localStorageService: LocalStorageService,
+              private orderFlyoutService: OrderFlyoutService,
   ) {
   }
 
@@ -64,6 +67,7 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
       }
     });
 
+
     this.addressFormSubscription = this.CustomerAddressForm.valueChanges.subscribe(() => {
         if (this.shipqingEqualsBillingAddress) {
           this.formIsValid = this.CustomerAddressForm.controls.customerBillingAddress.valid;
@@ -80,6 +84,7 @@ export class CheckoutCustomerdataComponent implements OnInit, OnDestroy {
     this.orderSubscription = this.orderFirestoreService.getUserOrder(userId).subscribe((res) => {
       this.orderData = res;
       this.setOrderData();
+      this.orderFlyoutService.refreshOrderFlyout(this.localStorageService.getData('products'), this.orderData);
     });
 
   }
